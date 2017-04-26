@@ -1,0 +1,16 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2016-10-13 13:35:56</exporttime>
+<name>VDCustomReports</name>
+<label>VDCustomReports</label>
+<parent>Analytics</parent>
+<type>extension</type>
+<version>1</version>
+<dependencies>
+<vtiger_version>6.0.0</vtiger_version>
+</dependencies>
+<tables>
+</tables>
+<crons>
+</crons>
+</module>

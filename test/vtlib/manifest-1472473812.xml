@@ -1,0 +1,11 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2016-08-29 15:30:12</exporttime>
+<name>SolaryBlockAlert</name>
+<label>Блоки предупреждений</label>
+<parent>Support</parent>
+<version>1</version>
+<dependencies>
+<vtiger_version>6.0.0</vtiger_version>
+</dependencies>
+<tables>
