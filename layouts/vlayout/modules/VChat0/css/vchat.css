@@ -1,0 +1,377 @@
+#toUserVchat
+{
+	cursor:pointer;
+}
+.yellowdiv
+{
+	background:#fff0a8!important;
+}
+.yellowdiv:hover
+{
+	background:#fff0a8!important;
+}
+
+.favtop
+{
+	width:100px;
+	float:right
+}
+.nameChannel
+{
+	width:400px;
+	float:left;
+	height:25px;
+	overflow:hidden;
+}
+.nameChannel h2
+{
+	font-size:18px!important;
+}
+.nameheaderchat
+{
+	padding:0px 0px 0px 30px;
+}
+
+#relMessage
+{
+position:absolute;
+bottom:115px;	
+width:100%;
+}
+
+.topMessageUserList
+{
+	display:none;
+}
+.uploadsFilesForm
+{
+	display:none;
+}
+.answer
+{
+    padding: 0px 0px 0px 20px;
+	 border-left-width: 5px;
+    border-radius: 3px;	
+	margin-left:40px;
+	margin-top:5px;
+}
+.containeranswer
+{
+	border-left-color: #aa6708;
+	background: #FFF;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+	padding:20px;
+	background:#FFF;	
+}
+
+.bs-callout
+{
+	
+	background:#FFF;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;	
+}
+.bs-callout-warning
+{
+	border-left-color: #aa6708;
+}
+
+.openCallPanelVChat
+{
+	background:#f3f8f9;
+	position:absolute;
+	min-width:200px;
+	min-height:400px;
+	display:none;
+	margin-left:-200px;
+	margin-top:20px;
+	border:1px solid #CCC;
+	
+}
+.rightVChatPanlelUserList
+{
+	border:1px solid #CCC;
+	padding:20px;
+}
+.contentrightPanelVChat
+{
+	padding:10px;
+}
+.rightbuttonVChat
+{
+	display:none;
+	float:right;
+	width:150px;
+	height:0px;
+	text-align:right;
+	
+}
+.addChannelLeftP
+{
+	padding-right:10px;
+	width:100px;
+	float:right;
+	text-align:right;
+}
+.innerRightbuttonVChat
+{
+	position:absolute;
+	margin-top:-30px;
+	/*background:#CCC;/**/
+}
+.rowmessage:hover
+{
+	background:#f3f8f9;
+}
+
+.rowmessage:hover>.rightbuttonVChat
+{
+	display:block;
+}
+
+.selectuserclass
+{
+	font-weight:bold;
+}
+.closePanelVChat
+{
+	text-align:right;
+}
+.inputloaduserVChat
+{
+	display:none;
+}
+#selectuser
+{
+	display:none;
+}
+.panelVChatChannel
+{
+	display:none;
+	/*
+	position:fixed;
+	/**/
+	position:absolute;
+	top:100px;
+	left:50%;
+	width:400px;
+
+	background:#CCC;
+	margin-left:-200px;
+	z-index:10001;
+	overflow:auto;
+}
+.containerVChat
+{
+	padding:10px 20px 10px 10px;
+}
+.rowVChat
+{
+	
+}
+
+.rowVChat input
+{
+	width:100%;
+}
+
+#TB_overlay {
+	display:none;
+  background-color: #000; /* Чёрный фон */
+  height: 100%; /* Высота максимальна */
+  left: 0; /* Нулевой отступ слева */
+  opacity: 0.50; /* Степень прозрачности */
+  position: fixed; /* Фиксированное положение */
+  top: 0; /* Нулевой отступ сверху */
+  width: 100%; /* Ширина максимальна */
+  z-index: 10000; /* Заведомо быть НАД другими элементами */
+  
+}
+.rowVChatButton
+{
+	text-align:center;
+}
+.rowVChatButton button
+{
+ margin:0px 10px 10px 10px;
+}
+.vchat .leftPanelvChat
+{
+	width:19%;
+}
+
+.vchat .centerPanelvChat
+{
+	width:50%;
+	min-height: 510px;
+	background:#FFF;
+	overflow:hidden;
+}
+
+.vchat .rightPanelvChat
+{
+	width:29.9%;
+}
+
+.vchat
+{
+	height:100%!important;
+}
+.panelVchat
+{
+	position:relative;
+	float:left;
+	border:0px solid #CCC;
+	height:100%;
+}
+
+.inputblockVChat
+{
+	
+	/*
+	position:absolute;
+	padding-bottom:50px;
+	bottom:0px;
+	height:70px;
+	border:1px solid #333;
+	width:100%;
+	/**/
+}
+textarea
+{
+}
+.inputblockVChat textarea
+{
+	min-height: 70px!important;
+	height:70px!important;
+}
+
+.selectTUser
+{
+	background:#CCC!important;
+}
+
+.contentVChat
+{
+	
+	background:#FFF;
+	min-height:320px;
+	max-height:320px;
+	overflow-y:scroll;
+}
+.commonActionsContainer 
+{
+	/*display:none!important;*/
+}
+.leftPanelvChat .contentLeftPanelvChat
+{
+	padding-left:30px;
+	padding-top:10px;
+}
+
+.rowmessage
+{
+	bottom:0;
+	padding:10px 20px 10px 10px;
+	clear:both;
+}
+#headerVchat
+{
+	padding:10px 20px 10px 10px;
+}
+.timeVchat
+{
+	color:#CCC;
+}
+.imgiconVChat
+{
+	width:40px;
+	height:40px;
+	float:left;
+	padding-right:10px;
+}
+
+.imgiconVChat2
+{
+	width:20px;
+	height:20px;
+	float:left;
+	padding-right:10px;
+}
+
+.rowmessage:focus {
+ /* background: #FA6!important;/**/
+  outline: none!important;  /* убрать рамку */
+}
+
+#textmessageVChat
+{
+	position:relative;
+}
+
+.rowuserVChat
+{
+	cursor:pointer;
+	padding-top:3px;
+	padding-bottom:3px;
+	padding-right:3px;
+}
+.rowuserVChat:hover
+{
+	background:#CCC;
+}
+
+    
+.badge
+{
+	float: right;
+	display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: red; /*#777;/**/
+    border-radius: 10px;
+}
+.radiusVChat {
+    background: red; /* Цвет фона */
+    /*
+	border: 1px solid black; /* Параметры рамки */
+    /**/
+	overflow:auto;
+	font-size:8px;
+	padding:3px;
+	/*  Поля вокруг текста */
+    margin-bottom: 0px; /* Отступ снизу */
+	float:right;
+	margin-right:8px;
+	margin-top:4px;
+	width:10px;height:10px;
+	 border-radius: 10px;
+	
+  }
+  
+ .radiusHeaderVChat {
+    background: red; /* Цвет фона */
+    /*
+	border: 1px solid black; /* Параметры рамки */
+    /**/
+	padding: 3px; /* Поля вокруг текста */
+    margin-bottom: 0px; /* Отступ снизу */
+	float:left;
+	margin-right:15px;
+	margin-top:4px;
+	width:5px;height:5px;
+	 border-radius: 5px;
+	
+  }
