@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_listresorts</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listresorts` (
+    `listresortsid` int(11) NOT NULL DEFAULT '0',
+      `resort` VARCHAR(128) DEFAULT NULL,
+    `country` INT(19) DEFAULT NULL,
+    `popular` VARCHAR(5) DEFAULT NULL,
+      PRIMARY KEY (`listresortsid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_listresortscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listresortscf` (
+  `listresortsid` int(11) NOT NULL,
+  PRIMARY KEY (`listresortsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

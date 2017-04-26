@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_fosa</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_fosa` (
+    `fosaid` int(11) NOT NULL DEFAULT '0',
+      `number` VARCHAR(128) DEFAULT NULL,
+    `seria` VARCHAR(128) DEFAULT NULL,
+    `contact_id` INT(19) DEFAULT NULL,
+    `related_to` INT(19) DEFAULT NULL,
+    `amount` DECIMAL(25,2) DEFAULT NULL,
+    `office` INT(19) DEFAULT NULL,
+    `statatus_fosa` VARCHAR(128) DEFAULT NULL,
+    `data_payment` DATE DEFAULT NULL,
+      PRIMARY KEY (`fosaid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_fosacf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_fosacf` (
+  `fosaid` int(11) NOT NULL,
+  PRIMARY KEY (`fosaid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

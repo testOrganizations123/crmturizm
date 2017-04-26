@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_solaryblockalert</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_solaryblockalert` (
+    `solaryblockalertid` int(11) NOT NULL DEFAULT '0',
+      `solaryblockalert` VARCHAR(128) DEFAULT NULL,
+    `amount` DECIMAL(25,3) DEFAULT NULL,
+    `maxpoint` INT(11) DEFAULT NULL,
+    `type_block_solary` VARCHAR(128) DEFAULT NULL,
+    `type_block_amount` VARCHAR(128) DEFAULT NULL,
+    `type_application` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`solaryblockalertid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_solaryblockalertcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_solaryblockalertcf` (
+  `vtiger_solaryblockalertcf` int(11) NOT NULL,
+  PRIMARY KEY (`vtiger_solaryblockalertcf`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

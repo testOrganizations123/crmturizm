@@ -1,0 +1,40 @@
+<?php 
+class VDNotifierProModuleSetting { 
+	public $Potentials = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Contacts = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Accounts = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Leads = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Documents = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Calendar = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Emails = '{"status":"1","creator":"1","owner":"1","modif":"1","newentity":"1","updateentity":"1"}';
+	public $Events = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Vendors = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Campaigns = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Services = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $PBXManager = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $SPPayments = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $SMSNotifier = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ProjectMilestone = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Act = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ModComments = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ListCountry = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ListResorts = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ListAirports = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ListAirlines = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ListAccommodations = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ListFoods = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ClientTypes = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $ListTouroperators = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Office = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $VDDialogueDesigner = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $VisaDocuments = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $TypeTourisVisa = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Suggestions = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $SolaryBlockAlert = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $SolaryoFoulList = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $SolaryPosition = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $Fosa = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $HRUser = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $CostOffice = '{"status":"0","creator":"0","owner":"0","modif":"0","newentity":"0","updateentity":"0"}';
+	public $FoulList = '{"status":"1","creator":"1","owner":"1","modif":"1","newentity":"1","updateentity":"1"}';
+}

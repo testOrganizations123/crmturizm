@@ -1,0 +1,31 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_vdnotifierpro</name>
+			<sql><![CDATA[
+                CREATE TABLE `vtiger_vdnotifierpro` (
+				`id` INT(11) NOT NULL AUTO_INCREMENT,
+				`userid` INT(11) NOT NULL DEFAULT '0',
+				`modulename` VARCHAR(50) NOT NULL DEFAULT '0',
+				`crmid` INT(11) NOT NULL DEFAULT '0',
+				`modiuserid` INT(11) NOT NULL DEFAULT '0',
+				`link` TEXT NOT NULL,
+				`title` TEXT NOT NULL,
+				`action` VARCHAR(50) NOT NULL,
+				`modifiedtime` DATETIME NOT NULL,
+				`status` TINYINT(4) NOT NULL DEFAULT '0',
+				PRIMARY KEY (`id`)
+				) ENGINE=InnoDB
+            ]]></sql>
+		</table>
+		<table>
+			<name>vtiger_vdnotifierpro_seq</name>
+			<sql><![CDATA[
+                CREATE TABLE `vtiger_vdnotifierpro_seq` (
+				`id` INT(11) NOT NULL
+				) ENGINE=InnoDB; 
+            ]]></sql>
+		</table>
+	</tables>
+</schema>

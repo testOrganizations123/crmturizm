@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_testmulti</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_testmulti` (
+    `testmultiid` int(11) NOT NULL DEFAULT '0',
+      `name_te` VARCHAR(128) DEFAULT NULL,
+    `pplism` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`testmultiid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_testmulticf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_testmulticf` (
+  `testmultiid` int(11) NOT NULL,
+  PRIMARY KEY (`testmultiid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

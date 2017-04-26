@@ -1,0 +1,31 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_foullist</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_foullist` (
+    `foullistid` int(11) NOT NULL DEFAULT '0',
+      `foul` VARCHAR(128) DEFAULT NULL,
+    `userid` INT(11) DEFAULT NULL,
+    `block` INT(19) DEFAULT NULL,
+    `foullist` INT(19) DEFAULT NULL,
+    `point` int(3) DEFAULT NULL,
+    `date_foul` DATE DEFAULT NULL,
+    `data_check` DATE DEFAULT NULL,
+    `notif` INT(11) DEFAULT NULL,
+    `target` INT(19) DEFAULT NULL,
+    `message` TEXT DEFAULT NULL,
+    `answer` TEXT DEFAULT NULL,
+    `check` VARCHAR(5) DEFAULT NULL,
+      PRIMARY KEY (`foullistid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_foullistcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_foullistcf` (
+  `foullistid` int(11) NOT NULL,
+  PRIMARY KEY (`foullistid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

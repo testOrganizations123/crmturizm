@@ -1,0 +1,20 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_solaryposition</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_solaryposition` (
+    `solarypositionid` int(11) NOT NULL DEFAULT '0',
+      `solaryposition` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`solarypositionid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_solarypositioncf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_solarypositioncf` (
+  `solarypositionid` int(11) NOT NULL,
+  PRIMARY KEY (`solarypositionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

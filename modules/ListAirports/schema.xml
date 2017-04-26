@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_listairports</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listairports` (
+    `listairportsid` int(11) NOT NULL DEFAULT '0',
+      `airport` VARCHAR(128) DEFAULT NULL,
+    `country` INT(19) DEFAULT NULL,
+    `popular` VARCHAR(5) DEFAULT NULL,
+      PRIMARY KEY (`listairportsid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_listairportscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listairportscf` (
+  `listairportsid` int(11) NOT NULL,
+  PRIMARY KEY (`listairportsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

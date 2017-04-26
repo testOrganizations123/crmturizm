@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_hruser</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_hruser` (
+    `hruserid` int(11) NOT NULL DEFAULT '0',
+      `name_hruser` VARCHAR(128) DEFAULT NULL,
+    `solary` DECIMAL(25,8) DEFAULT NULL,
+    `procent` TEXT DEFAULT NULL,
+    `position` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`hruserid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_hrusercf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_hrusercf` (
+  `vtiger_hrusercf` int(11) NOT NULL,
+  PRIMARY KEY (`vtiger_hrusercf`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_listfoods</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listfoods` (
+    `listfoodsid` int(11) NOT NULL DEFAULT '0',
+      `food_type` VARCHAR(128) DEFAULT NULL,
+    `code` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`listfoodsid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_listfoodscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listfoodscf` (
+  `listfoodsid` int(11) NOT NULL,
+  PRIMARY KEY (`listfoodsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

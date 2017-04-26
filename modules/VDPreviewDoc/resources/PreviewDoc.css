@@ -1,0 +1,10 @@
+
+td[data-field-type="documentsFileUpload"] > a {
+    float:left;
+    
+}
+a.PreviewDoc, a.PreviewDocHome {
+    float:right !important;
+    height:20px;
+    vertical-align: bottom;
+}

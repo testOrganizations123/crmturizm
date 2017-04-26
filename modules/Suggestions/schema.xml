@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_suggestions</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_suggestions` (
+    `suggestionsid` int(11) NOT NULL DEFAULT '0',
+      `suggestions` VARCHAR(128) DEFAULT NULL,
+    `script` VARCHAR(256) DEFAULT NULL,
+    `sugtype` VARCHAR(128) DEFAULT NULL,
+    `sugstatus` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`suggestionsid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_suggestionscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_suggestionscf` (
+  `suggestionsid` int(11) NOT NULL,
+  PRIMARY KEY (`suggestionsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+</head>
+<body>
+<h1>Пример работы с WebSocket</h1>
+<form action="" name="messages">
+<div class="row">Имя: <input id="name" type="text"></div>
+<div class="row">Текст: <input id="txt" type="text"></div>
+<div class="row"><input type="submit" value="Поехали"></div>
+</form>
+<div id="status"></div>
+<script>
+
+window.onload = function(){
+var socket = new WebSocket("ws://crmturizm.ru:8082");
+var status = document.querySelector("#status");
+
+socket.onopen = function() {
+
+  status.innerHTML = "cоединение установлено";
+};
+socket.onclose = function(event) {
+  if (event.wasClean) {
+    status.innerHTML = 'cоединение закрыто';
+  } else {
+    status.innerHTML = 'соединения как-то закрыто';
+  }
+  status.innerHTML += '<br>код: ' + event.code + ' причина: ' + event.reason;
+};
+
+socket.onmessage = function(event) {
+  status.innerHTML += "<div>пришли данные " + event.data + "</div>";
+};
+socket.onerror = function(event) {
+  status.innerHTML = "ошибка " + event.message;
+};
+
+document.forms["messages"].onsubmit = function(){
+  //let fname = this.fname.value;
+ // let msg   = this.msg.value;
+  var name=document.getElementById("name").value;
+  var txt=document.getElementById("txt").value;
+  socket.send("124##message##123");
+  //name+" "+txt
+  return false;
+}
+}
+</script>
+</body>
+</html>

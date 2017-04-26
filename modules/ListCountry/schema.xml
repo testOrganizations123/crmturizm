@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_listcountry</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listcountry` (
+    `listcountryid` int(11) NOT NULL DEFAULT '0',
+      `country_name` VARCHAR(128) DEFAULT NULL,
+    `popular` VARCHAR(5) DEFAULT NULL,
+    `visa` VARCHAR(5) DEFAULT NULL,
+      PRIMARY KEY (`listcountryid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_listcountrycf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listcountrycf` (
+  `listcountryid` int(11) NOT NULL,
+  PRIMARY KEY (`listcountryid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

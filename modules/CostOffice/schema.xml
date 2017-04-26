@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_costoffice</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_costoffice` (
+    `costofficeid` int(11) NOT NULL DEFAULT '0',
+      `year` VARCHAR(128) DEFAULT NULL,
+    `month` VARCHAR(128) DEFAULT NULL,
+    `cost` DECIMAL(25,8) DEFAULT NULL,
+    `office` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`costofficeid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_costofficecf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_costofficecf` (
+  `vtiger_costofficecf` int(11) NOT NULL,
+  PRIMARY KEY (`vtiger_costofficecf`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

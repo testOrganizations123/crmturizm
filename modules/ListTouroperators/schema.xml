@@ -1,0 +1,20 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_listtouroperators</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listtouroperators` (
+    `listtouroperatorsid` int(11) NOT NULL DEFAULT '0',
+      `turoperator_name` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`listtouroperatorsid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_listtouroperatorscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_listtouroperatorscf` (
+  `listtouroperatorsid` int(11) NOT NULL,
+  PRIMARY KEY (`listtouroperatorsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

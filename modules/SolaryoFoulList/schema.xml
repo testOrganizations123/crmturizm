@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_solaryofoullist</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_solaryofoullist` (
+    `solaryofoullistid` int(11) NOT NULL DEFAULT '0',
+      `solaryofoul` VARCHAR(128) DEFAULT NULL,
+    `block_id` INT(19) DEFAULT NULL,
+    `point` INT(11) DEFAULT NULL,
+    `category_foul` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`solaryofoullistid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_solaryofoullistcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_solaryofoullistcf` (
+  `solaryofoullistid` int(11) NOT NULL,
+  PRIMARY KEY (`solaryofoullistid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

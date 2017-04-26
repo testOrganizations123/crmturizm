@@ -1,0 +1,20 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_railstation</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_railstation` (
+    `railstationid` int(11) NOT NULL DEFAULT '0',
+      `railstation_name` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`railstationid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_railstationcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_railstationcf` (
+  `railstationid` int(11) NOT NULL,
+  PRIMARY KEY (`railstationid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

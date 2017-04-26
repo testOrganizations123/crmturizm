@@ -1,0 +1,20 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_typetourisvisa</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_typetourisvisa` (
+    `typetourisvisaid` int(11) NOT NULL DEFAULT '0',
+      `type_name` VARCHAR(128) DEFAULT NULL,
+      PRIMARY KEY (`typetourisvisaid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_typetourisvisacf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_typetourisvisacf` (
+  `typetourisvisaid` int(11) NOT NULL,
+  PRIMARY KEY (`typetourisvisaid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
