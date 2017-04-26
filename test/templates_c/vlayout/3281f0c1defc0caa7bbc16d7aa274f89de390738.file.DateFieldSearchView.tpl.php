@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-25 19:30:49
+<?php /* Smarty version Smarty-3.1.7, created on 2017-04-27 00:29:03
          compiled from "C:\OpenServer\domains\crmturizm.test\includes\runtime/../../layouts/vlayout\modules\VDCustomReports\uitypes\DateFieldSearchView.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:2374158ff79b996caf0-65420128%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '3281f0c1defc0caa7bbc16d7aa274f89de390738' => 
     array (
       0 => 'C:\\OpenServer\\domains\\crmturizm.test\\includes\\runtime/../../layouts/vlayout\\modules\\VDCustomReports\\uitypes\\DateFieldSearchView.tpl',
-      1 => 1492654196,
+      1 => 1493241816,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_58ff79b998d9e',
   'variables' => 
   array (
     'EDITPLAN' => 0,
@@ -25,8 +27,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'MONTHPERIOD' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_58ff79b998d9e',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_58ff79b998d9e')) {function content_58ff79b998d9e($_smarty_tpl) {?>
 <?php if (!isset($_smarty_tpl->tpl_vars['EDITPLAN']->value)&&!isset($_smarty_tpl->tpl_vars['PLAN']->value)){?><?php $_smarty_tpl->tpl_vars['dateFormat'] = new Smarty_variable($_smarty_tpl->tpl_vars['USER_MODEL']->value->get('date_format'), null, 0);?><div class='row-fluid'><input type='text' name="filtre[period]" class='span12 listSearchContributor dateField'data-date-format='<?php echo $_smarty_tpl->tpl_vars['dateFormat']->value;?>

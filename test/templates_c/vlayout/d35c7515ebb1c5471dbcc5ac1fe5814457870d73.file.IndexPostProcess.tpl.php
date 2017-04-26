@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-25 19:30:40
+<?php /* Smarty version Smarty-3.1.7, created on 2017-04-27 00:29:03
          compiled from "C:\OpenServer\domains\crmturizm.test\includes\runtime/../../layouts/vlayout\modules\Vtiger\IndexPostProcess.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:716658ff79b030a1f3-00081007%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'd35c7515ebb1c5471dbcc5ac1fe5814457870d73' => 
     array (
       0 => 'C:\\OpenServer\\domains\\crmturizm.test\\includes\\runtime/../../layouts/vlayout\\modules\\Vtiger\\IndexPostProcess.tpl',
-      1 => 1450875180,
+      1 => 1493241817,
       2 => 'file',
     ),
   ),
@@ -15,9 +15,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.7',
   'unifunc' => 'content_58ff79b030c3b',
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_58ff79b030c3b')) {function content_58ff79b030c3b($_smarty_tpl) {?>
 </div></div></div><?php }} ?>
