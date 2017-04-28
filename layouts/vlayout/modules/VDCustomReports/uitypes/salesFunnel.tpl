@@ -2,7 +2,14 @@
     window.funelData = {$FUNNEL};
 </script>
 
-<h1>qwertyuioasdfghjkcvbnm,hjnkl</h1>
+<style>
+    #chartDiv{
+        height: 500px;
+        width: 700px;
+    }
+</style>
+
+<div id="chartDiv"></div>
 
 
 
