@@ -205,7 +205,8 @@
                                                                         <label class="moduleNames"><a id="report_stat" href="index.php?module=VDCustomReports&view=List&mode=getStatistic">Статистика</a></label>
                                                                         <label class="moduleNames"><a id="report_avg" href="index.php?module=VDCustomReports&view=List&mode=getAverage">Средний чек</a></label>
                                                                         <label class="moduleNames"><a id="report_proceeds" href="index.php?module=VDCustomReports&view=List&mode=getProceeds">Выручка и Доход</a></label>
-												<label class="moduleNames"><a id="sales_plan" href="index.php?module=VDCustomReports&view=List&mode=getSalesPlan">План продаж</a></label>
+												                        <label class="moduleNames"><a id="sales_plan" href="index.php?module=VDCustomReports&view=List&mode=getSalesPlan">План продаж</a></label>
+												                        <label class="moduleNames"><a id="sales_funnel" href="index.php?module=VDCustomReports&view=List&mode=getSalesFunnel">Воронка продаж</a></label>
 
                                                                 </div></div>
 						</li>
