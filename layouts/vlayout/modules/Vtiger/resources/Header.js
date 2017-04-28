@@ -765,7 +765,6 @@ function paritet_complite(event){
         var key = jQuery(this).attr('name');
         var id = jQuery(this).val();
         console.log(key);
-        console.log(id);
         data[key] = id;
     });
      var params = {

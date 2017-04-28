@@ -78,6 +78,11 @@
             {if isset($EDITPLAN)}
                 {include file=vtemplate_path("uitypes/editPlan.tpl",$MODULE) }
             {/if}
+
+            {if isset($FUNNEL)}
+                {include file=vtemplate_path("uitypes/salesFunnel.tpl",$MODULE) }
+            {/if}
+
             {foreach item=iddiv from=$GRAFDIV}
                 <div id="{$iddiv}" class="{if $DIVSTILE.$iddiv['class']}{$DIVSTILE.$iddiv['class']}{else}span12{/if}"
                      style=" height:{if $DIVSTILE.$iddiv['height']}{$DIVSTILE.$iddiv['height']}{else}500px{/if}; background-color: #FFFFFF; margin-left:0;">

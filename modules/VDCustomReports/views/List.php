@@ -236,16 +236,15 @@ class VDCustomReports_List_View extends Vtiger_List_View
     public function getSalesFunnel(Vtiger_Request $request, $viewer){
 
 
+        $FUNNEL = [
+            "v1" => [
 
-        $graf = new grafConstructorFunnel(1, 1, 'graf1', 1, 1, 1);
-        $scripts = array();
+            ],
+            "dima" => "12000",
+            "andrey" => "24000"
+        ];
 
-        array_push($scripts, $graf->Script());
-
-        $GRAFDIV = array('graf1');
-        $viewer->assign('ADDSCRIPTS', $scripts);
-        $viewer->assign('GRAFDIV', $GRAFDIV);
-       // $viewer->assign('DIVSTILE', $DIVSTILE);
+        $viewer->assign('FUNNEL', json_encode($FUNNEL));
     }
 
 
@@ -812,6 +811,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
     function addScript_getSalesFunnel($jsFileNames)
     {
         array_push($jsFileNames, "modules.VDCustomReports.amcharts.funnel");
+        array_push($jsFileNames, "modules.VDCustomReports.script.salesFunnel");
         return $jsFileNames;
     }
 

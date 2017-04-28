@@ -44,7 +44,6 @@
     <script>
     jQuery(document).ready(function(){
         var id = jQuery('select[name="office"]').find('option:selected').data('officeid');
-        console.log(id);
        if (id){
         jQuery(".groupAll").hide();
         jQuery("#search_"+id).show();

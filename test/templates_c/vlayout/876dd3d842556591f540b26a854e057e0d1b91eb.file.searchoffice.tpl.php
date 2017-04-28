@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-27 00:29:02
+<?php /* Smarty version Smarty-3.1.7, created on 2017-04-28 22:44:04
          compiled from "C:\OpenServer\domains\crmturizm.test\includes\runtime/../../layouts/vlayout\modules\VDCustomReports\uitypes\searchoffice.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1392758ff79b96f10b1-38704150%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '876dd3d842556591f540b26a854e057e0d1b91eb' => 
     array (
       0 => 'C:\\OpenServer\\domains\\crmturizm.test\\includes\\runtime/../../layouts/vlayout\\modules\\VDCustomReports\\uitypes\\searchoffice.tpl',
-      1 => 1493241816,
+      1 => 1493408634,
       2 => 'file',
     ),
   ),
@@ -58,7 +58,6 @@ $_smarty_tpl->tpl_vars['PICKLIST_VALUE']->_loop = true;
     <script>
     jQuery(document).ready(function(){
         var id = jQuery('select[name="office"]').find('option:selected').data('officeid');
-        console.log(id);
        if (id){
         jQuery(".groupAll").hide();
         jQuery("#search_"+id).show();

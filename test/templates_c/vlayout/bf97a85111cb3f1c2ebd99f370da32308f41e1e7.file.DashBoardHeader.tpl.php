@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-25 19:30:40
+<?php /* Smarty version Smarty-3.1.7, created on 2017-04-28 22:34:05
          compiled from "C:\OpenServer\domains\crmturizm.test\includes\runtime/../../layouts/vlayout\modules\Vtiger\dashboards\DashBoardHeader.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1062458ff79b007b5f2-39109590%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'bf97a85111cb3f1c2ebd99f370da32308f41e1e7' => 
     array (
       0 => 'C:\\OpenServer\\domains\\crmturizm.test\\includes\\runtime/../../layouts/vlayout\\modules\\Vtiger\\dashboards\\DashBoardHeader.tpl',
-      1 => 1450875180,
+      1 => 1493241817,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_58ff79b00e637',
   'variables' => 
   array (
     'DASHBOARDHEADER_TITLE' => 0,
@@ -26,8 +28,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'MODULE_PERMISSION' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_58ff79b00e637',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_58ff79b00e637')) {function content_58ff79b00e637($_smarty_tpl) {?>
 
