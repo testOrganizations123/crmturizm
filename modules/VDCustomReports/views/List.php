@@ -231,6 +231,25 @@ class VDCustomReports_List_View extends Vtiger_List_View
         return $sql;
     }
 
+
+
+    public function getSalesFunnel(Vtiger_Request $request, $viewer){
+
+
+
+        $graf = new grafConstructorFunnel(1, 1, 'graf1', 1, 1, 1);
+        $scripts = array();
+
+        array_push($scripts, $graf->Script());
+
+        $GRAFDIV = array('graf1');
+        $viewer->assign('ADDSCRIPTS', $scripts);
+        $viewer->assign('GRAFDIV', $GRAFDIV);
+       // $viewer->assign('DIVSTILE', $DIVSTILE);
+    }
+
+
+
     public function getLeadsReport(Vtiger_Request $request, $viewer)
     {
         $addQuery = $this->addQueryFilter();
@@ -787,6 +806,12 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
     {
         array_push($jsFileNames, "modules.VDCustomReports.amcharts.serial");
         array_push($jsFileNames, "modules.VDCustomReports.amcharts.pie");
+        return $jsFileNames;
+    }
+
+    function addScript_getSalesFunnel($jsFileNames)
+    {
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.funnel");
         return $jsFileNames;
     }
 
@@ -4020,5 +4045,172 @@ class grafConstructorBar
         $this->outScript .= ')});';
 
     }
+}
+
+class grafConstructorFunnel
+{
+    public $data;
+    public $colum;
+    public $id;
+    public $outScript;
+    public $graphs = array();
+    public $dataProvider = array();
+
+    function __construct($data, $list, $id, $color, $title, $valueTitle)
+    {
+        $this->data = $data;
+        $this->colum = $list;
+        $this->id = $id;
+        $this->color = $color;
+        $this->title = $title;
+        $this->valueTitle = $valueTitle;
+
+
+    }
+
+    function Script($stackType = false, $legend = true)
+    {
+        $this->getGraphs();
+        $this->getScript($stackType, $legend);
+
+        return $this->outScript;
+    }
+
+    function getGraphs()
+    {
+        $i = 0;
+        foreach ($this->colum as $label => $val) {
+            $i++;
+            $this->graphs[] = '"balloonText": "[[title]] [[category]] - [[value]]",'
+                . '"fillAlphas": 0.9,'
+                . '"id": "' . $this->id . '-' . $i . '",'
+                . '"title": "' . $label . '",'
+                . '"type": "column",'
+                . '"labelRotation": 45,'
+                . '"valueField": "' . $label . '"';
+
+        }
+        $i = 0;
+        foreach ($this->data as $label => $val) {
+            $this->dataProvider[$i] = '"category": "' . $label . '",';
+            foreach ($val as $fieldLabel => $value) {
+                $this->dataProvider[$i] .= '"' . $fieldLabel . '":' . $value . ',';
+            }
+            $i++;
+        }
+    }
+
+    function getScript($stackType = false, $legend = true)
+    {
+
+        $this->outScript = 'jQuery(document).ready(function(){AmCharts.makeChart("' . $this->id . '",{'
+            . '"type": "funnel",'
+            . '"neckHeight"  : "30%",'
+            . '"neckWidth" : "40%",'
+            . '"titleField"  : "title",'
+            . '"valueField"  : "value",'
+            . '"dataProvider"  : ['
+            . ' {'
+            . '"title": "Website visits",'
+            .'"value": 300'
+            .'},'
+            .'{'
+            .'"title": "Downloads",'
+            .'"value": 123'
+            .'}'
+            .' ]});'
+            .'function generateChartData() {'
+	.'var chartData = [];'
+
+	.'for ( var i = 0; i < 10; i++ ) {'
+    .'var value = Math.floor(Math.random() * 100);'
+    .'var labelRadius = Math.floor(Math.random() * 100);'
+    .'var alpha = Math.random();'
+
+    .'chartData.push( {'
+      .'category: "" + i,'
+      .'value: value,'
+      .'labelRadius: labelRadius,'
+      .'alpha: alpha'
+    .'} );'
+	.'}'
+
+	.'return chartData;'
+.'}'
+
+
+.'function loop() {'
+	.'var data = generateChartData();'
+
+	.'chart.animateData(data, {'
+		.'duration: 1000,'
+		.'complete: function () {'
+			.'setTimeout(loop, 2000);'
+		.'}'
+	.'});'
+.'}'
+
+.'chart.addListener("init", function () {'
+	.'setTimeout(loop, 1000);'
+.'});';
+
+
+    }
+//        if ($legend) {
+//            $this->outScript .= '"legend":{"position":"right","borderAlpha":0.3,"horizontalGap":10},';
+//        }
+//        $this->outScript .= '"categoryAxis": {
+//                    "autoRotateAngle": 45,
+//		"autoRotateCount": 6,
+//		"gridPosition": "start"
+//	},'
+//            . '"trendLines": [],'
+//            . '"guides": [],'
+//            . '"valueAxes": [
+//						{
+//							"id": "ValueAxis-' . $this->id . '",
+//							"title": "' . $this->valueTitle . '",';
+//        if ($stackType) {
+//            $this->outScript .= '"stackType": "' . $stackType . '",';
+//        }
+//
+//        $this->outScript .= '					}
+//					],'
+//            . '"allLabels": [],'
+//            . '"balloon": {},
+//            "chartCursor": {
+//						"enabled": true
+//					},'
+//            . '"titles": [
+//		{
+//			"id": "title-' . $this->id . '",
+//			"text": "' . $this->title . '"
+//		}
+//	],'
+//            . '"dataProvider": [';
+//        foreach ($this->dataProvider as $string) {
+//            $this->outScript .= '{' . $string . '},';
+//        }
+//        $this->outScript .= '],'
+//            . '"graphs": [';
+//        foreach ($this->graphs as $string) {
+//            $this->outScript .= '{' . $string . '},';
+//        }
+//        if (!empty($this->color)) {
+//
+//            $this->outScript .= '],"colors": [';
+//            foreach ($this->color as $string) {
+//                $this->outScript .= '"' . $string . '",';
+//            }
+//        }
+//
+//        $this->outScript .= ']}';
+//        $this->outScript .= ')});';
+//
+//    }
+
+
+
+
 }
 

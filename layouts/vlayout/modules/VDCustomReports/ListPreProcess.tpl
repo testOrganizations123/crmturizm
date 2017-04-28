@@ -50,6 +50,11 @@
                                     <strong>План продаж</strong>
                                 </a>
                             </p>
+                            <p onclick="window.location.href='index.php?module=VDCustomReports&view=List&mode=getSalesFunnel'" id="Contacts_sideBar_link_LBL_DASHBOARD" class="{if $MODE eq 'getSalesFunnel'}selectedQuickLink{else}unSelectedQuickLink{/if}">
+                                <a class="quickLinks" href="index.php?module=VDCustomReports&view=List&mode=getSalesFunnel">
+                                    <strong>Воронка продаж</strong>
+                                </a>
+                            </p>
                         </div>
                      
                         
