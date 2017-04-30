@@ -16,14 +16,14 @@ class VDCustomReports_List_View extends Vtiger_List_View
 {
     public $filter_data;
     public $office_to_region = array(
-        "H10"=>array(409,407,30,752938,916206),
-        "H11"=>array(29,428,403,434,436,903648,906005),
-        "H16"=>array(412,408,411,413,410,812451),
-        "H49"=>array(405,406,404),
-        "H55"=>array(415,417,669),
-        "H62"=>array(20589,561913,561914,561933,561940,691703,728356, 561944, 779948, 881213, 892568, 892575, 892582, 892589, 892590, 892591, 918235, 918243),
+        "H10" => array(409, 407, 30, 752938, 916206),
+        "H11" => array(29, 428, 403, 434, 436, 903648, 906005),
+        "H16" => array(412, 408, 411, 413, 410, 812451),
+        "H49" => array(405, 406, 404),
+        "H55" => array(415, 417, 669),
+        "H62" => array(20589, 561913, 561914, 561933, 561940, 691703, 728356, 561944, 779948, 881213, 892568, 892575, 892582, 892589, 892590, 892591, 918235, 918243),
     );
-        
+
     public $getRusMonth = array(
         '01' => 'Январь',
         '02' => 'Февраль',
@@ -232,28 +232,36 @@ class VDCustomReports_List_View extends Vtiger_List_View
     }
 
 
-
-    public function getSalesFunnel(Vtiger_Request $request, $viewer){
-
-
+    public function getSalesFunnel(Vtiger_Request $request, $viewer)
+    {
 
 
         $addQuery = $this->addQueryFilter();
 
         // по дням заявки период
         $sql = "
-                SELECT s.due_date, l.leadid, s.eventstatus, s.activityid
+                SELECT s.due_date ,s.cf_1268 AS amount,s.cf_1266 AS eCharge, l.leadid, s.eventstatus,l.leadsource, s.activityid
                         FROM vtiger_leaddetails as l
                         INNER JOIN vtiger_crmentity as cl 
                             ON cl.crmid = l.leadid
-                        INNER JOIN (select s1.crmid, s1.activityid, a1.eventstatus, a1.due_date FROM vtiger_seactivityrel as s1 INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid LEFT JOIN vtiger_crmentity as c1 ON c1.crmid = a1.activityid WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery . " ORDER BY a1.activityid DESC) as s 
+                  
+                        
+                        INNER JOIN (select s1.crmid, pcf.cf_1268, pcf.cf_1266, s1.activityid, a1.eventstatus, a1.due_date FROM vtiger_seactivityrel as s1 INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid LEFT JOIN vtiger_crmentity as c1 ON c1.crmid = a1.activityid LEFT JOIN vtiger_potential as p ON p.potentialid = c1.crmid LEFT JOIN vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid  WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery . " ORDER BY a1.activityid DESC) as s 
                             ON s.crmid = l.leadid
+         
                         LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
                         LEFT JOIN vtiger_office as o ON o.officeid = u.office
                         WHERE cl.deleted = 0 
                         GROUP BY l.leadid 
+                    
                     ";
 
+
+//        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, u.first_name, u.last_name, o.officeid , o.office, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+//            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+//            left join vtiger_office as o ON o.officeid = pcf.cf_1215
+//            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+//            where u.office =" . $this->filter_data['office'] . " AND c1.deleted=0 AND $accessOfficesWhere and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' ";
 
 
         $db = PearDatabase::getInstance();
@@ -265,20 +273,57 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $raw[$i] = $db->query_result_rowdata($result, $i);
 
         }
-        var_dump($raw);
 
 
-        $FUNNEL = [
-            "v1" => [
+        $sourceArray = [];
+        foreach ($raw as $item) {
+            if (!in_array($item['leadsource'], $sourceArray)) {
+                $sourceArray[] = $item['leadsource'];
+            }
+        }
 
-            ],
-            "dima" => "12000",
-            "andrey" => "24000"
-        ];
+        $funnelArrayAll = [];
 
-        $viewer->assign('FUNNEL', json_encode($FUNNEL));
+
+        foreach ($sourceArray as $source) {
+
+            $funnelArrayAll[$source]['income'] = 0;
+            $funnelArrayAll[$source]['office'] = 0;
+            $funnelArrayAll[$source]['noSales'] = 0;
+            $funnelArrayAll[$source]['sales'] = 0;
+            $funnelArrayAll[$source]['null'] = 0;
+            $sumECharge = 0;
+            $sumProfit = 0;
+            foreach ($raw as $item) {
+                if ($item['leadsource']== $source) {
+                    $funnelArrayAll[$source]['income'] += 1;
+
+                    if ($item['eventstatus'] != 'Продажа') {
+                        $funnelArrayAll[$source]['noSales'] += 1;
+                    }
+
+                    if ($item['eventstatus'] == 'Продажа') {
+                        $funnelArrayAll[$source]['sales'] += 1;
+                    }
+                    if ($item['eventstatus'] == 'Отказ') {
+                        $funnelArrayAll[$source]['null'] += 1;
+                    }
+                    if (isset($item['eCharge'])) {
+                        $sumECharge += $item['eCharge'];
+                    }
+                    if (isset($item['amount'])) {
+                        $sumProfit += $item['amount'];
+                    }
+                }
+            }
+            $funnelArrayAll[$source]['averageMarkup'] = $sumECharge / $funnelArrayAll[$source]['income'];
+            $funnelArrayAll[$source]['averageProfit'] = $sumProfit / $funnelArrayAll[$source]['income'];
+            $funnelArrayAll[$source]['profit'] = $sumProfit;
+        }
+        var_dump($funnelArrayAll);
+
+        $viewer->assign('FUNNEL', json_encode($funnelArrayAll));
     }
-
 
 
     public function getLeadsReport(Vtiger_Request $request, $viewer)
@@ -959,14 +1004,13 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
 
         $db = PearDatabase::getInstance();
 
-        if ($value !== '' && $column!=='plan') {
-        $valueInt = $value + 0;
+        if ($value !== '' && $column !== 'plan') {
+            $valueInt = $value + 0;
 
-        if ($valueInt."" !== $value){
-            echo json_encode("Некорректные данные");
-            die();
-        }
-
+            if ($valueInt . "" !== $value) {
+                echo json_encode("Некорректные данные");
+                die();
+            }
 
 
             //все планы сотрудников
@@ -1070,20 +1114,20 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
                 }
 
                 if ($n !== 3)
-                for ($i = $n + 1; $i<= 3; $i++){
-                    if ($floor[$i] !== null && $floor[$i] <= $value){
-                        echo json_encode("Значение этапа слишком велико по сравнению с другими этапами");
-                        die();
+                    for ($i = $n + 1; $i <= 3; $i++) {
+                        if ($floor[$i] !== null && $floor[$i] <= $value) {
+                            echo json_encode("Значение этапа слишком велико по сравнению с другими этапами");
+                            die();
+                        }
                     }
-                }
 
                 if ($n !== 0)
-                for ($i = $n - 1; $i>= 0; $i--){
-                    if ($floor[$i] !== null && $floor[$i] >= $value){
-                        echo json_encode("Значение этапа слишком мало по сравнению с другими этапами");
-                        die();
+                    for ($i = $n - 1; $i >= 0; $i--) {
+                        if ($floor[$i] !== null && $floor[$i] >= $value) {
+                            echo json_encode("Значение этапа слишком мало по сравнению с другими этапами");
+                            die();
+                        }
                     }
-                }
 
                 $sql = "UPDATE office_sales_plan SET $column='$value' WHERE office_id = '$office' AND date = '$period'";
             }
@@ -1110,10 +1154,10 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
         $db = PearDatabase::getInstance();
 
 
-        if ($value !== '' && $column!=='plan') {
+        if ($value !== '' && $column !== 'plan') {
             $valueInt = $value + 0;
 
-            if ($valueInt."" !== $value){
+            if ($valueInt . "" !== $value) {
                 echo json_encode("Некорректные данные");
                 die();
             }
@@ -1176,17 +1220,17 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
             }
 
             if ($valueOffice != null)
-            if ($flag == 1) {
-                if (($summ + $value) > $valueOffice) {
-                    echo json_encode("Сумма планов сотрудников больше плана на оффис");
-                    die();
+                if ($flag == 1) {
+                    if (($summ + $value) > $valueOffice) {
+                        echo json_encode("Сумма планов сотрудников больше плана на оффис");
+                        die();
+                    }
+                } else {
+                    if (($summ + $value) != $valueOffice) {
+                        echo json_encode("План на оффис должен равняться сумме планов сотрудников");
+                        die();
+                    }
                 }
-            } else {
-                if (($summ + $value) != $valueOffice) {
-                    echo json_encode("План на оффис должен равняться сумме планов сотрудников");
-                    die();
-                }
-            }
 
         }
 
@@ -1234,16 +1278,16 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
                 }
 
                 if ($n !== 3)
-                    for ($i = $n + 1; $i<= 3; $i++){
-                        if ($floor[$i] !== null && $floor[$i] <= $value){
+                    for ($i = $n + 1; $i <= 3; $i++) {
+                        if ($floor[$i] !== null && $floor[$i] <= $value) {
                             echo json_encode("Значение этапа слишком велико по сравнению с другими этапами");
                             die();
                         }
                     }
 
                 if ($n !== 0)
-                    for ($i = $n - 1; $i>= 0; $i--){
-                        if ($floor[$i] !== null && $floor[$i] >= $value){
+                    for ($i = $n - 1; $i >= 0; $i--) {
+                        if ($floor[$i] !== null && $floor[$i] >= $value) {
                             echo json_encode("Значение этапа слишком мало по сравнению с другими этапами");
                             die();
                         }
@@ -1741,11 +1785,11 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
 
         $valCheckbox = false;
 
-        if ($_GET["franchiseCheckbox"] == "on"){
+        if ($_GET["franchiseCheckbox"] == "on") {
             $valCheckbox = true;
         }
 
-        if ($this->filter_data['user']){
+        if ($this->filter_data['user']) {
             $sql = "SELECT * FROM vtiger_users WHERE id = " . $this->filter_data['user'];
             $result = $db->pquery($sql, array());
             $this->filter_data['office'] = $db->query_result($result, 0, 'office');
@@ -1863,11 +1907,11 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
         if ($this->filter_data['region']) {
             $sql = "SELECT officeid, office FROM vtiger_office WHERE $accessOfficesWhere AND officeid IN (" . implode(',', $this->office_to_region[$this->filter_data['region']]) . ")";
         } else {
-            if($valCheckbox){
-                $of = implode( ',' , $this->office_to_region["H62"]);
+            if ($valCheckbox) {
+                $of = implode(',', $this->office_to_region["H62"]);
                 $sql = "SELECT officeid, office FROM vtiger_office WHERE $accessOfficesWhere";
             } else {
-                $of = implode( ',' , $this->office_to_region["H62"]);
+                $of = implode(',', $this->office_to_region["H62"]);
                 $sql = "SELECT officeid, office FROM vtiger_office WHERE $accessOfficesWhere AND officeid NOT IN ($of)";
             }
 
@@ -2096,7 +2140,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
                 }
                 $sumAmountSelling += $amountSelling;
                 $sum += round($selling[$key]['amount']);
-                $selling[$key]['amount'] = number_format($selling[$key]['amount'],0,".",",");
+                $selling[$key]['amount'] = number_format($selling[$key]['amount'], 0, ".", ",");
                 $selling[$key]['amount'] .= " / $amountSelling";
 
 
@@ -2230,7 +2274,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
 
                 $sumAmountSelling += $amountSelling;
                 $sum += round($selling[$key]['amount']);
-                $selling[$key]['amount'] = number_format($selling[$key]['amount'],0,".",",");
+                $selling[$key]['amount'] = number_format($selling[$key]['amount'], 0, ".", ",");
                 $selling[$key]['amount'] .= " / $amountSelling";
 
             }
@@ -2309,7 +2353,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
         $color = array_merge(array('#a20000', '#7FFF00'), $color);
 
 
-        $selling = array_merge([0 => array('name' => 'План продаж', 'amount' => number_format($officesPlanAll,0,".",","))], $selling);
+        $selling = array_merge([0 => array('name' => 'План продаж', 'amount' => number_format($officesPlanAll, 0, ".", ","))], $selling);
 
         $table['getTableSum'] = $row_sum;
         asort($table['getTableSum']);
@@ -2321,7 +2365,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
         $graf = new grafConstructorLine($line_sum, $arrName, 'LineAvgSum', $color, "План продаж $message за $m, " . $dateObj->format('Y'), '', true, $arrayLabel, $arraySales);
         array_push($scripts, $graf->ScriptSales());
 
-        if ($this->filter_data['office']&& !$this->filter_data['user']) {
+        if ($this->filter_data['office'] && !$this->filter_data['user']) {
             foreach ($arrIds as $key => $arrId) {
                 if (strlen($this->filter_data['period']) > 8) {
                     $date = new  DateTime();
@@ -2339,7 +2383,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
 
 
                 }
- $usersPlan =0;
+                $usersPlan = 0;
                 $arrayLabelUser['floor1'] = 0;
                 $arrayLabelUser['floor2'] = 0;
                 $arrayLabelUser['floor3'] = 0;
@@ -2413,7 +2457,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
 
                 $arrName = ['План продаж' => 'План продаж', $arrId['name'] => $arrId['name']];
                 $graf = [];
-$colorUser = array_merge(array('#a20000'), $colorUser);
+                $colorUser = array_merge(array('#a20000'), $colorUser);
                 $graf[$key] = new grafConstructorLine($line_sum_user, $arrName, 'LineAvgSum' . $arrId['id'], $colorUser, $arrId['name'], '', true, $arrayLabelUser, $arraySalesUser);
                 array_push($scripts, $graf[$key]->ScriptSales());
 
@@ -2444,7 +2488,7 @@ $colorUser = array_merge(array('#a20000'), $colorUser);
 
                     $arrStile['LineAvgSum' . $arrId['id']] = array('class' => 'span6', 'height' => '350px');
                 }
-                $viewer->assign('DIVSTILE',$arrStile);
+                $viewer->assign('DIVSTILE', $arrStile);
             } else {
                 $viewer->assign('DIVSTILE', array(
                     'LineAvgSum' => array('class' => 'span9', 'height' => '525px'),
