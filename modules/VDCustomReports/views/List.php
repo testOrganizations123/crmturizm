@@ -39,6 +39,9 @@ class VDCustomReports_List_View extends Vtiger_List_View
         '12' => 'Декабрь',
     );
 
+    public $date_start;
+    public $date_finish;
+
     function checkPermission(Vtiger_Request $request)
     {
         return true;
@@ -231,9 +234,24 @@ class VDCustomReports_List_View extends Vtiger_List_View
         return $sql;
     }
 
+    function getSQLArrayResult($sql, $arrayParams){
 
-    public function getSalesFunnel(Vtiger_Request $request, $viewer)
-    {
+        $db = PearDatabase::getInstance();
+        $result = $db->pquery($sql, $arrayParams);
+
+        $numRows = $db->num_rows($result);
+        $raw = [];
+        for ($i = 0; $i < $numRows; $i++) {
+            $raw[$i] = $db->query_result_rowdata($result, $i);
+
+        }
+
+        return $raw;
+    }
+
+    public function getSalesFunnel(Vtiger_Request $request, $viewer){
+
+
 
 
         $addQuery = $this->addQueryFilter();
@@ -256,24 +274,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     
                     ";
 
-
-//        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, u.first_name, u.last_name, o.officeid , o.office, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
-//            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
-//            left join vtiger_office as o ON o.officeid = pcf.cf_1215
-//            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
-//            where u.office =" . $this->filter_data['office'] . " AND c1.deleted=0 AND $accessOfficesWhere and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' ";
-
-
-        $db = PearDatabase::getInstance();
-        $result = $db->pquery($sql, array($this->date_start, $this->date_finish));
-
-        $numRows = $db->num_rows($result);
-        $raw = array();
-        for ($i = 0; $i < $numRows; $i++) {
-            $raw[$i] = $db->query_result_rowdata($result, $i);
-
-        }
-
+        $result = $this->getSQLArrayResult($sql, [$this->date_start, $this->date_finish]);
 
         $sourceArray = [];
         foreach ($raw as $item) {
