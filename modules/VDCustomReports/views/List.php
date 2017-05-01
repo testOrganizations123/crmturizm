@@ -398,22 +398,22 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
             $funnelArrayNew[$key]['value'][4]['text'] = "Средняя наценка:<br>";
             $funnelArrayNew[$key]['value'][4]['title'] = "Средняя наценка:";
-            $funnelArrayNew[$key]['value'][4]['level'] = $sumECharge / $funnelArrayNew['value'][0]['level'];
+            $funnelArrayNew[$key]['value'][4]['level'] =round($sumECharge / $funnelArrayNew['value'][0]['level'], 2) . " %";;
             $funnelArrayNew[$key]['value'][4]['height'] = 1;
 
             $funnelArrayNew[$key]['value'][5]['text'] = "Средний чек:<br>";
             $funnelArrayNew[$key]['value'][5]['title'] = "Средний чек:";
-            $funnelArrayNew[$key]['value'][5]['level'] = $revenues / $funnelArrayNew['value'][0]['level'];
+            $funnelArrayNew[$key]['value'][5]['level'] = round($revenues / $funnelArrayNew['value'][0]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][5]['height'] = 1;
 
             $funnelArrayNew[$key]['value'][6]['text'] = "Средний доход:<br>";
             $funnelArrayNew[$key]['value'][6]['title'] = "Средний доход:";
-            $funnelArrayNew[$key]['value'][6]['level'] = $sumProfit / $funnelArrayNew['value'][0]['level'];
+            $funnelArrayNew[$key]['value'][6]['level'] = round($sumProfit / $funnelArrayNew['value'][0]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][6]['height'] = 1;
 
             $funnelArrayNew[$key]['value'][7]['text'] = "Доход итоговый:<br>";
             $funnelArrayNew[$key]['value'][7]['title'] = "Доход итоговый:";
-            $funnelArrayNew[$key]['value'][7]['level'] = $sumProfit;
+            $funnelArrayNew[$key]['value'][7]['level'] = round($sumProfit) . " ₽";
             $funnelArrayNew[$key]['value'][7]['height'] = 1;
         }
 
