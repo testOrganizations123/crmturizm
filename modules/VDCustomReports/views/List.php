@@ -256,8 +256,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $addQuery = $this->addQueryFilter();
 
-        $sql = "
-                SELECT s.cf_1268 AS amount, s.cf_1266 AS eCharge, p.eventstatus,p.leadsource
+        $sql = "SELECT scf.cf_1268 AS amount, scf.cf_1266 AS eCharge, p.sales_stage,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as cl 
                             ON cl.crmid = p.potentialid
@@ -265,9 +264,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON scf.potentialid = p.potentialid
                   
                 
-                        LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
-                        LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                        WHERE cl.deleted = 0 AND WHERE (cl.createdtime AS DATE BETWEEN ? AND ?)
+                  WHERE (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
                          
                     ";
 
