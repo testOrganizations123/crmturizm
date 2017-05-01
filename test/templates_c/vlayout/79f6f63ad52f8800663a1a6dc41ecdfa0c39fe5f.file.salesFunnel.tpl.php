@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-05-01 18:08:46
+<?php /* Smarty version Smarty-3.1.7, created on 2017-05-01 20:44:52
          compiled from "C:\OpenServer\domains\crmturizm.test\includes\runtime/../../layouts/vlayout\modules\VDCustomReports\uitypes\salesFunnel.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1223259039a6a8d1b22-11590313%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '79f6f63ad52f8800663a1a6dc41ecdfa0c39fe5f' => 
     array (
       0 => 'C:\\OpenServer\\domains\\crmturizm.test\\includes\\runtime/../../layouts/vlayout\\modules\\VDCustomReports\\uitypes\\salesFunnel.tpl',
-      1 => 1493651324,
+      1 => 1493660688,
       2 => 'file',
     ),
   ),
@@ -29,15 +29,22 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 </script>
 
 <style>
-    #chartDiv, #chartDiv2{
-        height: 700px;
+    .funnelBlock{
         width: 740px;
         display: inline-block;
     }
+    .funnel{
+        width: 100%;
+    }
 </style>
 
-<div id="chartDiv"></div>
-<div id="chartDiv2"></div>
+<div class="funnelBlock">
+    <div style="height: 700px" class="funnel"  id="chartDiv"></div>
+</div>
+
+<div class="funnelBlock">
+    <div  style="height: 700px" class="funnel" id="chartDiv2"></div>
+</div>
 
 
 
