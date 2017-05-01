@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-27 00:28:56
+<?php /* Smarty version Smarty-3.1.7, created on 2017-04-30 19:34:45
          compiled from "C:\os\OpenServer\domains\crmturizm\includes\runtime/../../layouts/vlayout\modules\Vtiger\MenuBar.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1239559011118a6f3a7-96320215%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '2a81a8a4c64b93289f3606030fd22c1e49d9510f' => 
     array (
       0 => 'C:\\os\\OpenServer\\domains\\crmturizm\\includes\\runtime/../../layouts/vlayout\\modules\\Vtiger\\MenuBar.tpl',
-      1 => 1493241762,
+      1 => 1493567550,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_59011118b57da',
   'variables' => 
   array (
     'MENU_STRUCTURE' => 0,
@@ -55,8 +57,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'PARENT_MODULE' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_59011118b57da',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_59011118b57da')) {function content_59011118b57da($_smarty_tpl) {?>
 <?php $_smarty_tpl->tpl_vars["topMenus"] = new Smarty_variable($_smarty_tpl->tpl_vars['MENU_STRUCTURE']->value->getTop(), null, 0);?><?php $_smarty_tpl->tpl_vars["moreMenus"] = new Smarty_variable($_smarty_tpl->tpl_vars['MENU_STRUCTURE']->value->getMore(), null, 0);?><?php $_smarty_tpl->tpl_vars['NUMBER_OF_PARENT_TABS'] = new Smarty_variable(count(array_keys($_smarty_tpl->tpl_vars['moreMenus']->value)), null, 0);?><?php $_smarty_tpl->tpl_vars['REGION'] = new Smarty_variable(array("H10","H11","H16","H49","H55","H62"), null, 0);?><div class="navbar" id="topMenus" style="overflow: hidden;height:40px;"><div class="navbar-inner" id="nav-inner"><div class="menuBar row-fluid"><div class="span9"><ul class="nav modulesList" id="largeNav"><li class="tabs"><a class="alignMiddle <?php if ($_smarty_tpl->tpl_vars['MODULE']->value=='Home'){?> selected <?php }?>" href="<?php echo $_smarty_tpl->tpl_vars['HOME_MODULE_MODEL']->value->getDefaultUrl();?>
@@ -148,7 +148,7 @@ $_smarty_tpl->tpl_vars['moduleModel']->_loop = true;
 </a></div><div class="row-fluid"><a id="menubar_item_moduleManager" href="index.php?module=ModuleManager&parent=Settings&view=List" class="pull-right"><?php echo vtranslate('LBL_ADD_MANAGE_MODULES',$_smarty_tpl->tpl_vars['MODULE']->value);?>
 </a></div><?php }?></div></li></ul><?php }else{ ?><ul class="nav" id="commonMoreMenu1"><li class="dropdown" id="moreMenu"><a class="dropdown-toggle" data-toggle="dropdown" href="#moreMenu" style="color:#fff"><strong><?php echo vtranslate('Справочники',$_smarty_tpl->tpl_vars['MODULE']->value);?>
 &nbsp;</strong><b class="caret"></b></a><div class="dropdown-menu"><div class="shortDropdown"><label class="moduleNames"><a id="menubar_item_ClientTypes" href="index.php?module=ClientTypes&amp;view=List">Типы Номеров</a></label><label class="moduleNames"><a id="menubar_item_ListAccommodations" href="index.php?module=ListAccommodations&amp;view=List">Тип размешения</a></label><?php if (is_array($_smarty_tpl->tpl_vars['USER_MODEL']->value->get('roleid'),$_smarty_tpl->tpl_vars['REGION']->value)){?><label class="moduleNames"><a id="menubar_item_ListCountry" href="index.php?module=ListCountry&view=List">Страны</a></label><label class="moduleNames"><a id="menubar_item_ListTouroperators" href="index.php?module=ListTouroperators&view=List">Туроператоры</a></label><label class="moduleNames"><a id="menubar_item_Documents" href="index.php?module=Documents&view=List">Доп.Материалы</a></label><?php }?></div></div></li></ul><?php }?><ul class="nav" id="commonMoreMenu2"><li class="dropdown" id="moreMenu2"><a class="dropdown-toggle" data-toggle="dropdown" href="#moreMenu2" style="color:#fff"><strong><?php echo vtranslate('Аналитика',$_smarty_tpl->tpl_vars['MODULE']->value);?>
-&nbsp;</strong><b class="caret"></b></a><div class="dropdown-menu"><div class="shortDropdown"><label class="moduleNames"><a id="report_leads" href="index.php?module=VDCustomReports&view=List&mode=getLeadsReport">Заявки</a></label><label class="moduleNames"><a id="report_bron" href="index.php?module=VDCustomReports&view=List&mode=getBookingReport">Брони</a></label><label class="moduleNames"><a id="report_stat" href="index.php?module=VDCustomReports&view=List&mode=getStatistic">Статистика</a></label><label class="moduleNames"><a id="report_avg" href="index.php?module=VDCustomReports&view=List&mode=getAverage">Средний чек</a></label><label class="moduleNames"><a id="report_proceeds" href="index.php?module=VDCustomReports&view=List&mode=getProceeds">Выручка и Доход</a></label><label class="moduleNames"><a id="sales_plan" href="index.php?module=VDCustomReports&view=List&mode=getSalesPlan">План продаж</a></label></div></div></li></ul></div><div class="span3 marginLeftZero pull-right" id="headerLinks"><span id="headerLinksBig" class="pull-right headerLinksContainer"><span class="dropdown span settingIcons"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="<?php echo vimage_path('theme_brush.png');?>
+&nbsp;</strong><b class="caret"></b></a><div class="dropdown-menu"><div class="shortDropdown"><label class="moduleNames"><a id="report_leads" href="index.php?module=VDCustomReports&view=List&mode=getLeadsReport">Заявки</a></label><label class="moduleNames"><a id="report_bron" href="index.php?module=VDCustomReports&view=List&mode=getBookingReport">Брони</a></label><label class="moduleNames"><a id="report_stat" href="index.php?module=VDCustomReports&view=List&mode=getStatistic">Статистика</a></label><label class="moduleNames"><a id="report_avg" href="index.php?module=VDCustomReports&view=List&mode=getAverage">Средний чек</a></label><label class="moduleNames"><a id="report_proceeds" href="index.php?module=VDCustomReports&view=List&mode=getProceeds">Выручка и Доход</a></label><label class="moduleNames"><a id="sales_plan" href="index.php?module=VDCustomReports&view=List&mode=getSalesPlan">План продаж</a></label><label class="moduleNames"><a id="sales_funnel" href="index.php?module=VDCustomReports&view=List&mode=getSalesFunnel">Воронка продаж</a></label></div></div></li></ul></div><div class="span3 marginLeftZero pull-right" id="headerLinks"><span id="headerLinksBig" class="pull-right headerLinksContainer"><span class="dropdown span settingIcons"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><img src="<?php echo vimage_path('theme_brush.png');?>
 " alt="theme roller" title="<?php echo vtranslate('Theme Roller',$_smarty_tpl->tpl_vars['MODULE']->value);?>
 " /></a><ul class="dropdown-menu themeMenuContainer"><div id="themeContainer"><?php $_smarty_tpl->tpl_vars['COUNTER'] = new Smarty_variable(0, null, 0);?><?php $_smarty_tpl->tpl_vars['THEMES_LIST'] = new Smarty_variable(Vtiger_Theme::getAllSkins(), null, 0);?><div class="row-fluid themeMenu"><?php  $_smarty_tpl->tpl_vars['SKIN_COLOR'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['SKIN_COLOR']->_loop = false;
  $_smarty_tpl->tpl_vars['SKIN_NAME'] = new Smarty_Variable;

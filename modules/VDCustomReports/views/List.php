@@ -256,28 +256,25 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $addQuery = $this->addQueryFilter();
 
-        // по дням заявки период
         $sql = "
-                SELECT s.due_date ,s.cf_1268 AS amount,s.cf_1266 AS eCharge, l.leadid, s.eventstatus,l.leadsource, s.activityid
-                        FROM vtiger_leaddetails as l
+                SELECT s.cf_1268 AS amount, s.cf_1266 AS eCharge, p.eventstatus,p.leadsource
+                        FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as cl 
-                            ON cl.crmid = l.leadid
+                            ON cl.crmid = p.potentialid
+                            INNER JOIN vtiger_potentialscf as scf
+                            ON scf.potentialid = p.potentialid
                   
-                        
-                        INNER JOIN (select s1.crmid, pcf.cf_1268, pcf.cf_1266, s1.activityid, a1.eventstatus, a1.due_date FROM vtiger_seactivityrel as s1 INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid LEFT JOIN vtiger_crmentity as c1 ON c1.crmid = a1.activityid LEFT JOIN vtiger_potential as p ON p.potentialid = c1.crmid LEFT JOIN vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid  WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery . " ORDER BY a1.activityid DESC) as s 
-                            ON s.crmid = l.leadid
-         
+                
                         LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
                         LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                        WHERE cl.deleted = 0 
-                        GROUP BY l.leadid 
-                    
+                        WHERE cl.deleted = 0 AND WHERE (cl.createdtime AS DATE BETWEEN ? AND ?)
+                         
                     ";
 
         $result = $this->getSQLArrayResult($sql, [$this->date_start, $this->date_finish]);
 
         $sourceArray = [];
-        foreach ($raw as $item) {
+        foreach ($result as $item) {
             if (!in_array($item['leadsource'], $sourceArray)) {
                 $sourceArray[] = $item['leadsource'];
             }
@@ -295,7 +292,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayAll[$source]['null'] = 0;
             $sumECharge = 0;
             $sumProfit = 0;
-            foreach ($raw as $item) {
+            foreach ($result as $item) {
                 if ($item['leadsource']== $source) {
                     $funnelArrayAll[$source]['income'] += 1;
 
@@ -321,7 +318,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayAll[$source]['averageProfit'] = $sumProfit / $funnelArrayAll[$source]['income'];
             $funnelArrayAll[$source]['profit'] = $sumProfit;
         }
-        var_dump($funnelArrayAll);
+
 
         $viewer->assign('FUNNEL', json_encode($funnelArrayAll));
     }
@@ -353,7 +350,6 @@ class VDCustomReports_List_View extends Vtiger_List_View
         $raw = array();
         for ($i = 0; $i < $numRows; $i++) {
             $raw[$i] = $db->query_result_rowdata($result, $i);
-
         }
 
         $row = array();
