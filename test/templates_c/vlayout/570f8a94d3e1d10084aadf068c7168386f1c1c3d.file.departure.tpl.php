@@ -1,0 +1,153 @@
+<?php /* Smarty version Smarty-3.1.7, created on 2017-05-01 10:53:51
+         compiled from "C:\OpenServer\domains\crmturizm.test\includes\runtime/../../layouts/vlayout\modules\Potentials\part\departure.tpl" */ ?>
+<?php /*%%SmartyHeaderCode:309955906e98f111d32-12601598%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+$_valid = $_smarty_tpl->decodeProperties(array (
+  'file_dependency' => 
+  array (
+    '570f8a94d3e1d10084aadf068c7168386f1c1c3d' => 
+    array (
+      0 => 'C:\\OpenServer\\domains\\crmturizm.test\\includes\\runtime/../../layouts/vlayout\\modules\\Potentials\\part\\departure.tpl',
+      1 => 1493241805,
+      2 => 'file',
+    ),
+  ),
+  'nocache_hash' => '309955906e98f111d32-12601598',
+  'function' => 
+  array (
+  ),
+  'variables' => 
+  array (
+    'opportunity_type' => 0,
+    'width15' => 0,
+    'BLOCK_FIELDS' => 0,
+    'FIELD_MODEL' => 0,
+    'MODULE' => 0,
+    'RECORD_STRUCTURE_MODEL' => 0,
+    'KEY' => 0,
+    'FIELD_VALUE' => 0,
+    'VALUE' => 0,
+    'width11' => 0,
+    'width14' => 0,
+    'OCCUPY_COMPLETE_WIDTH' => 0,
+    'key_air' => 0,
+  ),
+  'has_nocache_code' => false,
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_5906e98fc7203',
+),false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_5906e98fc7203')) {function content_5906e98fc7203($_smarty_tpl) {?>
+
+<div class="row-fluid compressed flite tur" style="margin-top: 25px;"><!-- Туда - Авиалинии --><?php $_smarty_tpl->tpl_vars['width15'] = new Smarty_variable("15%", null, 0);?><?php $_smarty_tpl->tpl_vars['width14'] = new Smarty_variable("14%", null, 0);?><?php $_smarty_tpl->tpl_vars['width11'] = new Smarty_variable("11%", null, 0);?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="Авиа билеты"){?><?php $_smarty_tpl->tpl_vars['width15'] = new Smarty_variable("11%", null, 0);?><?php $_smarty_tpl->tpl_vars['width14'] = new Smarty_variable("11%", null, 0);?><?php $_smarty_tpl->tpl_vars['width11'] = new Smarty_variable("6%", null, 0);?><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"){?><?php $_smarty_tpl->tpl_vars['width15'] = new Smarty_variable("12%", null, 0);?><?php $_smarty_tpl->tpl_vars['width14'] = new Smarty_variable("13%", null, 0);?><?php $_smarty_tpl->tpl_vars['width11'] = new Smarty_variable("7%", null, 0);?><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value!="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><div class="span3 width15 ticket turPaket addShow" style="width: <?php echo $_smarty_tpl->tpl_vars['width15']->value;?>
+; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_airline'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><label  for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('label'),$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><div class=""><select class='form-control  ' id="departure_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+'><option value=''><?php echo vtranslate('LBL_SELECT_OPTION','Vtiger');?>
+</option><?php  $_smarty_tpl->tpl_vars['VALUE'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['VALUE']->_loop = false;
+ $_smarty_tpl->tpl_vars['KEY'] = new Smarty_Variable;
+ $_from = $_smarty_tpl->tpl_vars['RECORD_STRUCTURE_MODEL']->value->getAirlinePikList(); if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['VALUE']->key => $_smarty_tpl->tpl_vars['VALUE']->value){
+$_smarty_tpl->tpl_vars['VALUE']->_loop = true;
+ $_smarty_tpl->tpl_vars['KEY']->value = $_smarty_tpl->tpl_vars['VALUE']->key;
+?><option value="<?php echo $_smarty_tpl->tpl_vars['KEY']->value;?>
+" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value==$_smarty_tpl->tpl_vars['KEY']->value){?>selected<?php }?>><?php echo $_smarty_tpl->tpl_vars['VALUE']->value;?>
+</option><?php } ?></select></div></div></div><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><div class="span3 width15 rail addShow" style="width: <?php echo $_smarty_tpl->tpl_vars['width15']->value;?>
+; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_airline'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><label for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate('Поезд',$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><div class=""><input type="text" id="departure_ZD_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" class='form-control  ' name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+_rail[]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+' value="<?php echo $_smarty_tpl->tpl_vars['FIELD_VALUE']->value;?>
+"></div></div></div><?php }?><!-- Туда - Рейс --><div class="span1" style="width: 5%; padding-right: 0; margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_flite'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value!="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><label class="ticket turPaket addShow" for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('label'),$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><label class="rail addShow" for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate('Номер',$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><?php }?><div class="input-group"><input style="height: 26px;" id="<?php echo $_smarty_tpl->tpl_vars['MODULE']->value;?>
+_editView_fieldName_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('name');?>
+" type="text" class="form-control" <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> name="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]"value="<?php echo $_smarty_tpl->tpl_vars['FIELD_VALUE']->value;?>
+"  /></div></div></div><div class="span1 width11" style="width: <?php echo $_smarty_tpl->tpl_vars['width11']->value;?>
+; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_type_flite'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value!="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><label class="ticket turPaket addShow" for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+">Тип рейса<?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><label class="rail addShow" for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+">Тип вагона<?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><?php }?><div class="input-group"><select class='form-control  ' id="departure_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+'><option value=''><?php echo vtranslate('LBL_SELECT_OPTION','Vtiger');?>
+</option><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value!="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><optgroup class="ticket turPaket addShow"><option value="регулярный" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='регулярный'){?>selected<?php }?>>Регуляный</option><option value="чартер" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='чартер'){?>selected<?php }?>>Чартер</option></optgroup><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><optgroup class="rail addShow"><option value="купе" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='купе'){?>selected<?php }?>>Купе</option><option value="СВ" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='СВ'){?>selected<?php }?>>СВ</option><option value="плацкард" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='плацкард'){?>selected<?php }?>>Плацкард</option><option value="женский" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='женский'){?>selected<?php }?>>Женский</option><option value="мужской" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='мужской'){?>selected<?php }?>>Мужской</option></optgroup><?php }?></select></div></div></div><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value==''||$_smarty_tpl->tpl_vars['opportunity_type']->value=="Авиа билеты"){?><div class="span1 <?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value==''){?>hide<?php }?> ticket addShow" style="width: 5%; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_type_class'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><label for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+">Класс<?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><div class="input-group"><select class='form-control  ' id="departure_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+'><option value=''><?php echo vtranslate('LBL_SELECT_OPTION','Vtiger');?>
+</option><option value="экономичный" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='экономичный'){?>selected<?php }?>>Экономичный</option><option value="бизнес" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='бизнес'){?>selected<?php }?>>Бизнес</option><option value="комфорт" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value=='комфорт'){?>selected<?php }?>>Повышенной комфортности</option></select></div></div></div><?php }?><!-- Туда - Откуда --><div class="span2 width15" style="width: <?php echo $_smarty_tpl->tpl_vars['width15']->value;?>
+; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_departure'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><label for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('label'),$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><div class=""><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value!="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><select class='form-control ticket turPaket addShow ' id="departure_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+'><option value=''><?php echo vtranslate('LBL_SELECT_OPTION','Vtiger');?>
+</option><?php  $_smarty_tpl->tpl_vars['VALUE'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['VALUE']->_loop = false;
+ $_smarty_tpl->tpl_vars['KEY'] = new Smarty_Variable;
+ $_from = $_smarty_tpl->tpl_vars['RECORD_STRUCTURE_MODEL']->value->getAirportsPikList(); if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['VALUE']->key => $_smarty_tpl->tpl_vars['VALUE']->value){
+$_smarty_tpl->tpl_vars['VALUE']->_loop = true;
+ $_smarty_tpl->tpl_vars['KEY']->value = $_smarty_tpl->tpl_vars['VALUE']->key;
+?><option value="<?php echo $_smarty_tpl->tpl_vars['KEY']->value;?>
+" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value==$_smarty_tpl->tpl_vars['KEY']->value){?>selected<?php }?>><?php echo $_smarty_tpl->tpl_vars['VALUE']->value;?>
+</option><?php } ?></select><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><input value="<?php echo $_smarty_tpl->tpl_vars['FIELD_VALUE']->value;?>
+" id="departure_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" class='form-control rail addShow ' name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+_rail[]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+'><?php }?></div></div></div><!-- Туда - время вылета--><div class="span3 width14" style="width: <?php echo $_smarty_tpl->tpl_vars['width14']->value;?>
+; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_time_departure'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value!="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><label class="ticket turPaket addShow" for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('label'),$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><label class="rail addShow" for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate('Отправление',$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><?php }?><div class="input-group"><input style="height: 26px;" id="<?php echo $_smarty_tpl->tpl_vars['MODULE']->value;?>
+_editView_fieldName_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('name');?>
+" type="text" class="form-control datetimepicker vilet depvilet" onchange='validDate(this)' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> name="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]"value="<?php echo $_smarty_tpl->tpl_vars['FIELD_VALUE']->value;?>
+"  /><span style="cursor: pointer;" class="input-group-addon"><i class="fa fa-calendar"></i></span></div></div></div><!-- Туда - Куда --><div class="span2 width15" style="width: <?php echo $_smarty_tpl->tpl_vars['width15']->value;?>
+; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_arrival'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><label for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('label'),$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><div class=""><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value!="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><select class='form-control turPaket ticket addShow  ' id="departure_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+'><option value=''><?php echo vtranslate('LBL_SELECT_OPTION','Vtiger');?>
+</option><?php  $_smarty_tpl->tpl_vars['VALUE'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['VALUE']->_loop = false;
+ $_smarty_tpl->tpl_vars['KEY'] = new Smarty_Variable;
+ $_from = $_smarty_tpl->tpl_vars['RECORD_STRUCTURE_MODEL']->value->getAirportsPikList(); if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['VALUE']->key => $_smarty_tpl->tpl_vars['VALUE']->value){
+$_smarty_tpl->tpl_vars['VALUE']->_loop = true;
+ $_smarty_tpl->tpl_vars['KEY']->value = $_smarty_tpl->tpl_vars['VALUE']->key;
+?><option value="<?php echo $_smarty_tpl->tpl_vars['KEY']->value;?>
+" <?php if ($_smarty_tpl->tpl_vars['FIELD_VALUE']->value==$_smarty_tpl->tpl_vars['KEY']->value){?>selected<?php }?>><?php echo $_smarty_tpl->tpl_vars['VALUE']->value;?>
+</option><?php } ?></select><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><input value="<?php echo $_smarty_tpl->tpl_vars['FIELD_VALUE']->value;?>
+" id="departure_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" class='form-control rail addShow ' name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+_rail[]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+'><?php }?></div></div></div><!-- Туда - время прибытия --><div class="span3 width14" style="width: <?php echo $_smarty_tpl->tpl_vars['width14']->value;?>
+; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_time_arrival'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value!="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><label class="ticket turPaket addShow" for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('label'),$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><?php }?><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><label class="rail addShow" for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+"><?php echo vtranslate('Прибытие',$_smarty_tpl->tpl_vars['MODULE']->value);?>
+ <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><?php }?> <div class="input-group"><input style="height: 26px;" id="<?php echo $_smarty_tpl->tpl_vars['MODULE']->value;?>
+_editView_fieldName_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('name');?>
+" type="text" class="form-control datetimepicker prilet depprilet"  onchange='validDate2(this)' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> name="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]"value="<?php echo $_smarty_tpl->tpl_vars['FIELD_VALUE']->value;?>
+"  /><span style="cursor: pointer;" class="input-group-addon"><i class="fa fa-calendar"></i></span></div></div></div><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value==''||$_smarty_tpl->tpl_vars['opportunity_type']->value=="Авиа билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"){?><div class="span1 <?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value==''){?>hide<?php }?> ticket rail addShow" style="width: 13%; padding-right: 0;margin-left:1%"><div class="form-group"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['dep_list_pass'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable(explode('#',$_smarty_tpl->tpl_vars['FIELD_VALUE']->value), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable(explode(',',$_smarty_tpl->tpl_vars['FIELD_VALUE']->value[0]), null, 0);?><label for="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+">Пасажиры<?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> <span class="redColor">*</span> <?php }?></label><div class="input-group"><select id="departure_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+" class='chzn-select form-control <?php if ($_smarty_tpl->tpl_vars['OCCUPY_COMPLETE_WIDTH']->value){?> row-fluid-fluid <?php }?> listTurist listTuristPrice' multiple name='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[0][]' <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> data-selected-value='<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue');?>
+' style="width:160px;"><?php  $_smarty_tpl->tpl_vars['KEY'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['KEY']->_loop = false;
+ $_from = $_smarty_tpl->tpl_vars['FIELD_VALUE']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
+foreach ($_from as $_smarty_tpl->tpl_vars['KEY']->key => $_smarty_tpl->tpl_vars['KEY']->value){
+$_smarty_tpl->tpl_vars['KEY']->_loop = true;
+?><option value="<?php echo $_smarty_tpl->tpl_vars['KEY']->value;?>
+" selected ><?php echo $_smarty_tpl->tpl_vars['KEY']->value;?>
+</option><?php } ?></select></div></div></div><?php }?><div class="span1" style="width: 2%; padding-right: 0;margin-left:1%"><label>&nbsp;</label><div class="form-group addButtonContainer"><button class="btn btn-default add-row-fluid" onclick="addFlite(event,this);"><i class="fa fa-plus"></i></button></div></div><?php if ($_smarty_tpl->tpl_vars['opportunity_type']->value=="Авиа билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value=="ЖД билеты"||$_smarty_tpl->tpl_vars['opportunity_type']->value==''){?><div class="span4 ticket rai addShow" style="width: 100px; padding-right: 0;margin-left:1%"><span>Цена билета:</span></div><div class="span2 ticket rai addShow" style="width: 13%; padding-right: 0;margin-left:1%"><div class="form-group form-group-required"><?php $_smarty_tpl->tpl_vars['FIELD_MODEL'] = new Smarty_variable($_smarty_tpl->tpl_vars['BLOCK_FIELDS']->value['ticketprice_dep'], null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_INFO"] = new Smarty_variable(Vtiger_Util_Helper::toSafeHTML(Zend_Json::encode($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldInfo())), null, 0);?><?php $_smarty_tpl->tpl_vars["SPECIAL_VALIDATOR"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getValidator(), null, 0);?><?php $_smarty_tpl->tpl_vars["FIELD_VALUE"] = new Smarty_variable($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('fieldvalue'), null, 0);?><div class="input-group"><input id="<?php echo $_smarty_tpl->tpl_vars['MODULE']->value;?>
+_editView_fieldName_<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->get('name');?>
+_<?php echo $_smarty_tpl->tpl_vars['key_air']->value;?>
+" type="text" class="form-control ticketprice"  <?php if ($_smarty_tpl->tpl_vars['FIELD_MODEL']->value->isMandatory()==true){?> required<?php }?> name="<?php echo $_smarty_tpl->tpl_vars['FIELD_MODEL']->value->getFieldName();?>
+[]"value="<?php echo $_smarty_tpl->tpl_vars['FIELD_VALUE']->value;?>
+"  /><span class="input-group-addon"><i class="fa fa-rub"></i></span></div></div></div><div class="span4 ticket rai addShow" style="width: 300px; padding-right: 0;margin-left:1%"><span>*Указывается стоимость на одного пассажира</span></div><hr /><?php }?></div><?php }} ?>
