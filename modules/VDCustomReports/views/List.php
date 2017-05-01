@@ -250,12 +250,13 @@ class VDCustomReports_List_View extends Vtiger_List_View
     }
 
     public function getFunnels($result){
-        $sourceArray = [];
-        foreach ($result as $item) {
-            if (!in_array($item['leadsource'], $sourceArray) && $item['leadsource'] ) {
-                $sourceArray[] = $item['leadsource'];
-            }
-        }
+        //TODO
+        $sourceArray = array('Встреча в офисе','Входящий звонок','Обратный звонок','Заказ с поисковика на сайте','Соц. Сети', 'Заказ с сайта на покупку тура','Одноклассники','ВКонтакте','ICQ','Почтовая рассылка','Другое');
+//        foreach ($result as $item) {
+//            if (!in_array($item['leadsource'], $sourceArray) && $item['leadsource'] ) {
+//                $sourceArray[] = $item['leadsource'];
+//            }
+//        }
 
         $funnelArrayNew = [];
         $funnelArrayNew[0]['title'] = 'Все источники';
@@ -422,6 +423,16 @@ class VDCustomReports_List_View extends Vtiger_List_View
         $newFunnel = $this->getSQLArrayResult($sqlNewFunnel, [$this->date_start, $this->date_finish]);
         $funnelArrayNew = $this->getFunnels($newFunnel);
 
+        $sqlAllFunnel = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+                        FROM vtiger_potential as p
+                        INNER JOIN vtiger_crmentity as cl 
+                            ON cl.crmid = p.potentialid
+                            INNER JOIN vtiger_potentialscf as scf
+                            ON scf.potentialid = p.potentialid
+                 
+                
+                  WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
+                ";
         $funnelArrayAll = $this->getFunnels($newFunnel);
 
 
