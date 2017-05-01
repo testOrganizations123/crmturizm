@@ -362,7 +362,7 @@ foreach ($result as $item){
 
 
 
-        $viewer->assign('FUNNEL', json_encode($funnelArrayNew));
+        $viewer->assign('FUNNEL', json_encode($funnelArray));
     }
 
 
