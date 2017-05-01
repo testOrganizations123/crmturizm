@@ -79,7 +79,7 @@
                 {include file=vtemplate_path("uitypes/editPlan.tpl",$MODULE) }
             {/if}
 
-            {if isset($FUNNEL)}
+            {if isset($FUNNELNEW)}
                 {include file=vtemplate_path("uitypes/salesFunnel.tpl",$MODULE) }
             {/if}
 
