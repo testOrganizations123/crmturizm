@@ -253,12 +253,14 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $result = $this->getSQLArrayResult($sql, [$this->date_start, $this->date_finish]);
 
-        $sourceArray = [];
-        foreach ($result as $item) {
-            if (!in_array($item['leadsource'], $sourceArray) && $item['leadsource'] ) {
-                $sourceArray[] = $item['leadsource'];
-            }
-        }
+        $sourceArray = array('Встреча в офисе','Входящий звонок','Обратный звонок','Заказ с поисковика на сайте','Соц. Сети', 'Заказ с сайта на покупку тура','Одноклассники','ВКонтакте','ICQ','Почтовая рассылка','Другое');
+
+//        $sourceArray = [];
+//        foreach ($result as $item) {
+//            if (!in_array($item['leadsource'], $sourceArray) && $item['leadsource'] ) {
+//                $sourceArray[] = $item['leadsource'];
+//            }
+//        }
 
         $funnelArrayNew = [];
         $funnelArrayNew[0]['title'] = 'Все источники';
