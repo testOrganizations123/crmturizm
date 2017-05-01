@@ -251,7 +251,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
     public function getFunnels($result){
         //TODO
-        $sourceArray = array('Встреча в офисе','Входящий звонок','Обратный звонок','Заказ с поисковика на сайте','Соц. Сети', 'Заказ с сайта на покупку тура','Одноклассники','ВКонтакте','ICQ','Почтовая рассылка','Другое');
+        $sourceArray = array('Встреча в офисе','Входящий звонок','Обратный звонок','Заказ с поисковика на сайте','Соц. Сети', 'Заявка с сайта на покупку тура','Заявка с сайта на подбор тура','Одноклассники','ВКонтакте','ICQ','Почтовая рассылка','Другое');
 //        foreach ($result as $item) {
 //            if (!in_array($item['leadsource'], $sourceArray) && $item['leadsource'] ) {
 //                $sourceArray[] = $item['leadsource'];
