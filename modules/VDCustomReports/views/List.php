@@ -249,7 +249,10 @@ class VDCustomReports_List_View extends Vtiger_List_View
         return $raw;
     }
 
-    public function getFunnels($result){
+    public function getFunnels($sql){
+
+        $result = $this->getSQLArrayResult($sql, [$this->date_start, $this->date_finish]);
+
         $sourceArray = [];
         foreach ($result as $item) {
             if (!in_array($item['leadsource'], $sourceArray) && $item['leadsource'] ) {
@@ -419,10 +422,20 @@ class VDCustomReports_List_View extends Vtiger_List_View
                   WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
                 ";
 
-        $newFunnel = $this->getSQLArrayResult($sqlNewFunnel, [$this->date_start, $this->date_finish]);
-        $funnelArrayNew = $this->getFunnels($newFunnel);
+        $funnelArrayNew = $this->getFunnels($sqlNewFunnel);
 
-        $funnelArrayAll = $this->getFunnels($newFunnel);
+        $sqlAllFunnel = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+                        FROM vtiger_potential as p
+                        INNER JOIN vtiger_crmentity as cl 
+                            ON cl.crmid = p.potentialid
+                            INNER JOIN vtiger_potentialscf as scf
+                            ON scf.potentialid = p.potentialid
+                 
+              
+                  WHERE cl.deleted = 0 and p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and ((p.sales_stage <> 'Closed Won' and p.sales_stage <> 'Closed Lost') OR (CAST(scf.cf_1225 AS DATE) BETWEEN ? AND ?))
+                ";
+
+        $funnelArrayAll = $this->getFunnels($sqlAllFunnel);
 
 
         $viewer->assign('FUNNELNEW', json_encode($funnelArrayNew));

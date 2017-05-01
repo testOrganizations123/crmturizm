@@ -8,10 +8,10 @@ for (var i=0; i< window.funnelDataNew.length; i++) {
         "titles": [
             {
                 "size": 15,
-                "text": window.funnelDataNew[i].title
+                "text": window.funnelDataNew[i].title + " (новые)"
             }
         ],
-        "marginRight": 200,
+        "marginLeft": 200,
         "titleField": "title",
         "labelsEnabled": true,
         "valueField": "height",
@@ -22,19 +22,19 @@ for (var i=0; i< window.funnelDataNew.length; i++) {
         "legend": {
             "valueText": "[[level]]"
         },
-        "labelPosition": "right"
+        "labelPosition": "left"
     });
 
 }
 
-for (var i=0; i< window.funnelDataNew.length; i++) {
+for (i=0; i< window.funnelDataAll.length; i++) {
     AmCharts.makeChart("div_new_" + i, {
         "type": "funnel",
-        "dataProvider": window.funnelDataNew[i].value,
+        "dataProvider": window.funnelDataAll[i].value,
         "titles": [
             {
                 "size": 15,
-                "text": window.funnelDataNew[i].title + " (новые)"
+                "text": window.funnelDataAll[i].title
             }
         ],
         "marginRight": 200,
