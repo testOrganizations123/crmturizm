@@ -3,11 +3,11 @@ console.log(window.funelData);
 
 AmCharts.makeChart("chartDiv", {
     "type": "funnel",
-    "dataProvider": window.funelData.new["Все источники"],
+    "dataProvider": window.funelData.new[0].value,
     "titles": [
         {
             "size": 15,
-            "text": "Рейтинг"
+            "text": window.funelData.new[0].title
         }
     ],
     "marginRight": 200,
@@ -26,11 +26,11 @@ AmCharts.makeChart("chartDiv", {
 
 AmCharts.makeChart("chartDiv2", {
     "type": "funnel",
-    "dataProvider": window.funelData.new["Все источники"],
+    "dataProvider": window.funelData.new[0].value,
     "titles": [
         {
             "size": 15,
-            "text": "Рейтинг"
+            "text": window.funelData.new[0].title + ' (Новые)'
         }
     ],
     "marginRight": 200,
@@ -39,8 +39,8 @@ AmCharts.makeChart("chartDiv2", {
     "valueField": "height",
     "neckWidth": "0",
     "neckHeight": "0",
-    "balloonText": "[[title]][[level]]",
-    "labelText": "[[title]][[level]]",
+    "balloonText": "[[text]] [[level]]",
+    "labelText": "[[text]][[level]]",
     "legend": {
         "valueText" : "[[level]]"
     },

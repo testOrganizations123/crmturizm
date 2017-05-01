@@ -3,15 +3,22 @@
 </script>
 
 <style>
-    #chartDiv, #chartDiv2{
-        height: 700px;
+    .funnelBlock{
         width: 740px;
         display: inline-block;
     }
+    .funnel{
+        width: 100%;
+    }
 </style>
 
-<div id="chartDiv"></div>
-<div id="chartDiv2"></div>
+<div class="funnelBlock">
+    <div style="height: 700px" class="funnel"  id="chartDiv"></div>
+</div>
+
+<div class="funnelBlock">
+    <div  style="height: 700px" class="funnel" id="chartDiv2"></div>
+</div>
 
 
 
