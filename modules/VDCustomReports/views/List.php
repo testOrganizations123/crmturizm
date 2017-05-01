@@ -256,7 +256,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $addQuery = $this->addQueryFilter();
 
-        $sql = "SELECT scf.cf_1268 AS amount, scf.cf_1266 AS eCharge, p.sales_stage,p.leadsource
+        $sql = "SELECT scf.cf_1268 AS amount, scf.cf_1266 AS echarge, p.sales_stage,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as cl 
                             ON cl.crmid = p.potentialid
@@ -272,52 +272,97 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $sourceArray = [];
         foreach ($result as $item) {
-            if (!in_array($item['leadsource'], $sourceArray)) {
+            if (!in_array($item['leadsource'], $sourceArray) && $item['leadsource'] ) {
                 $sourceArray[] = $item['leadsource'];
             }
         }
 
-        $funnelArrayAll = [];
+        $funnelArrayNew = [];
 
 
         foreach ($sourceArray as $source) {
 
-            $funnelArrayAll[$source]['income'] = 0;
-            $funnelArrayAll[$source]['office'] = 0;
-            $funnelArrayAll[$source]['noSales'] = 0;
-            $funnelArrayAll[$source]['sales'] = 0;
-            $funnelArrayAll[$source]['null'] = 0;
+
+            $funnelArrayNew[$source]['income'] = 0;
+            $funnelArrayNew[$source]['office'] = 0;
+            $funnelArrayNew[$source]['noSales'] = 0;
+            $funnelArrayNew[$source]['sales'] = 0;
+            $funnelArrayNew[$source]['null'] = 0;
             $sumECharge = 0;
             $sumProfit = 0;
             foreach ($result as $item) {
+                if (!$item['leadsource']){
+                    $item['leadsource'] = 'Другое';
+                }
                 if ($item['leadsource']== $source) {
-                    $funnelArrayAll[$source]['income'] += 1;
+                    $funnelArrayNew[$source]['income'] += 1;
 
                     if ($item['eventstatus'] != 'Продажа') {
-                        $funnelArrayAll[$source]['noSales'] += 1;
+                        $funnelArrayNew[$source]['noSales'] += 1;
                     }
 
                     if ($item['eventstatus'] == 'Продажа') {
-                        $funnelArrayAll[$source]['sales'] += 1;
+                        $funnelArrayNew[$source]['sales'] += 1;
                     }
                     if ($item['eventstatus'] == 'Отказ') {
-                        $funnelArrayAll[$source]['null'] += 1;
+                        $funnelArrayNew[$source]['null'] += 1;
                     }
-                    if (isset($item['eCharge'])) {
-                        $sumECharge += $item['eCharge'];
+                    if (isset($item['echarge'])) {
+                        $sumECharge += $item['echarge'];
                     }
                     if (isset($item['amount'])) {
                         $sumProfit += $item['amount'];
                     }
                 }
             }
-            $funnelArrayAll[$source]['averageMarkup'] = $sumECharge / $funnelArrayAll[$source]['income'];
-            $funnelArrayAll[$source]['averageProfit'] = $sumProfit / $funnelArrayAll[$source]['income'];
-            $funnelArrayAll[$source]['profit'] = $sumProfit;
+            $funnelArrayNew[$source]['averageMarkup'] = $sumECharge / $funnelArrayNew[$source]['income'];
+            $funnelArrayNew[$source]['averageProfit'] = $sumProfit / $funnelArrayNew[$source]['income'];
+            $funnelArrayNew[$source]['profit'] = $sumProfit;
         }
 
+        $funnelArrayNew['All']['income'] = 0;
+        $funnelArrayNew['All']['office'] = 0;
+        $funnelArrayNew['All']['noSales'] = 0;
+        $funnelArrayNew['All']['sales'] = 0;
+        $funnelArrayNew['All']['null'] = 0;
+        $sumECharge = 0;
+        $sumProfit = 0;
+foreach ($result as $item){
 
-        $viewer->assign('FUNNEL', json_encode($funnelArrayAll));
+    $funnelArrayNew['All']['income'] += 1;
+
+    if ($item['sales_stage'] != 'Closed Won') {
+        $funnelArrayNew['All']['noSales'] += 1;
+    }
+
+    if ($item['sales_stage'] == 'Closed Won') {
+        $funnelArrayNew['All']['sales'] += 1;
+    }
+    if ($item['sales_stage'] == 'Closed Lost') {
+        $funnelArrayNew['All']['null'] += 1;
+    }
+    if (isset($item['echarge'])) {
+        $sumECharge += $item['echarge'];
+    }
+    if (isset($item['amount'])) {
+        $sumProfit += $item['amount'];
+    }
+
+
+}
+        $funnelArrayNew['All']['averageMarkup'] = $sumECharge / $funnelArrayNew['All']['income'];
+        $funnelArrayNew['All']['averageProfit'] = $sumProfit / $funnelArrayNew['All']['income'];
+        $funnelArrayNew['All']['profit'] = $sumProfit;
+
+
+        $funnelArray['new']=$funnelArrayNew;
+        $funnelArray['all']=[];
+
+
+
+
+
+        $viewer->assign('FUNNEL', json_encode($funnelArrayNew));
     }
 
 
