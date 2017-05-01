@@ -259,7 +259,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON scf.potentialid = p.potentialid
                   
                 
-                  WHERE (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
+                  WHERE  (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
                 ";
 
         $result = $this->getSQLArrayResult($sql, [$this->date_start, $this->date_finish]);
