@@ -272,27 +272,97 @@ class VDCustomReports_List_View extends Vtiger_List_View
         }
 
         $funnelArrayNew = [];
+        $funnelArrayNew[0]['titel'] = 'Все источники';
+        $funnelArrayNew[0]['value'][0]['text'] = "Входящие заявки:<br>";
+        $funnelArrayNew[0]['value'][0]['title'] = "Входящие заявки:";
+        $funnelArrayNew[0]['value'][0]['level'] = 0;
+        $funnelArrayNew[0]['value'][0]['height'] = 1;
+        //  $funnelArrayNew[$source]['office'] = 0;
+        $funnelArrayNew[0]['value'][1]['text'] = "Не закрытые на продажу<br>встречи: ";
+        $funnelArrayNew[0]['value'][1]['title'] = "Не закрытые на продажу встречи:";
+        $funnelArrayNew[0]['value'][1]['level'] = 0;
+        $funnelArrayNew[0]['value'][1]['height'] = 1;
+        $funnelArrayNew[0]['value'][2]['text'] = "Закрытые на продажу<br>встречи: ";
+        $funnelArrayNew[0]['value'][2]['title'] = "Закрытые на продажу встречи:";
+        $funnelArrayNew[0]['value'][2]['level'] = 0;
+        $funnelArrayNew[0]['value'][2]['height'] = 1;
+        $funnelArrayNew[0]['value'][3]['text'] = "Аннулированные встречи:<br>";
+        $funnelArrayNew[0]['value'][3]['title'] = "Аннулированные встречи:";
+        $funnelArrayNew[0]['value'][3]['level'] = 0;
+        $funnelArrayNew[0]['value'][3]['height'] = 1;
+        $sumECharge = 0;
+        $sumProfit = 0;
+        $revenues = 0;
+
+        foreach ($result as $item){
+
+            $funnelArrayNew[0]['value'][0]['level'] += 1;
+
+            if ($item['eventstatus'] != 'Closed Won') {
+                $funnelArrayNew[0]['value'][1]['level'] += 1;
+            }
+
+            if ($item['eventstatus'] == 'Closed Won') {
+                $funnelArrayNew[0]['value'][2]['level'] += 1;
+            }
+            if ($item['eventstatus'] == 'Closed Lost') {
+                $funnelArrayNew[0]['value'][3]['level'] += 1;
+            }
+            if (isset($item['echarge'])) {
+                $sumECharge += $item['echarge'];
+            }
+            if (isset($item['amount'])) {
+                $sumProfit += $item['amount'];
+            }
+            if (isset($item['amounta'])) {
+                $revenues += $item['amounta'];
+            }
+
+        }
+
+        $funnelArrayNew[0]['value'][4]['text'] = "Средняя наценка:<br>";
+        $funnelArrayNew[0]['value'][4]['title'] = "Средняя наценка:";
+        $funnelArrayNew[0]['value'][4]['level'] = round($sumECharge / $funnelArrayNew['value'][0]['level'], 2);
+        $funnelArrayNew[0]['value'][4]['height'] = 1;
 
 
-        foreach ($sourceArray as $source) {
+        $funnelArrayNew[0]['value'][5]['text'] = "Средний чек:<br>";
+        $funnelArrayNew[0]['value'][5]['title'] = "Средний чек:";
+        $funnelArrayNew[0]['value'][5]['level'] = round($revenues / $funnelArrayNew['value'][0]['level']);
+        $funnelArrayNew[0]['value'][5]['height'] = 1;
 
-            $funnelArrayNew[$source][0]['text'] = "Входящие заявки:<br>";
-            $funnelArrayNew[$source][0]['title'] = "Входящие заявки:";
-            $funnelArrayNew[$source][0]['level'] = 0;
-            $funnelArrayNew[$source][0]['height'] = 1;
+        $funnelArrayNew[0]['value'][6]['text'] = "Средний доход:<br>";
+        $funnelArrayNew[0]['value'][6]['title'] = "Средний доход:";
+        $funnelArrayNew[0]['value'][6]['level'] = round($sumProfit / $funnelArrayNew['value'][0]['level']);
+        $funnelArrayNew[0]['value'][6]['height'] = 1;
+
+        $funnelArrayNew[0]['value'][7]['text'] = "Доход итоговый:<br>";
+        $funnelArrayNew[0]['value'][7]['title'] = "Доход итоговый:";
+        $funnelArrayNew[0]['value'][7]['level'] = round($sumProfit);
+
+        $funnelArrayNew[0]['value'][7]['height'] = 1;
+
+        foreach ($sourceArray as $key=> $source) {
+            $key++;
+            $funnelArrayNew[$key]['title']=$source;
+
+            $funnelArrayNew[$key]['value'][0]['text'] = "Входящие заявки:<br>";
+            $funnelArrayNew[$key]['value'][0]['title'] = "Входящие заявки:";
+            $funnelArrayNew[$key]['value'][0]['level'] = 0;
+            $funnelArrayNew[$key]['value'][0]['height'] = 1;
           //  $funnelArrayNew[$source]['office'] = 0;
-            $funnelArrayNew[$source][1]['text'] = "Не закрытые на продажу<br>встречи: ";
-            $funnelArrayNew[$source][1]['title'] = "Не закрытые на продажу встречи:";
-            $funnelArrayNew[$source][1]['level'] = 0;
-            $funnelArrayNew[$source][1]['height'] = 1;
-            $funnelArrayNew[$source][2]['text'] = "Закрытые на продажу<br>встречи: ";
-            $funnelArrayNew[$source][2]['title'] = "Закрытые на продажу встречи:";
-            $funnelArrayNew[$source][2]['level'] = 0;
-            $funnelArrayNew[$source][2]['height'] = 1;
-            $funnelArrayNew[$source][3]['text'] = "Аннулированные встречи:<br>";
-            $funnelArrayNew[$source][3]['title'] = "Аннулированные встречи:";
-            $funnelArrayNew[$source][3]['level'] = 0;
-            $funnelArrayNew[$source][3]['height'] = 1;
+            $funnelArrayNew[$key]['value'][1]['text'] = "Не закрытые на продажу<br>встречи: ";
+            $funnelArrayNew[$key]['value'][1]['title'] = "Не закрытые на продажу встречи:";
+            $funnelArrayNew[$key]['value'][1]['level'] = 0;
+            $funnelArrayNew[$key]['value'][1]['height'] = 1;
+            $funnelArrayNew[$key]['value'][2]['text'] = "Закрытые на продажу<br>встречи: ";
+            $funnelArrayNew[$key]['value'][2]['title'] = "Закрытые на продажу встречи:";
+            $funnelArrayNew[$key]['value'][2]['level'] = 0;
+            $funnelArrayNew[$key]['value'][2]['height'] = 1;
+            $funnelArrayNew[$key]['value'][3]['text'] = "Аннулированные встречи:<br>";
+            $funnelArrayNew[$key]['value'][3]['title'] = "Аннулированные встречи:";
+            $funnelArrayNew[$key]['value'][3]['level'] = 0;
+            $funnelArrayNew[$key]['value'][3]['height'] = 1;
             $sumECharge = 0;
             $sumProfit = 0;
             $revenues = 0;
@@ -301,17 +371,17 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     $item['leadsource'] = 'Другое';
                 }
                 if ($item['leadsource']== $source) {
-                    $funnelArrayNew[$source][0]['level'] += 1;
+                    $funnelArrayNew[$key]['value'][0]['level'] += 1;
 
                     if ($item['eventstatus'] != 'Closed Won') {
-                        $funnelArrayNew[$source][1]['level'] += 1;
+                        $funnelArrayNew[$key]['value'][1]['level'] += 1;
                     }
 
                     if ($item['eventstatus'] == 'Closed Won') {
-                        $funnelArrayNew[$source][2]['level'] += 1;
+                        $funnelArrayNew[$key]['value'][2]['level'] += 1;
                     }
                     if ($item['eventstatus'] == 'Closed Lost') {
-                        $funnelArrayNew[$source][3]['level'] += 1;
+                        $funnelArrayNew[$key]['value'][3]['level'] += 1;
                     }
                     if (isset($item['echarge'])) {
                         $sumECharge += $item['echarge'];
@@ -326,95 +396,28 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 }
             }
 
-            $funnelArrayNew[$source][4]['text'] = "Средняя наценка:<br>";
-            $funnelArrayNew[$source][4]['title'] = "Средняя наценка:";
-            $funnelArrayNew[$source][4]['level'] = $sumECharge / $funnelArrayNew[$source][0]['level'];
-            $funnelArrayNew[$source][4]['height'] = 1;
+            $funnelArrayNew[$key]['value'][4]['text'] = "Средняя наценка:<br>";
+            $funnelArrayNew[$key]['value'][4]['title'] = "Средняя наценка:";
+            $funnelArrayNew[$key]['value'][4]['level'] = $sumECharge / $funnelArrayNew['value'][0]['level'];
+            $funnelArrayNew[$key]['value'][4]['height'] = 1;
 
-            $funnelArrayNew[$source][5]['text'] = "Средний чек:<br>";
-            $funnelArrayNew[$source][5]['title'] = "Средний чек:";
-            $funnelArrayNew[$source][5]['level'] = $revenues / $funnelArrayNew[$source][0]['level'];
-            $funnelArrayNew[$source][5]['height'] = 1;
+            $funnelArrayNew[$key]['value'][5]['text'] = "Средний чек:<br>";
+            $funnelArrayNew[$key]['value'][5]['title'] = "Средний чек:";
+            $funnelArrayNew[$key]['value'][5]['level'] = $revenues / $funnelArrayNew['value'][0]['level'];
+            $funnelArrayNew[$key]['value'][5]['height'] = 1;
 
-            $funnelArrayNew[$source][6]['text'] = "Средний доход:<br>";
-            $funnelArrayNew[$source][6]['title'] = "Средний доход:";
-            $funnelArrayNew[$source][6]['level'] = $sumProfit / $funnelArrayNew[$source][0]['level'];
-            $funnelArrayNew[$source][6]['height'] = 1;
+            $funnelArrayNew[$key]['value'][6]['text'] = "Средний доход:<br>";
+            $funnelArrayNew[$key]['value'][6]['title'] = "Средний доход:";
+            $funnelArrayNew[$key]['value'][6]['level'] = $sumProfit / $funnelArrayNew['value'][0]['level'];
+            $funnelArrayNew[$key]['value'][6]['height'] = 1;
 
-            $funnelArrayNew[$source][7]['text'] = "Доход итоговый:<br>";
-            $funnelArrayNew[$source][7]['title'] = "Доход итоговый:";
-            $funnelArrayNew[$source][7]['level'] = $sumProfit;
-            $funnelArrayNew[$source][7]['height'] = 1;
+            $funnelArrayNew[$key]['value'][7]['text'] = "Доход итоговый:<br>";
+            $funnelArrayNew[$key]['value'][7]['title'] = "Доход итоговый:";
+            $funnelArrayNew[$key]['value'][7]['level'] = $sumProfit;
+            $funnelArrayNew[$key]['value'][7]['height'] = 1;
         }
 
-        $funnelArrayNew['Все источники'][0]['text'] = "Входящие заявки:<br>";
-        $funnelArrayNew['Все источники'][0]['title'] = "Входящие заявки:";
-        $funnelArrayNew['Все источники'][0]['level'] = 0;
-        $funnelArrayNew['Все источники'][0]['height'] = 1;
-        //  $funnelArrayNew[$source]['office'] = 0;
-        $funnelArrayNew['Все источники'][1]['text'] = "Не закрытые на продажу<br>встречи: ";
-        $funnelArrayNew['Все источники'][1]['title'] = "Не закрытые на продажу встречи:";
-        $funnelArrayNew['Все источники'][1]['level'] = 0;
-        $funnelArrayNew['Все источники'][1]['height'] = 1;
-        $funnelArrayNew['Все источники'][2]['text'] = "Закрытые на продажу<br>встречи: ";
-        $funnelArrayNew['Все источники'][2]['title'] = "Закрытые на продажу встречи:";
-        $funnelArrayNew['Все источники'][2]['level'] = 0;
-        $funnelArrayNew['Все источники'][2]['height'] = 1;
-        $funnelArrayNew['Все источники'][3]['text'] = "Аннулированные встречи:<br>";
-        $funnelArrayNew['Все источники'][3]['title'] = "Аннулированные встречи:";
-        $funnelArrayNew['Все источники'][3]['level'] = 0;
-        $funnelArrayNew['Все источники'][3]['height'] = 1;
-        $sumECharge = 0;
-        $sumProfit = 0;
-        $revenues = 0;
 
-        foreach ($result as $item){
-
-            $funnelArrayNew['Все источники'][0]['level'] += 1;
-
-            if ($item['eventstatus'] != 'Closed Won') {
-                $funnelArrayNew['Все источники'][1]['level'] += 1;
-            }
-
-            if ($item['eventstatus'] == 'Closed Won') {
-                $funnelArrayNew['Все источники'][2]['level'] += 1;
-            }
-            if ($item['eventstatus'] == 'Closed Lost') {
-                $funnelArrayNew['Все источники'][3]['level'] += 1;
-            }
-            if (isset($item['echarge'])) {
-                $sumECharge += $item['echarge'];
-            }
-            if (isset($item['amount'])) {
-                $sumProfit += $item['amount'];
-            }
-            if (isset($item['amounta'])) {
-                $revenues += $item['amounta'];
-            }
-
-        }
-
-        $funnelArrayNew['Все источники'][4]['text'] = "Средняя наценка:<br>";
-        $funnelArrayNew['Все источники'][4]['title'] = "Средняя наценка:";
-        $funnelArrayNew['Все источники'][4]['level'] = round($sumECharge / $funnelArrayNew['Все источники'][0]['level'], 2);
-        $funnelArrayNew['Все источники'][4]['height'] = 1;
-
-
-        $funnelArrayNew['Все источники'][5]['text'] = "Средний чек:<br>";
-        $funnelArrayNew['Все источники'][5]['title'] = "Средний чек:";
-        $funnelArrayNew['Все источники'][5]['level'] = round($revenues / $funnelArrayNew['Все источники'][0]['level']);
-        $funnelArrayNew['Все источники'][5]['height'] = 1;
-
-        $funnelArrayNew['Все источники'][6]['text'] = "Средний доход:<br>";
-        $funnelArrayNew['Все источники'][6]['title'] = "Средний доход:";
-        $funnelArrayNew['Все источники'][6]['level'] = round($sumProfit / $funnelArrayNew['Все источники'][0]['level']);
-        $funnelArrayNew['Все источники'][6]['height'] = 1;
-
-        $funnelArrayNew['Все источники'][7]['text'] = "Доход итоговый:<br>";
-        $funnelArrayNew['Все источники'][7]['title'] = "Доход итоговый:";
-        $funnelArrayNew['Все источники'][7]['level'] = round($sumProfit);
-
-        $funnelArrayNew['Все источники'][7]['height'] = 1;
 
 
         $funnelArray['new']=$funnelArrayNew;
