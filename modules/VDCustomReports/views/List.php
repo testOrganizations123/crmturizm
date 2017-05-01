@@ -259,7 +259,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON scf.potentialid = p.potentialid
                   
                 
-                  WHERE  (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
+                  WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
                 ";
 
         $result = $this->getSQLArrayResult($sql, [$this->date_start, $this->date_finish]);
@@ -322,18 +322,18 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $funnelArrayNew[0]['value'][4]['text'] = "Средняя наценка:<br>";
         $funnelArrayNew[0]['value'][4]['title'] = "Средняя наценка:";
-        $funnelArrayNew[0]['value'][4]['level'] = round($sumECharge / $funnelArrayNew['value'][0]['level'], 2) . " %";
+        $funnelArrayNew[0]['value'][4]['level'] = round($sumECharge / $funnelArrayNew[0]['value'][0]['level'], 2) . " %";
         $funnelArrayNew[0]['value'][4]['height'] = 1;
 
 
         $funnelArrayNew[0]['value'][5]['text'] = "Средний чек:<br>";
         $funnelArrayNew[0]['value'][5]['title'] = "Средний чек:";
-        $funnelArrayNew[0]['value'][5]['level'] = round($revenues / $funnelArrayNew['value'][0]['level']) . " ₽";
+        $funnelArrayNew[0]['value'][5]['level'] = round($revenues / $funnelArrayNew[0]['value'][0]['level']) . " ₽";
         $funnelArrayNew[0]['value'][5]['height'] = 1;
 
         $funnelArrayNew[0]['value'][6]['text'] = "Средний доход:<br>";
         $funnelArrayNew[0]['value'][6]['title'] = "Средний доход:";
-        $funnelArrayNew[0]['value'][6]['level'] = round($sumProfit / $funnelArrayNew['value'][0]['level']) . " ₽";
+        $funnelArrayNew[0]['value'][6]['level'] = round($sumProfit / $funnelArrayNew[0]['value'][0]['level']) . " ₽";
         $funnelArrayNew[0]['value'][6]['height'] = 1;
 
         $funnelArrayNew[0]['value'][7]['text'] = "Доход итоговый:<br>";
@@ -398,17 +398,17 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
             $funnelArrayNew[$key]['value'][4]['text'] = "Средняя наценка:<br>";
             $funnelArrayNew[$key]['value'][4]['title'] = "Средняя наценка:";
-            $funnelArrayNew[$key]['value'][4]['level'] =round($sumECharge / $funnelArrayNew['value'][0]['level'], 2) . " %";;
+            $funnelArrayNew[$key]['value'][4]['level'] =round($sumECharge / $funnelArrayNew[$key]['value'][0]['level'], 2) . " %";;
             $funnelArrayNew[$key]['value'][4]['height'] = 1;
 
             $funnelArrayNew[$key]['value'][5]['text'] = "Средний чек:<br>";
             $funnelArrayNew[$key]['value'][5]['title'] = "Средний чек:";
-            $funnelArrayNew[$key]['value'][5]['level'] = round($revenues / $funnelArrayNew['value'][0]['level']) . " ₽";
+            $funnelArrayNew[$key]['value'][5]['level'] = round($revenues / $funnelArrayNew[$key]['value'][0]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][5]['height'] = 1;
 
             $funnelArrayNew[$key]['value'][6]['text'] = "Средний доход:<br>";
             $funnelArrayNew[$key]['value'][6]['title'] = "Средний доход:";
-            $funnelArrayNew[$key]['value'][6]['level'] = round($sumProfit / $funnelArrayNew['value'][0]['level']) . " ₽";
+            $funnelArrayNew[$key]['value'][6]['level'] = round($sumProfit / $funnelArrayNew[$key]['value'][0]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][6]['height'] = 1;
 
             $funnelArrayNew[$key]['value'][7]['text'] = "Доход итоговый:<br>";
@@ -420,11 +420,12 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
 
 
-        $funnelArray['new']=$funnelArrayNew;
-        $funnelArray['all']=[];
+
+        $funnelArrayAll=[];
 
 
-        $viewer->assign('FUNNEL', json_encode($funnelArray));
+        $viewer->assign('FUNNELNEW', json_encode($funnelArrayNew));
+        $viewer->assign('FUNNELALL', json_encode($funnelArrayAll));
     }
 
 
