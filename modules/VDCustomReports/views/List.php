@@ -408,7 +408,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
     public function getSalesFunnel(Vtiger_Request $request, $viewer){
 
-        $sql = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+        $sqlNewFunnel = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as cl 
                             ON cl.crmid = p.potentialid
@@ -419,11 +419,10 @@ class VDCustomReports_List_View extends Vtiger_List_View
                   WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
                 ";
 
-        $result = $this->getSQLArrayResult($sql, [$this->date_start, $this->date_finish]);
+        $newFunnel = $this->getSQLArrayResult($sqlNewFunnel, [$this->date_start, $this->date_finish]);
+        $funnelArrayNew = $this->getFunnels($newFunnel);
 
-        $funnelArrayNew = $this->getFunnels($result);
-
-        $funnelArrayAll = $this->getFunnels($result);
+        $funnelArrayAll = $this->getFunnels($newFunnel);
 
 
         $viewer->assign('FUNNELNEW', json_encode($funnelArrayNew));
