@@ -544,11 +544,11 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE ((l.leadsource <> 'Продажа' and l.leadsource <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery . "
+                                    WHERE ((a1.eventstatus <> 'Продажа' and a1.eventstatus <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery . "
             GROUP BY  c1.crmid";
 
 
-        $sqlAllFunnelReservation = "SELECT pcf.cf_1268 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as c1 
                             ON c1.crmid = p.potentialid
