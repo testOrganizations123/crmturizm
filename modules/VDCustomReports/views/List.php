@@ -346,7 +346,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']) > 0) {
             $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']);
-            $koefp = 100 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][3]['level']);
+            $koefp = 100 / $funnelArrayNew[0]['value'][0]['level'];
             $funnelArrayNew[0]['value'][0]['height'] = round($koef * $funnelArrayNew[0]['value'][0]['level']);
             $funnelArrayNew[0]['value'][1]['height'] = round($koef * $funnelArrayNew[0]['value'][1]['level']);
             $funnelArrayNew[0]['value'][2]['height'] = round($koef * $funnelArrayNew[0]['value'][2]['level']);
