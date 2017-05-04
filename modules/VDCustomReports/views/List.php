@@ -1416,9 +1416,9 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
                 foreach ($raw8 as $item) {
                     if ($item["worker"] == $db->query_result($result, $i, 'id')) {
 
-                        if ($item["worker"] != $worker) {
+                        $fl = 1;
 
-                            $fl = 1;
+                        if ($item["worker"] != $worker) {
 
                             if ($item[$column] != NULL) {
                                 $summ += $item[$column];
@@ -1429,6 +1429,10 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
 
                         break;
                     }
+                }
+
+                if ($fl == 0){
+                    $flag = 1;
                 }
 
             }

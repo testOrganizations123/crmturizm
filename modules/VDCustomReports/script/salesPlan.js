@@ -83,7 +83,7 @@ webix.ready(function () {
 
                     $.ajax({
                         type: "GET",
-                        url: "http://crmturizm.ru/index.php?module=VDCustomReports&view=List&mode=savePlan&value=" + value + "&column=" + column + "&office=" + office + "&monthPeriod=" + monthPeriod,
+                        url: "/index.php?module=VDCustomReports&view=List&mode=savePlan&value=" + value + "&column=" + column + "&office=" + office + "&monthPeriod=" + monthPeriod,
                         success: function (data) {
                             if (data != "success") {
                                 record[coordinates.column] = cell.old;
@@ -248,7 +248,7 @@ webix.ready(function () {
 
                     $.ajax({
                         type: "GET",
-                        url: "http://crmturizm.ru/index.php?module=VDCustomReports&view=List&mode=saveWorkerPlan&value=" + value + "&column=" + column + "&worker=" + worker + "&monthPeriod=" + monthPeriod,
+                        url: "/index.php?module=VDCustomReports&view=List&mode=saveWorkerPlan&value=" + value + "&column=" + column + "&worker=" + worker + "&monthPeriod=" + monthPeriod,
                         dataType: "json",
                         success: function (data) {
                             if (data != "success") {
