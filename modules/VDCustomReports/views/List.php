@@ -545,7 +545,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
                                     WHERE ((a1.eventstatus <> 'Продажа' and a1.eventstatus <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery . "
-            GROUP BY  c1.crmid";
+            GROUP BY  c1.crmid ";
 
 
         $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
