@@ -346,7 +346,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']) > 0) {
             $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']);
-            $koefp = 100 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][3]['level']);
+            $koefp = 100 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][3]['level']);
             $funnelArrayNew[0]['value'][0]['height'] = ceil($koef * $funnelArrayNew[0]['value'][0]['level']);
             $funnelArrayNew[0]['value'][1]['height'] = ceil($koef * $funnelArrayNew[0]['value'][1]['level']);
             $funnelArrayNew[0]['value'][2]['height'] = ceil($koef * $funnelArrayNew[0]['value'][2]['level']);
@@ -554,11 +554,9 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON pcf.potentialid = p.potentialid
                             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                             LEFT JOIN vtiger_office as o ON o.officeid = u.office
-              
-                  WHERE cl.deleted = 0 and p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and ((p.sales_stage <> 'Closed Won' and p.sales_stage <> 'Closed Lost') OR (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?))
-                " . $addQuery;
+              WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery;
 
-        var_dump($addQuery);
+
         $funnelArrayAll = $this->getFunnels($sqlAllFunnelReservation, $sqlAllFunnelApplication);
 
 
