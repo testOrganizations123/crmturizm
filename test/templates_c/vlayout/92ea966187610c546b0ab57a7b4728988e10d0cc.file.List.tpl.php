@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-28 23:02:01
+<?php /* Smarty version Smarty-3.1.7, created on 2017-05-02 19:15:42
          compiled from "C:\os\OpenServer\domains\crmturizm\includes\runtime/../../layouts/vlayout\modules\VDCustomReports\List.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1514459037f5c765292-33098851%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '92ea966187610c546b0ab57a7b4728988e10d0cc' => 
     array (
       0 => 'C:\\os\\OpenServer\\domains\\crmturizm\\includes\\runtime/../../layouts/vlayout\\modules\\VDCustomReports\\List.tpl',
-      1 => 1493408811,
+      1 => 1493667574,
       2 => 'file',
     ),
   ),
@@ -29,7 +29,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'EDITPLAN' => 0,
     'FRANCHISECHECKBOX' => 0,
     'VALCHECKBOX' => 0,
-    'FUNNEL' => 0,
+    'FUNNELNEW' => 0,
     'GRAFDIV' => 0,
     'iddiv' => 0,
     'DIVSTILE' => 0,
@@ -65,7 +65,7 @@ $_smarty_tpl->tpl_vars['PICKLIST_VALUE']->_loop = true;
 ' <?php if ($_smarty_tpl->tpl_vars['PICKLIST_VALUE']->value['value']==$_smarty_tpl->tpl_vars['item']->value['data']){?> selected <?php }?>data-userId="<?php echo $_smarty_tpl->tpl_vars['USER_MODEL']->value->get('id');?>
 "><?php echo $_smarty_tpl->tpl_vars['PICKLIST_VALUE']->value['label'];?>
 </option><?php } ?></select></div><?php }?></div><?php } ?><div class="span2"><label>&nbsp;</label><div class="row-fluid"><input type="submit" value="Сгенерировать" class="btn btn-success span12"/></div></div><?php if (isset($_smarty_tpl->tpl_vars['EDITPLANBUTTON']->value)&&$_smarty_tpl->tpl_vars['EDITPLANBUTTON']->value==true){?><div class="span2"><label>&nbsp;</label><div class="row-fluid"><input type="button" value="Редактировать" class="btn btn-success edit-button span12"onclick="window.location.href = 'index.php?module=VDCustomReports&view=List&mode=editSalesPlan'"></div></div><?php }?><?php if (isset($_smarty_tpl->tpl_vars['EDITPLAN']->value)){?><div class="span2"><label>&nbsp;</label><div class="row-fluid"><input type="button" value="Графики" class="btn btn-success edit-button span12"onclick="window.location.href = 'index.php?module=VDCustomReports&view=List&mode=getSalesPlan'"></div></div><?php }?><?php if (isset($_smarty_tpl->tpl_vars['FRANCHISECHECKBOX']->value)&&$_smarty_tpl->tpl_vars['FRANCHISECHECKBOX']->value==true){?><div class="span2"><label>&nbsp;</label><div class="row-fluid"><input type="checkbox" name="franchiseCheckbox" <?php if ($_smarty_tpl->tpl_vars['VALCHECKBOX']->value){?>checked<?php }?>> Франчайзинг</div></div><?php }?></form></div><hr/><div class="padding1per row-fluid" style="border:1px solid #ccc;"><?php if (isset($_smarty_tpl->tpl_vars['EDITPLAN']->value)){?><?php echo $_smarty_tpl->getSubTemplate (vtemplate_path("uitypes/editPlan.tpl",$_smarty_tpl->tpl_vars['MODULE']->value), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
-<?php }?><?php if (isset($_smarty_tpl->tpl_vars['FUNNEL']->value)){?><?php echo $_smarty_tpl->getSubTemplate (vtemplate_path("uitypes/salesFunnel.tpl",$_smarty_tpl->tpl_vars['MODULE']->value), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
+<?php }?><?php if (isset($_smarty_tpl->tpl_vars['FUNNELNEW']->value)){?><?php echo $_smarty_tpl->getSubTemplate (vtemplate_path("uitypes/salesFunnel.tpl",$_smarty_tpl->tpl_vars['MODULE']->value), $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 <?php }?><?php  $_smarty_tpl->tpl_vars['iddiv'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['iddiv']->_loop = false;
  $_from = $_smarty_tpl->tpl_vars['GRAFDIV']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['iddiv']->key => $_smarty_tpl->tpl_vars['iddiv']->value){

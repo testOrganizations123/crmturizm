@@ -234,7 +234,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
         return $sql;
     }
 
-    function getSQLArrayResult($sql, $arrayParams){
+    function getSQLArrayResult($sql, $arrayParams)
+    {
 
         $db = PearDatabase::getInstance();
         $result = $db->pquery($sql, $arrayParams);
@@ -249,11 +250,14 @@ class VDCustomReports_List_View extends Vtiger_List_View
         return $raw;
     }
 
-    public function getFunnels($sql){
+    public function getFunnels($sqlReservation, $sqlApplication)
+    {
 
-        $result = $this->getSQLArrayResult($sql, [$this->date_start, $this->date_finish]);
+        $resultReservation = $this->getSQLArrayResult($sqlReservation, [$this->date_start, $this->date_finish]);
+        $resultApplication = $this->getSQLArrayResult($sqlApplication, [$this->date_start, $this->date_finish]);
 
-        $sourceArray = array('Встреча в офисе','Входящий звонок','Обратный звонок','Заказ с поисковика на сайте','Соц. Сети', 'Заявка с сайта на покупку тура','Заявка с сайта на подбор тура','Одноклассники','ВКонтакте','ICQ','Почтовая рассылка','Другое');
+
+        $sourceArray = array('Встреча в офисе', 'Входящий звонок', 'Обратный звонок', 'Заказ с поисковика на сайте', 'Соц. Сети', 'Заявка с сайта на покупку тура', 'Заявка с сайта на подбор тура', 'Одноклассники', 'ВКонтакте', 'ICQ', 'Почтовая рассылка', 'Другое');
 
 //        $sourceArray = [];
 //        foreach ($result as $item) {
@@ -269,75 +273,92 @@ class VDCustomReports_List_View extends Vtiger_List_View
         $funnelArrayNew[0]['value'][0]['level'] = 0;
         $funnelArrayNew[0]['value'][0]['height'] = 1;
         //  $funnelArrayNew[$source]['office'] = 0;
-        $funnelArrayNew[0]['value'][1]['text'] = "Не закрытые на продажу<br>встречи: ";
-        $funnelArrayNew[0]['value'][1]['title'] = "Не закрытые на продажу встречи:";
+
+        $funnelArrayNew[0]['value'][1]['text'] = "Встречи в офисе:<br>";
+        $funnelArrayNew[0]['value'][1]['title'] = "Встречи в офисе:";
         $funnelArrayNew[0]['value'][1]['level'] = 0;
         $funnelArrayNew[0]['value'][1]['height'] = 1;
-        $funnelArrayNew[0]['value'][2]['text'] = "Закрытые на продажу<br>встречи: ";
-        $funnelArrayNew[0]['value'][2]['title'] = "Закрытые на продажу встречи:";
+
+        $funnelArrayNew[0]['value'][2]['text'] = "Не закрытые на продажу<br>встречи: ";
+        $funnelArrayNew[0]['value'][2]['title'] = "Не закрытые на продажу встречи:";
         $funnelArrayNew[0]['value'][2]['level'] = 0;
         $funnelArrayNew[0]['value'][2]['height'] = 1;
-        $funnelArrayNew[0]['value'][3]['text'] = "Аннулированные встречи:<br>";
-        $funnelArrayNew[0]['value'][3]['title'] = "Аннулированные встречи:";
+        $funnelArrayNew[0]['value'][3]['text'] = "Закрытые на продажу<br>встречи: ";
+        $funnelArrayNew[0]['value'][3]['title'] = "Закрытые на продажу встречи:";
         $funnelArrayNew[0]['value'][3]['level'] = 0;
         $funnelArrayNew[0]['value'][3]['height'] = 1;
+        $funnelArrayNew[0]['value'][4]['text'] = "Аннулированные встречи:<br>";
+        $funnelArrayNew[0]['value'][4]['title'] = "Аннулированные встречи:";
+        $funnelArrayNew[0]['value'][4]['level'] = 0;
+        $funnelArrayNew[0]['value'][4]['height'] = 1;
         $sumECharge = 0;
         $sumProfit = 0;
         $revenues = 0;
 
-        foreach ($result as $item){
+        foreach ($resultApplication as $item) {
 
             $funnelArrayNew[0]['value'][0]['level'] += 1;
 
-            if ($item['eventstatus'] != 'Closed Won') {
+            if ($item['meet']){
                 $funnelArrayNew[0]['value'][1]['level'] += 1;
             }
 
-            if ($item['eventstatus'] == 'Closed Won') {
+            if ($item['eventstatus'] != 'Продажа') {
                 $funnelArrayNew[0]['value'][2]['level'] += 1;
             }
-            if ($item['eventstatus'] == 'Closed Lost') {
+
+
+        }
+        foreach ($resultReservation as $item) {
+            if ($item['eventstatus'] == 'Closed Won') {
                 $funnelArrayNew[0]['value'][3]['level'] += 1;
             }
-            if (isset($item['echarge'])) {
-                $sumECharge += $item['echarge'];
+            if ($item['eventstatus'] == 'Closed Lost') {
+                $funnelArrayNew[0]['value'][4]['level'] += 1;
             }
-            if (isset($item['amount'])) {
-                $sumProfit += $item['amount'];
-            }
-            if (isset($item['amounta'])) {
-                $revenues += $item['amounta'];
+            if ($item['eventstatus'] == 'Closed Won') {
+                if (isset($item['echarge'])) {
+                    $sumECharge += $item['echarge'];
+                }
+                if (isset($item['amount'])) {
+                    $sumProfit += $item['amount'];
+                }
+                if (isset($item['amounta'])) {
+                    $revenues += $item['amounta'];
+                }
             }
 
         }
 
-        if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level']) > 0) {
-            $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level']);
+        if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level']+$funnelArrayNew[0]['value'][4]['level']) > 0) {
+            $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level']+$funnelArrayNew[0]['value'][4]['level']);
 
             $funnelArrayNew[0]['value'][0]['height'] = round($koef * $funnelArrayNew[0]['value'][0]['level']);
             $funnelArrayNew[0]['value'][1]['height'] = round($koef * $funnelArrayNew[0]['value'][1]['level']);
             $funnelArrayNew[0]['value'][2]['height'] = round($koef * $funnelArrayNew[0]['value'][2]['level']);
             $funnelArrayNew[0]['value'][3]['height'] = round($koef * $funnelArrayNew[0]['value'][3]['level']);
+            $funnelArrayNew[0]['value'][4]['height'] = round($koef * $funnelArrayNew[0]['value'][4]['level']);
         } else {
             $funnelArrayNew[0]['value'][0]['height'] = 100;
             $funnelArrayNew[0]['value'][1]['height'] = 100;
             $funnelArrayNew[0]['value'][2]['height'] = 100;
             $funnelArrayNew[0]['value'][3]['height'] = 100;
+            $funnelArrayNew[0]['value'][4]['height'] = 100;
         }
 
         $funnelArrayNew[0]['value'][4]['text'] = "Средняя наценка:<br>";
         $funnelArrayNew[0]['value'][4]['title'] = "Средняя наценка:";
-        $funnelArrayNew[0]['value'][4]['level'] = round($sumECharge / $funnelArrayNew[0]['value'][0]['level'], 2) . " %";
+        $funnelArrayNew[0]['value'][4]['level'] = round($sumECharge / $funnelArrayNew[0]['value'][3]['level'], 2) . " %";
         $funnelArrayNew[0]['value'][4]['height'] = 100;
 
         $funnelArrayNew[0]['value'][5]['text'] = "Средний чек:<br>";
         $funnelArrayNew[0]['value'][5]['title'] = "Средний чек:";
-        $funnelArrayNew[0]['value'][5]['level'] = round($revenues / $funnelArrayNew[0]['value'][0]['level']) . " ₽";
+        $funnelArrayNew[0]['value'][5]['level'] = round($revenues / $funnelArrayNew[0]['value'][3]['level']) . " ₽";
         $funnelArrayNew[0]['value'][5]['height'] = 100;
 
         $funnelArrayNew[0]['value'][6]['text'] = "Средний доход:<br>";
         $funnelArrayNew[0]['value'][6]['title'] = "Средний доход:";
-        $funnelArrayNew[0]['value'][6]['level'] = round($sumProfit / $funnelArrayNew[0]['value'][0]['level']) . " ₽";
+        $funnelArrayNew[0]['value'][6]['level'] = round($sumProfit / $funnelArrayNew[0]['value'][3]['level']) . " ₽";
         $funnelArrayNew[0]['value'][6]['height'] = 100;
 
         $funnelArrayNew[0]['value'][7]['text'] = "Доход итоговый:<br>";
@@ -346,83 +367,101 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $funnelArrayNew[0]['value'][7]['height'] = 100;
 
-        foreach ($sourceArray as $key=> $source) {
+        foreach ($sourceArray as $key => $source) {
             $key++;
-            $funnelArrayNew[$key]['title']=$source;
+            $funnelArrayNew[$key]['title'] = $source;
 
             $funnelArrayNew[$key]['value'][0]['text'] = "Входящие заявки:<br>";
             $funnelArrayNew[$key]['value'][0]['title'] = "Входящие заявки:";
             $funnelArrayNew[$key]['value'][0]['level'] = 0;
             //  $funnelArrayNew[$source]['office'] = 0;
-            $funnelArrayNew[$key]['value'][1]['text'] = "Не закрытые на продажу<br>встречи: ";
-            $funnelArrayNew[$key]['value'][1]['title'] = "Не закрытые на продажу встречи:";
+
+            $funnelArrayNew[$key]['value'][1]['text'] = "Встречи в офисе:<br>";
+            $funnelArrayNew[$key]['value'][1]['title'] = "Встречи в офисе:";
             $funnelArrayNew[$key]['value'][1]['level'] = 0;
-            $funnelArrayNew[$key]['value'][2]['text'] = "Закрытые на продажу<br>встречи: ";
-            $funnelArrayNew[$key]['value'][2]['title'] = "Закрытые на продажу встречи:";
+            $funnelArrayNew[$key]['value'][1]['height'] = 1;
+            $funnelArrayNew[$key]['value'][2]['text'] = "Не закрытые на продажу<br>встречи: ";
+            $funnelArrayNew[$key]['value'][2]['title'] = "Не закрытые на продажу встречи:";
             $funnelArrayNew[$key]['value'][2]['level'] = 0;
-            $funnelArrayNew[$key]['value'][3]['text'] = "Аннулированные встречи:<br>";
-            $funnelArrayNew[$key]['value'][3]['title'] = "Аннулированные встречи:";
+            $funnelArrayNew[$key]['value'][3]['text'] = "Закрытые на продажу<br>встречи: ";
+            $funnelArrayNew[$key]['value'][3]['title'] = "Закрытые на продажу встречи:";
             $funnelArrayNew[$key]['value'][3]['level'] = 0;
+            $funnelArrayNew[$key]['value'][4]['text'] = "Аннулированные встречи:<br>";
+            $funnelArrayNew[$key]['value'][4]['title'] = "Аннулированные встречи:";
+            $funnelArrayNew[$key]['value'][4]['level'] = 0;
             $sumECharge = 0;
             $sumProfit = 0;
             $revenues = 0;
-            foreach ($result as $item) {
-                if (!$item['leadsource']){
+            foreach ($resultApplication as $item) {
+                if (!$item['leadsource']) {
                     $item['leadsource'] = 'Другое';
                 }
-                if ($item['leadsource']== $source) {
+                if ($item['leadsource'] == $source) {
                     $funnelArrayNew[$key]['value'][0]['level'] += 1;
-
-                    if ($item['eventstatus'] != 'Closed Won') {
-                        $funnelArrayNew[$key]['value'][1]['level'] += 1;
+                    if ($item['meet']){
+                        $funnelArrayNew[0]['value'][1]['level'] += 1;
                     }
 
-                    if ($item['eventstatus'] == 'Closed Won') {
+                    if ($item['eventstatus'] != 'Продажа') {
                         $funnelArrayNew[$key]['value'][2]['level'] += 1;
                     }
-                    if ($item['eventstatus'] == 'Closed Lost') {
+                }
+            }
+            foreach ($resultReservation as $item) {
+                if (!$item['leadsource']) {
+                    $item['leadsource'] = 'Другое';
+                }
+                if ($item['leadsource'] == $source) {
+                    if ($item['eventstatus'] == 'Closed Won') {
                         $funnelArrayNew[$key]['value'][3]['level'] += 1;
                     }
-                    if (isset($item['echarge'])) {
-                        $sumECharge += $item['echarge'];
+                    if ($item['eventstatus'] == 'Closed Lost') {
+                        $funnelArrayNew[$key]['value'][4]['level'] += 1;
                     }
-                    if (isset($item['amount'])) {
-                        $sumProfit += $item['amount'];
-                    }
+                    if ($item['eventstatus'] == 'Closed Won') {
+                        if (isset($item['echarge'])) {
+                            $sumECharge += $item['echarge'];
+                        }
+                        if (isset($item['amount'])) {
+                            $sumProfit += $item['amount'];
+                        }
 
-                    if (isset($item['amounta'])) {
-                        $revenues += $item['amounta'];
+                        if (isset($item['amounta'])) {
+                            $revenues += $item['amounta'];
+                        }
                     }
                 }
             }
 
-            if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']) > 0){
-                $koef = 400 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']);
+            if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']) > 0) {
+                $koef = 400 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']);
 
                 $funnelArrayNew[$key]['value'][0]['height'] = round($koef * $funnelArrayNew[$key]['value'][0]['level']);
                 $funnelArrayNew[$key]['value'][1]['height'] = round($koef * $funnelArrayNew[$key]['value'][1]['level']);
                 $funnelArrayNew[$key]['value'][2]['height'] = round($koef * $funnelArrayNew[$key]['value'][2]['level']);
                 $funnelArrayNew[$key]['value'][3]['height'] = round($koef * $funnelArrayNew[$key]['value'][3]['level']);
+                $funnelArrayNew[$key]['value'][3]['height'] = round($koef * $funnelArrayNew[$key]['value'][4]['level']);
             } else {
                 $funnelArrayNew[$key]['value'][0]['height'] = 100;
                 $funnelArrayNew[$key]['value'][1]['height'] = 100;
                 $funnelArrayNew[$key]['value'][2]['height'] = 100;
                 $funnelArrayNew[$key]['value'][3]['height'] = 100;
+                $funnelArrayNew[$key]['value'][4]['height'] = 100;
             }
 
             $funnelArrayNew[$key]['value'][4]['text'] = "Средняя наценка:<br>";
             $funnelArrayNew[$key]['value'][4]['title'] = "Средняя наценка:";
-            $funnelArrayNew[$key]['value'][4]['level'] =round($sumECharge / $funnelArrayNew[$key]['value'][0]['level'], 2) . " %";;
+            $funnelArrayNew[$key]['value'][4]['level'] = round($sumECharge / $funnelArrayNew[$key]['value'][3]['level'], 2) . " %";;
             $funnelArrayNew[$key]['value'][4]['height'] = 100;
 
             $funnelArrayNew[$key]['value'][5]['text'] = "Средний чек:<br>";
             $funnelArrayNew[$key]['value'][5]['title'] = "Средний чек:";
-            $funnelArrayNew[$key]['value'][5]['level'] = round($revenues / $funnelArrayNew[$key]['value'][0]['level']) . " ₽";
+            $funnelArrayNew[$key]['value'][5]['level'] = round($revenues / $funnelArrayNew[$key]['value'][3]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][5]['height'] = 100;
 
             $funnelArrayNew[$key]['value'][6]['text'] = "Средний доход:<br>";
             $funnelArrayNew[$key]['value'][6]['title'] = "Средний доход:";
-            $funnelArrayNew[$key]['value'][6]['level'] = round($sumProfit / $funnelArrayNew[$key]['value'][0]['level']) . " ₽";
+            $funnelArrayNew[$key]['value'][6]['level'] = round($sumProfit / $funnelArrayNew[$key]['value'][3]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][6]['height'] = 100;
 
             $funnelArrayNew[$key]['value'][7]['text'] = "Доход итоговый:<br>";
@@ -434,9 +473,19 @@ class VDCustomReports_List_View extends Vtiger_List_View
         return $funnelArrayNew;
     }
 
-    public function getSalesFunnel(Vtiger_Request $request, $viewer){
+    public
+    function getSalesFunnel(Vtiger_Request $request, $viewer)
+    {
 
-        $sqlNewFunnel = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+        $addQuery = $this->addQueryFilter();
+        $sqlNewFunnelApplication = "SELECT  a1.eventstatus, l.leadsource, l.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as cl ON cl.crmid = l.leadid
+                                    INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
+                                    LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
+                                    LEFT JOIN vtiger_office as o ON o.officeid = u.office
+                                    WHERE (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)".$addQuery;
+
+
+        $sqlNewFunnelReservation = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as cl 
                             ON cl.crmid = p.potentialid
@@ -445,11 +494,19 @@ class VDCustomReports_List_View extends Vtiger_List_View
                  
                 
                   WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
-                ";
+                ".$addQuery;
 
-        $funnelArrayNew = $this->getFunnels($sqlNewFunnel);
 
-        $sqlAllFunnel = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+        $funnelArrayNew = $this->getFunnels($sqlNewFunnelReservation, $sqlNewFunnelApplication);
+
+        $sqlAllFunnelApplication = "SELECT a1.eventstatus,l.leadsource, l.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as cl  ON cl.crmid = l.leadid
+                                    INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
+                                    LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
+                                    LEFT JOIN vtiger_office as o ON o.officeid = u.office
+                                    WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)".$addQuery;
+
+
+        $sqlAllFunnelReservation = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as cl 
                             ON cl.crmid = p.potentialid
@@ -458,17 +515,18 @@ class VDCustomReports_List_View extends Vtiger_List_View
                  
               
                   WHERE cl.deleted = 0 and p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and ((p.sales_stage <> 'Closed Won' and p.sales_stage <> 'Closed Lost') OR (CAST(scf.cf_1225 AS DATE) BETWEEN ? AND ?))
-                ";
+                ".$addQuery;
 
-        $funnelArrayAll = $this->getFunnels($sqlAllFunnel);
-
+        $funnelArrayAll = $this->getFunnels($sqlAllFunnelReservation, $sqlAllFunnelApplication);
+var_dump($addQuery);
 
         $viewer->assign('FUNNELNEW', json_encode($funnelArrayNew));
         $viewer->assign('FUNNELALL', json_encode($funnelArrayAll));
     }
 
 
-    public function getLeadsReport(Vtiger_Request $request, $viewer)
+    public
+    function getLeadsReport(Vtiger_Request $request, $viewer)
     {
         $addQuery = $this->addQueryFilter();
 
@@ -519,21 +577,21 @@ class VDCustomReports_List_View extends Vtiger_List_View
         /*$sql = "SELECT g.createdtime, count(g.leadid) as value FROM
                     (SELECT s.date_start, l.leadid, s.eventstatus, s.due_date,s.activityid, convert(createdtime, DATE) as createdtime
                         FROM vtiger_leaddetails as l
-                        INNER JOIN vtiger_crmentity as cl 
+                        INNER JOIN vtiger_crmentity as cl
                             ON cl.crmid = l.leadid
-                        INNER JOIN (select s1.crmid, s1.activityid, a1.eventstatus, a1.date_start, a1.due_date FROM vtiger_seactivityrel as s1 INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid LEFT JOIN vtiger_crmentity as c1 ON c1.crmid = a1.activityid WHERE c1.deleted = 0 ".$addQuery." GROUP BY s1.crmid ORDER BY a1.activityid ) as s 
+                        INNER JOIN (select s1.crmid, s1.activityid, a1.eventstatus, a1.date_start, a1.due_date FROM vtiger_seactivityrel as s1 INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid LEFT JOIN vtiger_crmentity as c1 ON c1.crmid = a1.activityid WHERE c1.deleted = 0 ".$addQuery." GROUP BY s1.crmid ORDER BY a1.activityid ) as s
                             ON s.crmid = l.leadid and s.date_start >= ?
                         LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
                         LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                        WHERE cl.deleted = 0 and (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?) 
-                        GROUP BY l.leadid 
+                        WHERE cl.deleted = 0 and (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
+                        GROUP BY l.leadid
                     ) as g GROUP BY g.createdtime";
         $result = $db->pquery($sql,array($this->date_start,$this->date_start,$this->date_finish));
         $numRows = $db->num_rows($result);
          $raw = array();
         for($i=0;$i<$numRows;$i++){
             $raw[$i] = $db->query_result_rowdata($result,$i);
-            
+
         }
         foreach ($raw as $value){
             if(isset($row[$value['createdtime']])){
@@ -981,7 +1039,8 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
 
     }
 
-    public function getErrorLeads()
+    public
+    function getErrorLeads()
     {
         $sql = "SELECT a.due_date,
                     l.leadid, a.eventstatus, a.activityid, o.office , CONCAT (u.first_name, ' ', u.last_name) as username, concat ('http://crmturizm1.vordoom.net/index.php?module=Leads&view=Detail&record=', l.leadid) as link
@@ -1860,7 +1919,8 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
 
     }
 
-    private function GenerateRandomColor()
+    private
+    function GenerateRandomColor()
     {
         $color = '#';
         $colorHexLighter = array("9", "A", "B", "C", "D", "E", "F", "1", "2", "3", "4", "5", "6", "7", "8");
