@@ -434,40 +434,54 @@ class VDCustomReports_List_View extends Vtiger_List_View
             }
 
             if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']) > 0) {
-                $koef = 400 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']);
-
+                $koef = 500 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']);
+$koefp = 100/($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']);
                 $funnelArrayNew[$key]['value'][0]['height'] = round($koef * $funnelArrayNew[$key]['value'][0]['level']);
                 $funnelArrayNew[$key]['value'][1]['height'] = round($koef * $funnelArrayNew[$key]['value'][1]['level']);
                 $funnelArrayNew[$key]['value'][2]['height'] = round($koef * $funnelArrayNew[$key]['value'][2]['level']);
                 $funnelArrayNew[$key]['value'][3]['height'] = round($koef * $funnelArrayNew[$key]['value'][3]['level']);
-                $funnelArrayNew[$key]['value'][3]['height'] = round($koef * $funnelArrayNew[$key]['value'][4]['level']);
+                $funnelArrayNew[$key]['value'][4]['height'] = round($koef * $funnelArrayNew[$key]['value'][4]['level']);
+                $funnelArrayNew[$key]['value'][0]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][0]['level'])."%";
+                $funnelArrayNew[$key]['value'][1]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][1]['level'])."%";
+                $funnelArrayNew[$key]['value'][2]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][2]['level'])."%";
+                $funnelArrayNew[$key]['value'][3]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][3]['level'])."%";
+                $funnelArrayNew[$key]['value'][4]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][4]['level'])."%";
             } else {
                 $funnelArrayNew[$key]['value'][0]['height'] = 100;
                 $funnelArrayNew[$key]['value'][1]['height'] = 100;
                 $funnelArrayNew[$key]['value'][2]['height'] = 100;
                 $funnelArrayNew[$key]['value'][3]['height'] = 100;
                 $funnelArrayNew[$key]['value'][4]['height'] = 100;
+                $funnelArrayNew[$key]['value'][0]['percent'] = "";
+                $funnelArrayNew[$key]['value'][1]['percent'] = "";
+                $funnelArrayNew[$key]['value'][2]['percent'] = "";
+                $funnelArrayNew[$key]['value'][3]['percent'] = "";
+                $funnelArrayNew[$key]['value'][4]['percent'] = "";
             }
 
             $funnelArrayNew[$key]['value'][4]['text'] = "Средняя наценка:<br>";
             $funnelArrayNew[$key]['value'][4]['title'] = "Средняя наценка:";
             $funnelArrayNew[$key]['value'][4]['level'] = round($sumECharge / $funnelArrayNew[$key]['value'][3]['level'], 2) . " %";;
             $funnelArrayNew[$key]['value'][4]['height'] = 100;
+            $funnelArrayNew[$key]['value'][4]['height'] = "";
 
             $funnelArrayNew[$key]['value'][5]['text'] = "Средний чек:<br>";
             $funnelArrayNew[$key]['value'][5]['title'] = "Средний чек:";
             $funnelArrayNew[$key]['value'][5]['level'] = round($revenues / $funnelArrayNew[$key]['value'][3]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][5]['height'] = 100;
+            $funnelArrayNew[$key]['value'][5]['percent'] = "";
 
             $funnelArrayNew[$key]['value'][6]['text'] = "Средний доход:<br>";
             $funnelArrayNew[$key]['value'][6]['title'] = "Средний доход:";
             $funnelArrayNew[$key]['value'][6]['level'] = round($sumProfit / $funnelArrayNew[$key]['value'][3]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][6]['height'] = 100;
+            $funnelArrayNew[$key]['value'][6]['percent'] = "";
 
             $funnelArrayNew[$key]['value'][7]['text'] = "Доход итоговый:<br>";
             $funnelArrayNew[$key]['value'][7]['title'] = "Доход итоговый:";
             $funnelArrayNew[$key]['value'][7]['level'] = round($sumProfit) . " ₽";
             $funnelArrayNew[$key]['value'][7]['height'] = 100;
+            $funnelArrayNew[$key]['value'][7]['percent'] = "";
         }
 
         return $funnelArrayNew;
@@ -478,11 +492,11 @@ class VDCustomReports_List_View extends Vtiger_List_View
     {
 
         $addQuery = $this->addQueryFilter();
-        $sqlNewFunnelApplication = "SELECT  a1.eventstatus, l.leadsource, l.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as cl ON cl.crmid = l.leadid
+        $sqlNewFunnelApplication = "SELECT  a1.eventstatus, l.leadsource, cl.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as cl ON cl.crmid = l.leadid
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)".$addQuery;
+                                    WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)";
 
 
         $sqlNewFunnelReservation = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
@@ -493,17 +507,17 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON scf.potentialid = p.potentialid
                  
                 
-                  WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(cl.createdtime AS DATE) BETWEEN ? AND ?)
+                  WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(scf.cf_1225 AS DATE) BETWEEN ? AND ?)
                 ".$addQuery;
 
 
         $funnelArrayNew = $this->getFunnels($sqlNewFunnelReservation, $sqlNewFunnelApplication);
 
-        $sqlAllFunnelApplication = "SELECT a1.eventstatus,l.leadsource, l.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as cl  ON cl.crmid = l.leadid
+        $sqlAllFunnelApplication = "SELECT a1.eventstatus,l.leadsource, cl.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as cl  ON cl.crmid = l.leadid
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)".$addQuery;
+                                    WHERE ((l.leadsource <> 'Продажа' and l.leadsource <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))";
 
 
         $sqlAllFunnelReservation = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
@@ -515,10 +529,10 @@ class VDCustomReports_List_View extends Vtiger_List_View
                  
               
                   WHERE cl.deleted = 0 and p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and ((p.sales_stage <> 'Closed Won' and p.sales_stage <> 'Closed Lost') OR (CAST(scf.cf_1225 AS DATE) BETWEEN ? AND ?))
-                ".$addQuery;
+                ";
 
         $funnelArrayAll = $this->getFunnels($sqlAllFunnelReservation, $sqlAllFunnelApplication);
-var_dump($addQuery);
+
 
         $viewer->assign('FUNNELNEW', json_encode($funnelArrayNew));
         $viewer->assign('FUNNELALL', json_encode($funnelArrayAll));
