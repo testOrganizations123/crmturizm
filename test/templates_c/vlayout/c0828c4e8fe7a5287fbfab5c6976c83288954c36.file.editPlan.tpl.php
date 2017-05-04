@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-25 19:31:11
+<?php /* Smarty version Smarty-3.1.7, created on 2017-05-04 20:07:39
          compiled from "C:\OpenServer\domains\crmturizm.test\includes\runtime/../../layouts/vlayout\modules\VDCustomReports\uitypes\editPlan.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:2158ff79cf085028-40453929%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'c0828c4e8fe7a5287fbfab5c6976c83288954c36' => 
     array (
       0 => 'C:\\OpenServer\\domains\\crmturizm.test\\includes\\runtime/../../layouts/vlayout\\modules\\VDCustomReports\\uitypes\\editPlan.tpl',
-      1 => 1492654196,
+      1 => 1493241816,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_58ff79cf0c351',
   'variables' => 
   array (
     'OFFICEPLANJSON' => 0,
@@ -24,8 +26,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'OFFICESELECT' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_58ff79cf0c351',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_58ff79cf0c351')) {function content_58ff79cf0c351($_smarty_tpl) {?><script>
     window.officePlan = <?php echo $_smarty_tpl->tpl_vars['OFFICEPLANJSON']->value;?>

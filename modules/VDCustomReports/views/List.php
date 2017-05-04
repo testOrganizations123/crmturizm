@@ -347,11 +347,11 @@ class VDCustomReports_List_View extends Vtiger_List_View
         if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']) > 0) {
             $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']);
             $koefp = 100 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][3]['level']);
-            $funnelArrayNew[0]['value'][0]['height'] = round($koef * $funnelArrayNew[0]['value'][0]['level']);
-            $funnelArrayNew[0]['value'][1]['height'] = round($koef * $funnelArrayNew[0]['value'][1]['level']);
-            $funnelArrayNew[0]['value'][2]['height'] = round($koef * $funnelArrayNew[0]['value'][2]['level']);
-            $funnelArrayNew[0]['value'][3]['height'] = round($koef * $funnelArrayNew[0]['value'][3]['level']);
-            $funnelArrayNew[0]['value'][4]['height'] = round($koef * $funnelArrayNew[0]['value'][4]['level']);
+            $funnelArrayNew[0]['value'][0]['height'] = ceil($koef * $funnelArrayNew[0]['value'][0]['level']);
+            $funnelArrayNew[0]['value'][1]['height'] = ceil($koef * $funnelArrayNew[0]['value'][1]['level']);
+            $funnelArrayNew[0]['value'][2]['height'] = ceil($koef * $funnelArrayNew[0]['value'][2]['level']);
+            $funnelArrayNew[0]['value'][3]['height'] = ceil($koef * $funnelArrayNew[0]['value'][3]['level']);
+            $funnelArrayNew[0]['value'][4]['height'] = ceil($koef * $funnelArrayNew[0]['value'][4]['level']);
             $funnelArrayNew[0]['value'][0]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][0]['level']) . "%";
             $funnelArrayNew[0]['value'][1]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][1]['level']) . "%";
             $funnelArrayNew[0]['value'][2]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][2]['level']) . "%";
@@ -461,11 +461,11 @@ class VDCustomReports_List_View extends Vtiger_List_View
             if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][3]['level']) > 0) {
                 $koef = 500 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][3]['level']);
                 $koefp = 100 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][3]['level']);
-                $funnelArrayNew[$key]['value'][0]['height'] = round($koef * $funnelArrayNew[$key]['value'][0]['level']);
-                $funnelArrayNew[$key]['value'][1]['height'] = round($koef * $funnelArrayNew[$key]['value'][1]['level']);
-                $funnelArrayNew[$key]['value'][2]['height'] = round($koef * $funnelArrayNew[$key]['value'][2]['level']);
-                $funnelArrayNew[$key]['value'][3]['height'] = round($koef * $funnelArrayNew[$key]['value'][3]['level']);
-                $funnelArrayNew[$key]['value'][4]['height'] = round($koef * $funnelArrayNew[$key]['value'][4]['level']);
+                $funnelArrayNew[$key]['value'][0]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][0]['level']);
+                $funnelArrayNew[$key]['value'][1]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][1]['level']);
+                $funnelArrayNew[$key]['value'][2]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][2]['level']);
+                $funnelArrayNew[$key]['value'][3]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][3]['level']);
+                $funnelArrayNew[$key]['value'][4]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][4]['level']);
                 $funnelArrayNew[$key]['value'][0]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][0]['level']) . "%";
                 $funnelArrayNew[$key]['value'][1]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][1]['level']) . "%";
                 $funnelArrayNew[$key]['value'][2]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][2]['level']) . "%";
@@ -567,8 +567,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
     }
 
 
-    public
-    function getLeadsReport(Vtiger_Request $request, $viewer)
+    public function getLeadsReport(Vtiger_Request $request, $viewer)
     {
         $addQuery = $this->addQueryFilter();
 
