@@ -50,6 +50,14 @@ class Accounts_Detail_View extends Vtiger_Detail_View {
 			$viewer->assign('PAGE_NUMBER', $pageNumber);
 			$viewer->assign('ACTIVITIES', $relatedActivities);
 
+            $db = PearDatabase::getInstance();
+            $result = $db->pquery("SELECT meet
+                        FROM vtiger_crmentity
+                        WHERE crmid = '$recordId'
+                ", []);
+            $meet = $db->query_result_rowdata($result, 0);
+            $viewer->assign('MEET', $meet["meet"]);
+
 			return $viewer->view('RelatedActivities.tpl', $moduleName, true);
 		}
 	}

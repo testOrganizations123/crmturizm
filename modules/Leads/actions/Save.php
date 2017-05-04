@@ -119,6 +119,9 @@ class Leads_Save_Action extends Vtiger_Save_Action
 
 
         if ($leadstatus == 'Продажа') {
+            $sql = "UPDATE vtiger_crmentity SET meet=1 WHERE crmid = '". $request->get('record') ."'";
+            $db = PearDatabase::getInstance();
+            $db->pquery($sql, array());
             $loadUrl = "index.php?module=Potentials&view=Edit&leadsource=" . $this->recordLeads;
         } else if ($redirect == 'Leads') {
             $loadUrl = "index.php?module=Leads&view=Detail&mod=read2&record=" . $this->recordLeads;
@@ -280,6 +283,9 @@ class Leads_Save_Action extends Vtiger_Save_Action
                 $recordModel->set('eventstatus', 'Отказ');
             } else if ($request->get('eventstatus') == 'Продажа') {
                 $recordModel->set('eventstatus', 'Продажа');
+                $sql = "UPDATE vtiger_crmentity SET meet=1 WHERE crmid = '". $request->get('record') ."'";
+                $db = PearDatabase::getInstance();
+                $db->pquery($sql, array());
             } else {
                 $recordModel->set('eventstatus', 'Held');
             }

@@ -23,6 +23,7 @@ class Vtiger_Detail_View extends Vtiger_Index_View {
 		$this->exposeMethod('showChildComments');
 		$this->exposeMethod('showAllComments');
 		$this->exposeMethod('getActivities');
+		$this->exposeMethod('setMeetCrmEntity');
 	}
 
 	function checkPermission(Vtiger_Request $request) {
@@ -299,6 +300,19 @@ class Vtiger_Detail_View extends Vtiger_Index_View {
 
 		echo $viewer->view('DetailViewSummaryContents.tpl', $moduleName, true);
 	}
+
+	function setMeetCrmEntity(Vtiger_Request $request){
+
+        $crmEntityId = $request->get('record');
+        $meet = $request->get('meet');
+
+        $sql = "UPDATE vtiger_crmentity SET meet='$meet' WHERE crmid = '$crmEntityId'";
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+        echo json_encode("success");
+    }
 
 	/**
 	 * Function returns recent changes made on the record
