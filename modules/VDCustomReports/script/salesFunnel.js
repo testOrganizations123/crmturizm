@@ -17,10 +17,11 @@ for (var i=0; i< window.funnelDataNew.length; i++) {
         "valueField": "height",
         "neckWidth": "0",
         "neckHeight": "0",
-        "balloonText": "[[text]] [[level]] [[percent]]",
-        "labelText": "[[text]][[level]] [[percent]]",
+        "balloonText": "[[text]] [[level]]\n[[percent]]",
+        "labelText": "[[text]][[level]]\n[[percent]]",
         "legend": {
-            "valueText": "[[level]]"
+            "valueText": "[[level]] [[percent]]",
+            "valueWidth": 200
         },
         "labelPosition": "left"
     });
@@ -42,11 +43,11 @@ for (i=0; i< window.funnelDataAll.length; i++) {
         "labelsEnabled": true,
         "valueField": "height",
         "neckWidth": "0",
-        "neckHeight": "0",
-        "balloonText": "[[text]] [[level]] [[percent]]",
-        "labelText": "[[text]][[level]] [[percent]]",
+        "balloonText": "[[text]] [[level]]\n[[percent]]",
+        "labelText": "[[text]][[level]]\n[[percent]]",
         "legend": {
-            "valueText": "[[level]]"
+            "valueText": "[[level]] [[percent]]",
+            "valueWidth": 200
         },
         "labelPosition": "right"
     });
