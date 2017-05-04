@@ -213,6 +213,17 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     $users = $this->getUsersOffice();
                     $sql .= " (" . implode(',', $users) . ")";
                 }
+            } elseif ($this->mode == 'getSalesFunnel') {
+                if (!empty($this->filter_data['user'])) {
+                    $sql .= " AND c1.smownerid IN (" . $this->filter_data['user'] . ")";
+                    if ($this->filter_data['office'] === 1) {
+                        $sql .= " AND c1.smownerid IN (0)";
+                    } else {
+                        $this->office_data = $this->filter_data['office'];
+                        $sql .= " AND pcf.cf_1215 = " . $this->filter_data['office'] . " ";
+
+                    }
+                }
             } else {
                 if (!empty($this->filter_data['user'])) {
                     $sql .= " AND c1.smownerid IN (" . $this->filter_data['user'] . ")";
@@ -299,7 +310,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
             $funnelArrayNew[0]['value'][0]['level'] += 1;
 
-            if ($item['meet']){
+            if ($item['meet']) {
                 $funnelArrayNew[0]['value'][1]['level'] += 1;
             }
 
@@ -330,8 +341,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         }
 
-        if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level']+$funnelArrayNew[0]['value'][4]['level']) > 0) {
-            $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level']+$funnelArrayNew[0]['value'][4]['level']);
+        if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']) > 0) {
+            $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']);
 
             $funnelArrayNew[0]['value'][0]['height'] = round($koef * $funnelArrayNew[0]['value'][0]['level']);
             $funnelArrayNew[0]['value'][1]['height'] = round($koef * $funnelArrayNew[0]['value'][1]['level']);
@@ -398,7 +409,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 }
                 if ($item['leadsource'] == $source) {
                     $funnelArrayNew[$key]['value'][0]['level'] += 1;
-                    if ($item['meet']){
+                    if ($item['meet']) {
                         $funnelArrayNew[0]['value'][1]['level'] += 1;
                     }
 
@@ -433,19 +444,19 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 }
             }
 
-            if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']) > 0) {
-                $koef = 500 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']);
-$koefp = 100/($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level']+$funnelArrayNew[$key]['value'][3]['level']);
+            if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][3]['level']) > 0) {
+                $koef = 500 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][3]['level']);
+                $koefp = 100 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][3]['level']);
                 $funnelArrayNew[$key]['value'][0]['height'] = round($koef * $funnelArrayNew[$key]['value'][0]['level']);
                 $funnelArrayNew[$key]['value'][1]['height'] = round($koef * $funnelArrayNew[$key]['value'][1]['level']);
                 $funnelArrayNew[$key]['value'][2]['height'] = round($koef * $funnelArrayNew[$key]['value'][2]['level']);
                 $funnelArrayNew[$key]['value'][3]['height'] = round($koef * $funnelArrayNew[$key]['value'][3]['level']);
                 $funnelArrayNew[$key]['value'][4]['height'] = round($koef * $funnelArrayNew[$key]['value'][4]['level']);
-                $funnelArrayNew[$key]['value'][0]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][0]['level'])."%";
-                $funnelArrayNew[$key]['value'][1]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][1]['level'])."%";
-                $funnelArrayNew[$key]['value'][2]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][2]['level'])."%";
-                $funnelArrayNew[$key]['value'][3]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][3]['level'])."%";
-                $funnelArrayNew[$key]['value'][4]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][4]['level'])."%";
+                $funnelArrayNew[$key]['value'][0]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][0]['level']) . "%";
+                $funnelArrayNew[$key]['value'][1]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][1]['level']) . "%";
+                $funnelArrayNew[$key]['value'][2]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][2]['level']) . "%";
+                $funnelArrayNew[$key]['value'][3]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][3]['level']) . "%";
+                $funnelArrayNew[$key]['value'][4]['percent'] = round($koefp * $funnelArrayNew[$key]['value'][4]['level']) . "%";
             } else {
                 $funnelArrayNew[$key]['value'][0]['height'] = 100;
                 $funnelArrayNew[$key]['value'][1]['height'] = 100;
@@ -487,49 +498,49 @@ $koefp = 100/($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]
         return $funnelArrayNew;
     }
 
-    public
-    function getSalesFunnel(Vtiger_Request $request, $viewer)
+    public function getSalesFunnel(Vtiger_Request $request, $viewer)
     {
 
         $addQuery = $this->addQueryFilter();
-        $sqlNewFunnelApplication = "SELECT  a1.eventstatus, l.leadsource, cl.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as cl ON cl.crmid = l.leadid
+        $sqlNewFunnelApplication = "SELECT  a1.eventstatus, l.leadsource, c1.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as c1 ON c1.crmid = l.leadid
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
-                                    LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
+                                    LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)";
+                                    WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery;
 
 
-        $sqlNewFunnelReservation = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+        $sqlNewFunnelReservation = "SELECT pcf.cf_1268 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
-                        INNER JOIN vtiger_crmentity as cl 
-                            ON cl.crmid = p.potentialid
-                            INNER JOIN vtiger_potentialscf as scf
-                            ON scf.potentialid = p.potentialid
+                        INNER JOIN vtiger_crmentity as c1 
+                            ON c1.crmid = p.potentialid
+                            INNER JOIN vtiger_potentialscf as pcf
+                            ON pcf.potentialid = p.potentialid
                  
                 
                   WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(scf.cf_1225 AS DATE) BETWEEN ? AND ?)
-                ".$addQuery;
+                " . $addQuery;
 
 
         $funnelArrayNew = $this->getFunnels($sqlNewFunnelReservation, $sqlNewFunnelApplication);
 
-        $sqlAllFunnelApplication = "SELECT a1.eventstatus,l.leadsource, cl.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as cl  ON cl.crmid = l.leadid
+        $sqlAllFunnelApplication = "SELECT a1.eventstatus,l.leadsource, c1.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as c1  ON c1.crmid = l.leadid
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
-                                    LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
+                                    LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE ((l.leadsource <> 'Продажа' and l.leadsource <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))";
+                                    WHERE ((l.leadsource <> 'Продажа' and l.leadsource <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery;
 
 
-        $sqlAllFunnelReservation = "SELECT scf.cf_1268 AS amount, p.amount AS amounta,scf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+        $sqlAllFunnelReservation = "SELECT pcf.cf_1268 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
-                        INNER JOIN vtiger_crmentity as cl 
-                            ON cl.crmid = p.potentialid
-                            INNER JOIN vtiger_potentialscf as scf
-                            ON scf.potentialid = p.potentialid
+                        INNER JOIN vtiger_crmentity as c1 
+                            ON c1.crmid = p.potentialid
+                            INNER JOIN vtiger_potentialscf as pcf
+                            ON pcf.potentialid = p.potentialid
                  
               
                   WHERE cl.deleted = 0 and p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and ((p.sales_stage <> 'Closed Won' and p.sales_stage <> 'Closed Lost') OR (CAST(scf.cf_1225 AS DATE) BETWEEN ? AND ?))
-                ";
+                " . $addQuery;
+
 
         $funnelArrayAll = $this->getFunnels($sqlAllFunnelReservation, $sqlAllFunnelApplication);
 
