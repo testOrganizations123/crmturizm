@@ -346,17 +346,17 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']) > 0) {
             $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']);
-            $koefp = 100 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][3]['level']);
-            $funnelArrayNew[0]['value'][0]['height'] = ceil($koef * $funnelArrayNew[0]['value'][0]['level']);
-            $funnelArrayNew[0]['value'][1]['height'] = ceil($koef * $funnelArrayNew[0]['value'][1]['level']);
-            $funnelArrayNew[0]['value'][2]['height'] = ceil($koef * $funnelArrayNew[0]['value'][2]['level']);
-            $funnelArrayNew[0]['value'][3]['height'] = ceil($koef * $funnelArrayNew[0]['value'][3]['level']);
-            $funnelArrayNew[0]['value'][4]['height'] = ceil($koef * $funnelArrayNew[0]['value'][4]['level']);
-            $funnelArrayNew[0]['value'][0]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][0]['level']) . "%";
-            $funnelArrayNew[0]['value'][1]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][1]['level']) . "%";
-            $funnelArrayNew[0]['value'][2]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][2]['level']) . "%";
-            $funnelArrayNew[0]['value'][3]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][3]['level']) . "%";
-            $funnelArrayNew[0]['value'][4]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][4]['level']) . "%";
+            $koefp = 100 / $funnelArrayNew[0]['value'][0]['level'];
+            $funnelArrayNew[0]['value'][0]['height'] = round($koef * $funnelArrayNew[0]['value'][0]['level']);
+            $funnelArrayNew[0]['value'][1]['height'] = round($koef * $funnelArrayNew[0]['value'][1]['level']);
+            $funnelArrayNew[0]['value'][2]['height'] = round($koef * $funnelArrayNew[0]['value'][2]['level']);
+            $funnelArrayNew[0]['value'][3]['height'] = round($koef * $funnelArrayNew[0]['value'][3]['level']);
+            $funnelArrayNew[0]['value'][4]['height'] = round($koef * $funnelArrayNew[0]['value'][4]['level']);
+            $funnelArrayNew[0]['value'][0]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][0]['level']) . "%";
+            $funnelArrayNew[0]['value'][1]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][1]['level']) . "%";
+            $funnelArrayNew[0]['value'][2]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][2]['level']) . "%";
+            $funnelArrayNew[0]['value'][3]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][3]['level']) . "%";
+            $funnelArrayNew[0]['value'][4]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][4]['level']) . "%";
         } else {
             $funnelArrayNew[0]['value'][0]['height'] = 100;
             $funnelArrayNew[0]['value'][1]['height'] = 100;
