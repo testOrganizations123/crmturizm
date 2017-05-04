@@ -17,8 +17,8 @@ for (var i=0; i< window.funnelDataNew.length; i++) {
         "valueField": "height",
         "neckWidth": "0",
         "neckHeight": "0",
-        "balloonText": "[[text]] [[level]]",
-        "labelText": "[[text]][[level]]",
+        "balloonText": "[[text]] [[level]] [[percent]]",
+        "labelText": "[[text]][[level]] [[percent]]",
         "legend": {
             "valueText": "[[level]]"
         },
@@ -43,8 +43,8 @@ for (i=0; i< window.funnelDataAll.length; i++) {
         "valueField": "height",
         "neckWidth": "0",
         "neckHeight": "0",
-        "balloonText": "[[text]] [[level]]",
-        "labelText": "[[text]][[level]]",
+        "balloonText": "[[text]] [[level]] [[percent]]",
+        "labelText": "[[text]][[level]] [[percent]]",
         "legend": {
             "valueText": "[[level]]"
         },

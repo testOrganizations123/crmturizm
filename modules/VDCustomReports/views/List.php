@@ -352,11 +352,11 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[0]['value'][2]['height'] = ceil($koef * $funnelArrayNew[0]['value'][2]['level']);
             $funnelArrayNew[0]['value'][3]['height'] = ceil($koef * $funnelArrayNew[0]['value'][3]['level']);
             $funnelArrayNew[0]['value'][4]['height'] = ceil($koef * $funnelArrayNew[0]['value'][4]['level']);
-            $funnelArrayNew[0]['value'][0]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][0]['level']) . "%";
-            $funnelArrayNew[0]['value'][1]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][1]['level']) . "%";
-            $funnelArrayNew[0]['value'][2]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][2]['level']) . "%";
-            $funnelArrayNew[0]['value'][3]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][3]['level']) . "%";
-            $funnelArrayNew[0]['value'][4]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[0]['value'][4]['level']) . "%";
+            $funnelArrayNew[0]['value'][0]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][0]['level']) . "%";
+            $funnelArrayNew[0]['value'][1]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][1]['level']) . "%";
+            $funnelArrayNew[0]['value'][2]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][2]['level']) . "%";
+            $funnelArrayNew[0]['value'][3]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][3]['level']) . "%";
+            $funnelArrayNew[0]['value'][4]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[0]['value'][4]['level']) . "%";
         } else {
             $funnelArrayNew[0]['value'][0]['height'] = 100;
             $funnelArrayNew[0]['value'][1]['height'] = 100;
@@ -466,11 +466,11 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 $funnelArrayNew[$key]['value'][2]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][2]['level']);
                 $funnelArrayNew[$key]['value'][3]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][3]['level']);
                 $funnelArrayNew[$key]['value'][4]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][4]['level']);
-                $funnelArrayNew[$key]['value'][0]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][0]['level']) . "%";
-                $funnelArrayNew[$key]['value'][1]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][1]['level']) . "%";
-                $funnelArrayNew[$key]['value'][2]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][2]['level']) . "%";
-                $funnelArrayNew[$key]['value'][3]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][3]['level']) . "%";
-                $funnelArrayNew[$key]['value'][4]['percent'] = "Конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][4]['level']) . "%";
+                $funnelArrayNew[$key]['value'][0]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][0]['level']) . "%";
+                $funnelArrayNew[$key]['value'][1]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][1]['level']) . "%";
+                $funnelArrayNew[$key]['value'][2]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][2]['level']) . "%";
+                $funnelArrayNew[$key]['value'][3]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][3]['level']) . "%";
+                $funnelArrayNew[$key]['value'][4]['percent'] = "конверсия-" . round($koefp * $funnelArrayNew[$key]['value'][4]['level']) . "%";
             } else {
                 $funnelArrayNew[$key]['value'][0]['height'] = 100;
                 $funnelArrayNew[$key]['value'][1]['height'] = 100;
@@ -520,7 +520,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery;
+                                    WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+            GROUP BY  c1.crmid";
 
 
         $sqlNewFunnelReservation = "SELECT pcf.cf_1268 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
@@ -534,8 +535,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
                  
                 
                   WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)
-                " . $addQuery;
-
+                " . $addQuery . "
+            GROUP BY  c1.crmid";
 
         $funnelArrayNew = $this->getFunnels($sqlNewFunnelReservation, $sqlNewFunnelApplication);
 
@@ -543,7 +544,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE ((l.leadsource <> 'Продажа' and l.leadsource <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery;
+                                    WHERE ((l.leadsource <> 'Продажа' and l.leadsource <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery . "
+            GROUP BY  c1.crmid";
 
 
         $sqlAllFunnelReservation = "SELECT pcf.cf_1268 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
@@ -554,7 +556,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON pcf.potentialid = p.potentialid
                             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                             LEFT JOIN vtiger_office as o ON o.officeid = u.office
-              WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery;
+              WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+            GROUP BY  c1.crmid";
 
 
         $funnelArrayAll = $this->getFunnels($sqlAllFunnelReservation, $sqlAllFunnelApplication);
