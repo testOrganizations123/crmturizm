@@ -424,7 +424,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 if ($item['leadsource'] == $source) {
                     $funnelArrayNew[$key]['value'][0]['level'] += 1;
                     if ($item['meet']) {
-                        $funnelArrayNew[0]['value'][1]['level'] += 1;
+                        $funnelArrayNew[$key]['value'][1]['level'] += 1;
                     }
 
                     if ($item['eventstatus'] != 'Продажа') {
@@ -544,7 +544,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE ((a1.eventstatus <> 'Продажа' and a1.eventstatus <> 'Отказ') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery . "
+                                    WHERE ((a1.eventstatus = 'Planned') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery . "
             GROUP BY  c1.crmid ";
 
 
