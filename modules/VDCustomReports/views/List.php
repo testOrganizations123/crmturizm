@@ -424,7 +424,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 if ($item['leadsource'] == $source) {
                     $funnelArrayNew[$key]['value'][0]['level'] += 1;
                     if ($item['meet']) {
-                        $funnelArrayNew[0]['value'][1]['level'] += 1;
+                        $funnelArrayNew[$key]['value'][1]['level'] += 1;
                     }
 
                     if ($item['eventstatus'] != 'Продажа') {
