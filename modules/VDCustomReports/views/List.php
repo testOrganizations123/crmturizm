@@ -324,13 +324,13 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         }
         foreach ($resultReservation as $item) {
-            if ($item['eventstatus'] == 'Closed Won') {
+            if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь подтверждена' || $item['eventstatus']=='Бронь оплачена') {
                 $funnelArrayNew[0]['value'][3]['level'] += 1;
             }
             if ($item['eventstatus'] == 'Closed Lost') {
                 $funnelArrayNew[0]['value'][4]['level'] += 1;
             }
-            if ($item['eventstatus'] == 'Closed Won') {
+            if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь подтверждена' || $item['eventstatus']=='Бронь оплачена') {
                 if (isset($item['echarge'])) {
                     $sumECharge += $item['echarge'];
                 }
