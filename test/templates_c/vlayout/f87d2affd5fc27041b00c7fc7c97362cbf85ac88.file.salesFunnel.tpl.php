@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-05-04 20:15:28
+<?php /* Smarty version Smarty-3.1.7, created on 2017-05-07 21:43:05
          compiled from "C:\os\OpenServer\domains\crmturizm\includes\runtime/../../layouts/vlayout\modules\VDCustomReports\uitypes\salesFunnel.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:105185903a1cb460d69-08660081%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'f87d2affd5fc27041b00c7fc7c97362cbf85ac88' => 
     array (
       0 => 'C:\\os\\OpenServer\\domains\\crmturizm\\includes\\runtime/../../layouts/vlayout\\modules\\VDCustomReports\\uitypes\\salesFunnel.tpl',
-      1 => 1493918005,
+      1 => 1494096470,
       2 => 'file',
     ),
   ),
@@ -54,6 +54,7 @@ $_smarty_tpl->tpl_vars['value']->_loop = true;
 ?>
             <div style="height: 700px" class="funnel" id="div_new_<?php echo $_smarty_tpl->tpl_vars['i']->value;?>
 "></div>
+            <br>
         <?php } ?>
     </div>
 
@@ -67,6 +68,7 @@ $_smarty_tpl->tpl_vars['value']->_loop = true;
 ?>
             <div style="height: 700px" class="funnel" id="div_<?php echo $_smarty_tpl->tpl_vars['i']->value;?>
 "></div>
+            <br>
         <?php } ?>
     </div>
 

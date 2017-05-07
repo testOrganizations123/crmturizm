@@ -406,7 +406,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[$key]['value'][1]['level'] = 0;
             $funnelArrayNew[$key]['value'][1]['height'] = 1;
             $funnelArrayNew[$key]['value'][2]['text'] = "Не закрытые на продажу<br>встречи: ";
-            $funnelArrayNew[$key]['value'][2]['title'] = "Не закрытые на продажу встречи:";
+            $funnelArrayNew[$key]['value'][2]['title'] = "Не закрытые на продажу заявки:";
             $funnelArrayNew[$key]['value'][2]['level'] = 0;
             $funnelArrayNew[$key]['value'][3]['text'] = "Закрытые на продажу<br>брони: ";
             $funnelArrayNew[$key]['value'][3]['title'] = "Закрытые на продажу брони:";
@@ -437,13 +437,13 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     $item['leadsource'] = 'Другое';
                 }
                 if ($item['leadsource'] == $source) {
-                    if ($item['eventstatus'] == 'Closed Won') {
+                    if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь подтверждена' || $item['eventstatus']=='Бронь оплачена') {
                         $funnelArrayNew[$key]['value'][3]['level'] += 1;
                     }
                     if ($item['eventstatus'] == 'Closed Lost') {
                         $funnelArrayNew[$key]['value'][4]['level'] += 1;
                     }
-                    if ($item['eventstatus'] == 'Closed Won') {
+                    if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь подтверждена' || $item['eventstatus']=='Бронь оплачена') {
                         if (isset($item['echarge'])) {
                             $sumECharge += $item['echarge'];
                         }
@@ -520,7 +520,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+                                    WHERE (CAST(c1.createdtime AS DATE) BETWEEN ? AND ?)" . $addQuery . "
             GROUP BY  c1.crmid";
 
 
@@ -534,7 +534,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             LEFT JOIN vtiger_office as o ON o.officeid = u.office
                  
                 
-                  WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)
+                  WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты'  and (CAST(c1.createdtime AS DATE) BETWEEN ? AND ?)
                 " . $addQuery . "
             GROUP BY  c1.crmid";
 
@@ -544,7 +544,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE ((a1.eventstatus = 'Planned') OR (CAST(a1.due_date AS DATE) BETWEEN ? AND ?))" . $addQuery . "
+                                    WHERE ((a1.eventstatus = 'Planned' AND c1.createdtime <".$this->date_finish.") OR (CAST(c1.createdtime AS DATE) BETWEEN ? AND ?))" . $addQuery . "
             GROUP BY  c1.crmid ";
 
 
@@ -556,7 +556,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON pcf.potentialid = p.potentialid
                             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                             LEFT JOIN vtiger_office as o ON o.officeid = u.office
-              WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+              WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ".$this->date_start." AND ".$this->date_finish.") OR (CAST(c1.createdtime AS DATE) BETWEEN ? AND ?)" . $addQuery . "
             GROUP BY  c1.crmid";
 
 
