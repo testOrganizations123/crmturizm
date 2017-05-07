@@ -560,7 +560,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             GROUP BY  c1.crmid";
 
 
-        $funnelArrayAll = $this->getFunnels($sqlAllFunnelReservation, $sqlAllFunnelApplication);
+        $funnelArrayAll = $this->getFunnels($sqlAllFunnelReservation, $sqlNewFunnelApplication);
 
 
         $viewer->assign('FUNNELNEW', json_encode($funnelArrayNew));
