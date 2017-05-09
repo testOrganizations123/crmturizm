@@ -376,7 +376,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $funnelArrayNew[0]['value'][5]['text'] = "Средняя наценка:<br>";
         $funnelArrayNew[0]['value'][5]['title'] = "Средняя наценка:";
-        $funnelArrayNew[0]['value'][5]['level'] = round($amountReservationAll, 2) . " %";
+        $funnelArrayNew[0]['value'][5]['level'] = round($sumECharge/$amountReservationAll, 2) . " %";
         $funnelArrayNew[0]['value'][5]['height'] = 100;
         $funnelArrayNew[0]['value'][5]['percent'] = "";
 
