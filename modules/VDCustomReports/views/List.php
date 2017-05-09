@@ -323,21 +323,17 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
 
         }
-        $amountReservationAll = 0;
         foreach ($resultReservation as $item) {
-            $amountReservationAll += 1;
             if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                 $funnelArrayNew[0]['value'][3]['level'] += 1;
             }
             if ($item['eventstatus'] == 'Closed Lost') {
                 $funnelArrayNew[0]['value'][4]['level'] += 1;
             }
-
-            if (isset($item['echarge'])) {
-                $sumECharge += $item['echarge'];
-            }
             if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
-
+                if (isset($item['echarge'])) {
+                    $sumECharge += $item['echarge'];
+                }
                 if (isset($item['amount'])) {
                     $sumProfit += $item['amount'];
                 }
@@ -376,7 +372,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $funnelArrayNew[0]['value'][5]['text'] = "Средняя наценка:<br>";
         $funnelArrayNew[0]['value'][5]['title'] = "Средняя наценка:";
-        $funnelArrayNew[0]['value'][5]['level'] = round($sumECharge/$amountReservationAll, 2) . " %";
+        $funnelArrayNew[0]['value'][5]['level'] = round($sumECharge / $funnelArrayNew[0]['value'][3]['level'], 2) . " %";
         $funnelArrayNew[0]['value'][5]['height'] = 100;
         $funnelArrayNew[0]['value'][5]['percent'] = "";
 
@@ -436,25 +432,21 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     }
                 }
             }
-            $amountReservationSource = 0;
             foreach ($resultReservation as $item) {
                 if (!$item['leadsource']) {
                     $item['leadsource'] = 'Другое';
                 }
                 if ($item['leadsource'] == $source) {
-
-                    $amountReservationSource += 1;
                     if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                         $funnelArrayNew[$key]['value'][3]['level'] += 1;
                     }
                     if ($item['eventstatus'] == 'Closed Lost') {
                         $funnelArrayNew[$key]['value'][4]['level'] += 1;
                     }
-                    if (isset($item['echarge'])) {
-                        $sumECharge += $item['echarge'];
-                    }
                     if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
-
+                        if (isset($item['echarge'])) {
+                            $sumECharge += $item['echarge'];
+                        }
                         if (isset($item['amount'])) {
                             $sumProfit += $item['amount'];
                         }
@@ -494,7 +486,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
             $funnelArrayNew[$key]['value'][5]['text'] = "Средняя наценка:<br>";
             $funnelArrayNew[$key]['value'][5]['title'] = "Средняя наценка:";
-            $funnelArrayNew[$key]['value'][5]['level'] = round($sumECharge / $amountReservationSource,2) . " %";;
+            $funnelArrayNew[$key]['value'][5]['level'] = round($sumECharge / $funnelArrayNew[$key]['value'][3]['level'],2) . " %";;
             $funnelArrayNew[$key]['value'][5]['height'] = 100;
             $funnelArrayNew[$key]['value'][5]['percent'] = "";
 
@@ -532,7 +524,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             GROUP BY  c1.crmid";
 
 
-        $sqlNewFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+        $sqlNewFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta, (p.amount-pcf.cf_1256)/(p.amount)*100 as  echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as c1 
                             ON c1.crmid = p.potentialid
@@ -556,7 +548,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             GROUP BY  c1.crmid ";
 
 
-        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,pcf.cf_1266 AS echarge, p.sales_stage AS eventstatus,p.leadsource
+        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,(p.amount-pcf.cf_1256)/(p.amount)*100 as  echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as c1 
                             ON c1.crmid = p.potentialid
