@@ -524,7 +524,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             GROUP BY  c1.crmid";
 
 
-        $sqlNewFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta, (p.amount-pcf.cf_1256)/(p.amount)*100 as  echarge, p.sales_stage AS eventstatus,p.leadsource
+        $sqlNewFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta, ((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as c1 
                             ON c1.crmid = p.potentialid
@@ -548,7 +548,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             GROUP BY  c1.crmid ";
 
 
-        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,(p.amount-pcf.cf_1256)/(p.amount)*100 as  echarge, p.sales_stage AS eventstatus,p.leadsource
+        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus,p.leadsource
                         FROM vtiger_potential as p
                         INNER JOIN vtiger_crmentity as c1 
                             ON c1.crmid = p.potentialid
