@@ -293,7 +293,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
         $funnelArrayNew[0]['value'][1]['level'] = 0;
         $funnelArrayNew[0]['value'][1]['height'] = 1;
 
-        $funnelArrayNew[0]['value'][2]['text'] = "Не закрытые на продажу<br>встречи: ";
+        $funnelArrayNew[0]['value'][2]['text'] = "Не закрытые на продажу<br>заявки: ";
         $funnelArrayNew[0]['value'][2]['title'] = "Не закрытые на продажу заявки:";
         $funnelArrayNew[0]['value'][2]['level'] = 0;
         $funnelArrayNew[0]['value'][2]['height'] = 1;
@@ -405,7 +405,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[$key]['value'][1]['title'] = "Встречи в офисе:";
             $funnelArrayNew[$key]['value'][1]['level'] = 0;
             $funnelArrayNew[$key]['value'][1]['height'] = 1;
-            $funnelArrayNew[$key]['value'][2]['text'] = "Не закрытые на продажу<br>встречи: ";
+            $funnelArrayNew[$key]['value'][2]['text'] = "Не закрытые на продажу<br>заявки: ";
             $funnelArrayNew[$key]['value'][2]['title'] = "Не закрытые на продажу заявки:";
             $funnelArrayNew[$key]['value'][2]['level'] = 0;
             $funnelArrayNew[$key]['value'][3]['text'] = "Закрытые на продажу<br>брони: ";
