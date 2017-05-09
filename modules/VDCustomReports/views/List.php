@@ -323,17 +323,21 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
 
         }
+        $amountReservationAll = 0;
         foreach ($resultReservation as $item) {
+            $amountReservationAll += 1;
             if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                 $funnelArrayNew[0]['value'][3]['level'] += 1;
             }
             if ($item['eventstatus'] == 'Closed Lost') {
                 $funnelArrayNew[0]['value'][4]['level'] += 1;
             }
+
+            if (isset($item['echarge'])) {
+                $sumECharge += $item['echarge'];
+            }
             if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
-                if (isset($item['echarge'])) {
-                    $sumECharge += $item['echarge'];
-                }
+
                 if (isset($item['amount'])) {
                     $sumProfit += $item['amount'];
                 }
@@ -372,7 +376,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         $funnelArrayNew[0]['value'][5]['text'] = "Средняя наценка:<br>";
         $funnelArrayNew[0]['value'][5]['title'] = "Средняя наценка:";
-        $funnelArrayNew[0]['value'][5]['level'] = round($sumECharge / $funnelArrayNew[0]['value'][3]['level'], 2) . " %";
+        $funnelArrayNew[0]['value'][5]['level'] = round($amountReservationAll, 2) . " %";
         $funnelArrayNew[0]['value'][5]['height'] = 100;
         $funnelArrayNew[0]['value'][5]['percent'] = "";
 
@@ -432,21 +436,25 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     }
                 }
             }
+            $amountReservationSource = 0;
             foreach ($resultReservation as $item) {
                 if (!$item['leadsource']) {
                     $item['leadsource'] = 'Другое';
                 }
                 if ($item['leadsource'] == $source) {
+
+                    $amountReservationSource += 1;
                     if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                         $funnelArrayNew[$key]['value'][3]['level'] += 1;
                     }
                     if ($item['eventstatus'] == 'Closed Lost') {
                         $funnelArrayNew[$key]['value'][4]['level'] += 1;
                     }
+                    if (isset($item['echarge'])) {
+                        $sumECharge += $item['echarge'];
+                    }
                     if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
-                        if (isset($item['echarge'])) {
-                            $sumECharge += $item['echarge'];
-                        }
+
                         if (isset($item['amount'])) {
                             $sumProfit += $item['amount'];
                         }
@@ -486,7 +494,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
             $funnelArrayNew[$key]['value'][5]['text'] = "Средняя наценка:<br>";
             $funnelArrayNew[$key]['value'][5]['title'] = "Средняя наценка:";
-            $funnelArrayNew[$key]['value'][5]['level'] = round($sumECharge / $funnelArrayNew[$key]['value'][3]['level'],2) . " %";;
+            $funnelArrayNew[$key]['value'][5]['level'] = round($sumECharge / $amountReservationSource,2) . " %";;
             $funnelArrayNew[$key]['value'][5]['height'] = 100;
             $funnelArrayNew[$key]['value'][5]['percent'] = "";
 
