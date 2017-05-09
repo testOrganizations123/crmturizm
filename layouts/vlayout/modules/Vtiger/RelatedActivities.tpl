@@ -127,6 +127,27 @@
                                  </select>
                              </div>
                             <br />
+                            {if isset($MEET)}
+                                    <div class="row-fluid"><span class="span8"><p style="margin: 0" class="textOverflowEllipsis">Встреча в офисе</p></span></div>
+                                    <input type="radio" name="meet" value="yes" onchange="changeMeet(1, this)" style="margin-right: 5px; width: 15px; height: 15px" {if $MEET != '0'}checked{/if}>состоялась <span style="display: none; font-size:10px; color: red"> сохранено</span><br>
+                                    <input type="radio" name="meet" value="no" onchange="changeMeet(0, this)" style="margin-right: 5px; width: 15px; height: 15px" {if $MEET == '0'}checked{/if}>не состоялась <span style="display: none; font-size:10px; color: red"> сохранено</span><br>
+                                <script>
+                                    function changeMeet(val, elem){
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "/index.php?module=Leads&view=Detail&record={$RECORDID}&mode=setMeetCrmEntity&meet=" + val,
+                                            success: function (data) {
+                                                if (data == "success") {
+                                                    $($(elem).siblings("span")[1 - val]).css('display','inline-block');
+                                                    $($(elem).siblings("span")[val]).css('display','none');
+                                                }
+                                            },
+                                            dataType: "json"
+                                        });
+                                    }
+                                </script>
+                            {/if}
+                            <br />
                             <input type="submit" value="Сохранить" class="btn btn-success" />
                         </form>
 		{else}
@@ -143,30 +164,4 @@
 		{/if}
 	</div>
 </div>
-
-    {if isset($MEET)}
-        <div  class="summaryWidgetContainer">
-            <div class="widget_header row-fluid"><span class="span8"><h4 class="textOverflowEllipsis">Встреча в офисе</h4></span></div>
-            <br />
-            <input type="radio" name="meet" value="yes" onchange="changeMeet(1, this)" style="margin-right: 5px; width: 15px; height: 15px" {if $MEET != '0'}checked{/if}>состоялась <span style="display: none; font-size:10px; color: red"> сохранено</span><br>
-                <input type="radio" name="meet" value="no" onchange="changeMeet(0, this)" style="margin-right: 5px; width: 15px; height: 15px" {if $MEET == '0'}checked{/if}>не состоялась <span style="display: none; font-size:10px; color: red"> сохранено</span><br>
-        </div>
-        <script>
-            function changeMeet(val, elem){
-                $.ajax({
-                    type: "GET",
-                    url: "/index.php?module=Leads&view=Detail&record={$RECORDID}&mode=setMeetCrmEntity&meet=" + val,
-                    success: function (data) {
-                        if (data == "success") {
-                            window.qqq = $($(elem).siblings("span")[1 - val]);
-                            $($(elem).siblings("span")[1 - val]).css('display','inline-block');
-                            $($(elem).siblings("span")[val]).css('display','none');
-
-                        }
-                    },
-                    dataType: "json"
-                });
-            }
-        </script>
-    {/if}
 {/strip}
