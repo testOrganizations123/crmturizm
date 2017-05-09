@@ -388,7 +388,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
         $funnelArrayNew[0]['value'][7]['percent'] = "";
         $funnelArrayNew[0]['value'][8]['text'] = "Доход итоговый:<br>";
         $funnelArrayNew[0]['value'][8]['title'] = "Доход итоговый:";
-        $funnelArrayNew[0]['value'][8]['level'] = round($sumProfit) . " ₽";
+        $funnelArrayNew[0]['value'][8]['level'] =$sumProfit . " ₽";
 
         $funnelArrayNew[0]['value'][8]['height'] = 100;
         $funnelArrayNew[0]['value'][8]['percent'] = "";
