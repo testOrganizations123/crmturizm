@@ -556,7 +556,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON pcf.potentialid = p.potentialid
                             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                             LEFT JOIN vtiger_office as o ON o.officeid = u.office
-              WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+              WHERE (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery . "
             GROUP BY  c1.crmid";
 
 
