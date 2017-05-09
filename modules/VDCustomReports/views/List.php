@@ -544,7 +544,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    WHERE (CAST(a1.due_date  AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+                                    WHERE  (CAST(a1.due_date  AS DATE) BETWEEN ? AND ?)" . $addQuery . "
             GROUP BY  c1.crmid ";
 
 
@@ -556,7 +556,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                             ON pcf.potentialid = p.potentialid
                             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                             LEFT JOIN vtiger_office as o ON o.officeid = u.office
-              WHERE (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+              WHERE c1.deleted=0 and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery . "
             GROUP BY  c1.crmid";
 
 
