@@ -308,14 +308,23 @@ class VDCustomReports_List_View extends Vtiger_List_View
         $funnelArrayNew[0]['value'][4]['title'] = "Не закрытые на продажу заявки:";
         $funnelArrayNew[0]['value'][4]['level'] = 0;
         $funnelArrayNew[0]['value'][4]['height'] = 1;
+
+
+
         $funnelArrayNew[0]['value'][5]['text'] = "Закрытые на продажу<br>брони: ";
         $funnelArrayNew[0]['value'][5]['title'] = "Закрытые на продажу брони:";
         $funnelArrayNew[0]['value'][5]['level'] = 0;
         $funnelArrayNew[0]['value'][5]['height'] = 1;
-        $funnelArrayNew[0]['value'][6]['text'] = "Аннулированные туры:<br>";
-        $funnelArrayNew[0]['value'][6]['title'] = "Аннулированные туры:";
+
+        $funnelArrayNew[0]['value'][6]['text'] = "Количество подтвержденных<br>броней: ";
+        $funnelArrayNew[0]['value'][6]['title'] = "Количество подтвержденных броней:";
         $funnelArrayNew[0]['value'][6]['level'] = 0;
         $funnelArrayNew[0]['value'][6]['height'] = 1;
+
+        $funnelArrayNew[0]['value'][7]['text'] = "Аннулированные туры:<br>";
+        $funnelArrayNew[0]['value'][7]['title'] = "Аннулированные туры:";
+        $funnelArrayNew[0]['value'][7]['level'] = 0;
+        $funnelArrayNew[0]['value'][7]['height'] = 1;
         $sumECharge = 0;
         $sumProfit = 0;
         $revenues = 0;
@@ -344,8 +353,13 @@ class VDCustomReports_List_View extends Vtiger_List_View
             if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                 $funnelArrayNew[0]['value'][5]['level'] += 1;
             }
-            if ($item['eventstatus'] == 'Closed Lost') {
+
+            if ($item['eventstatus'] != 'Closed Lost'){
                 $funnelArrayNew[0]['value'][6]['level'] += 1;
+            }
+
+            if ($item['eventstatus'] == 'Closed Lost') {
+                $funnelArrayNew[0]['value'][7]['level'] += 1;
             }
             if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                 if (isset($item['echarge'])) {
@@ -361,8 +375,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         }
 
-        if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']+$funnelArrayNew[0]['value'][5]['level']+$funnelArrayNew[0]['value'][6]['level']) > 0) {
-            $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']+$funnelArrayNew[0]['value'][5]['level']+$funnelArrayNew[0]['value'][6]['level']);
+        if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']+$funnelArrayNew[0]['value'][5]['level']+$funnelArrayNew[0]['value'][6]['level']+$funnelArrayNew[0]['value'][7]['level']) > 0) {
+            $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']+$funnelArrayNew[0]['value'][5]['level']+$funnelArrayNew[0]['value'][6]['level']+$funnelArrayNew[0]['value'][7]['level']);
             $koefp = 100 / $funnelArrayNew[0]['value'][0]['level'];
             $funnelArrayNew[0]['value'][0]['height'] = ceil($koef * $funnelArrayNew[0]['value'][0]['level']);
             $funnelArrayNew[0]['value'][1]['height'] = ceil($koef * $funnelArrayNew[0]['value'][1]['level']);
@@ -371,13 +385,15 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[0]['value'][4]['height'] = ceil($koef * $funnelArrayNew[0]['value'][4]['level']);
             $funnelArrayNew[0]['value'][5]['height'] = ceil($koef * $funnelArrayNew[0]['value'][5]['level']);
             $funnelArrayNew[0]['value'][6]['height'] = ceil($koef * $funnelArrayNew[0]['value'][6]['level']);
+            $funnelArrayNew[0]['value'][7]['height'] = ceil($koef * $funnelArrayNew[0]['value'][7]['level']);
             $funnelArrayNew[0]['value'][0]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][0]['level']) . "%)";
             $funnelArrayNew[0]['value'][1]['percent'] = "";
             $funnelArrayNew[0]['value'][2]['percent'] = "";
             $funnelArrayNew[0]['value'][3]['percent'] = "";
             $funnelArrayNew[0]['value'][4]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][4]['level']) . "%)";
             $funnelArrayNew[0]['value'][5]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][5]['level']) . "%)";
-            $funnelArrayNew[0]['value'][6]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][6]['level']) . "%)";
+            $funnelArrayNew[0]['value'][6]['percent'] = "";
+            $funnelArrayNew[0]['value'][7]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][7]['level']) . "%)";
         } else {
             $funnelArrayNew[0]['value'][0]['height'] = 100;
             $funnelArrayNew[0]['value'][1]['height'] = 100;
@@ -386,6 +402,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[0]['value'][4]['height'] = 100;
             $funnelArrayNew[0]['value'][5]['height'] = 100;
             $funnelArrayNew[0]['value'][6]['height'] = 100;
+            $funnelArrayNew[0]['value'][7]['height'] = 100;
             $funnelArrayNew[0]['value'][0]['percent'] = "";
             $funnelArrayNew[0]['value'][1]['percent'] = "";
             $funnelArrayNew[0]['value'][2]['percent'] = "";
@@ -393,30 +410,31 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[0]['value'][4]['percent'] = "";
             $funnelArrayNew[0]['value'][5]['percent'] = "";
             $funnelArrayNew[0]['value'][6]['percent'] = "";
+            $funnelArrayNew[0]['value'][7]['percent'] = "";
         }
 
-        $funnelArrayNew[0]['value'][7]['text'] = "Средняя наценка:<br>";
-        $funnelArrayNew[0]['value'][7]['title'] = "Средняя наценка:";
-        $funnelArrayNew[0]['value'][7]['level'] = round($sumECharge / $funnelArrayNew[0]['value'][5]['level'], 2) . " %";
-        $funnelArrayNew[0]['value'][7]['height'] = 100;
-        $funnelArrayNew[0]['value'][7]['percent'] = "";
-
-        $funnelArrayNew[0]['value'][8]['text'] = "Средний чек:<br>";
-        $funnelArrayNew[0]['value'][8]['title'] = "Средний чек:";
-        $funnelArrayNew[0]['value'][8]['level'] = round($revenues / $funnelArrayNew[0]['value'][5]['level']) . " ₽";
+        $funnelArrayNew[0]['value'][8]['text'] = "Средняя наценка:<br>";
+        $funnelArrayNew[0]['value'][8]['title'] = "Средняя наценка:";
+        $funnelArrayNew[0]['value'][8]['level'] = round($sumECharge / $funnelArrayNew[0]['value'][5]['level'], 2) . " %";
         $funnelArrayNew[0]['value'][8]['height'] = 100;
         $funnelArrayNew[0]['value'][8]['percent'] = "";
-        $funnelArrayNew[0]['value'][9]['text'] = "Средний доход:<br>";
-        $funnelArrayNew[0]['value'][9]['title'] = "Средний доход:";
-        $funnelArrayNew[0]['value'][9]['level'] = round($sumProfit / $funnelArrayNew[0]['value'][5]['level']) . " ₽";
+
+        $funnelArrayNew[0]['value'][9]['text'] = "Средний чек:<br>";
+        $funnelArrayNew[0]['value'][9]['title'] = "Средний чек:";
+        $funnelArrayNew[0]['value'][9]['level'] = round($revenues / $funnelArrayNew[0]['value'][5]['level']) . " ₽";
         $funnelArrayNew[0]['value'][9]['height'] = 100;
         $funnelArrayNew[0]['value'][9]['percent'] = "";
-        $funnelArrayNew[0]['value'][10]['text'] = "Доход итоговый:<br>";
-        $funnelArrayNew[0]['value'][10]['title'] = "Доход итоговый:";
-        $funnelArrayNew[0]['value'][10]['level'] = round($sumProfit) . " ₽";
-
+        $funnelArrayNew[0]['value'][10]['text'] = "Средний доход:<br>";
+        $funnelArrayNew[0]['value'][10]['title'] = "Средний доход:";
+        $funnelArrayNew[0]['value'][10]['level'] = round($sumProfit / $funnelArrayNew[0]['value'][5]['level']) . " ₽";
         $funnelArrayNew[0]['value'][10]['height'] = 100;
         $funnelArrayNew[0]['value'][10]['percent'] = "";
+        $funnelArrayNew[0]['value'][11]['text'] = "Доход итоговый:<br>";
+        $funnelArrayNew[0]['value'][11]['title'] = "Доход итоговый:";
+        $funnelArrayNew[0]['value'][11]['level'] = round($sumProfit) . " ₽";
+
+        $funnelArrayNew[0]['value'][11]['height'] = 100;
+        $funnelArrayNew[0]['value'][11]['percent'] = "";
         foreach ($sourceArray as $key => $source) {
             $key++;
             $funnelArrayNew[$key]['title'] = $source;
@@ -444,9 +462,14 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[$key]['value'][5]['text'] = "Закрытые на продажу<br>брони: ";
             $funnelArrayNew[$key]['value'][5]['title'] = "Закрытые на продажу брони:";
             $funnelArrayNew[$key]['value'][5]['level'] = 0;
-            $funnelArrayNew[$key]['value'][6]['text'] = "Аннулированные туры:<br>";
-            $funnelArrayNew[$key]['value'][6]['title'] = "Аннулированные туры:";
+
+            $funnelArrayNew[$key]['value'][6]['text'] = "Количество подтвержденных<br>броней: ";
+            $funnelArrayNew[$key]['value'][6]['title'] = "Количество подтвержденных броней:";
             $funnelArrayNew[$key]['value'][6]['level'] = 0;
+
+            $funnelArrayNew[$key]['value'][7]['text'] = "Аннулированные туры:<br>";
+            $funnelArrayNew[$key]['value'][7]['title'] = "Аннулированные туры:";
+            $funnelArrayNew[$key]['value'][7]['level'] = 0;
             $sumECharge = 0;
             $sumProfit = 0;
             $revenues = 0;
@@ -483,8 +506,12 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                         $funnelArrayNew[$key]['value'][5]['level'] += 1;
                     }
-                    if ($item['eventstatus'] == 'Closed Lost') {
+
+                    if ($item['eventstatus'] != 'Closed Lost') {
                         $funnelArrayNew[$key]['value'][6]['level'] += 1;
+                    }
+                    if ($item['eventstatus'] == 'Closed Lost') {
+                        $funnelArrayNew[$key]['value'][7]['level'] += 1;
                     }
                     if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                         if (isset($item['echarge'])) {
@@ -501,8 +528,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 }
             }
 
-            if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][4]['level']+$funnelArrayNew[$key]['value'][5]['level']+$funnelArrayNew[$key]['value'][6]['level']) > 0) {
-                $koef = 500 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][4]['level']+$funnelArrayNew[$key]['value'][5]['level']+$funnelArrayNew[$key]['value'][6]['level']);
+            if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][4]['level']+$funnelArrayNew[$key]['value'][5]['level']+$funnelArrayNew[$key]['value'][6]['level']+$funnelArrayNew[$key]['value'][7]['level']) > 0) {
+                $koef = 500 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][4]['level']+$funnelArrayNew[$key]['value'][5]['level']+$funnelArrayNew[$key]['value'][6]['level']+$funnelArrayNew[$key]['value'][7]['level']);
                 $koefp = 100 / $funnelArrayNew[$key]['value'][0]['level'];
                 $funnelArrayNew[$key]['value'][0]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][0]['level']);
                 $funnelArrayNew[$key]['value'][1]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][1]['level']);
@@ -511,13 +538,15 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 $funnelArrayNew[$key]['value'][4]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][4]['level']);
                 $funnelArrayNew[$key]['value'][5]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][5]['level']);
                 $funnelArrayNew[$key]['value'][6]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][6]['level']);
+                $funnelArrayNew[$key]['value'][7]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][7]['level']);
                 $funnelArrayNew[$key]['value'][0]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][0]['level']) . "%)";
                 $funnelArrayNew[$key]['value'][1]['percent'] = "";
                 $funnelArrayNew[$key]['value'][2]['percent'] = "";
                 $funnelArrayNew[$key]['value'][3]['percent'] = "";
                 $funnelArrayNew[$key]['value'][4]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][4]['level']) . "%)";
                 $funnelArrayNew[$key]['value'][5]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][5]['level']) . "%)";
-                $funnelArrayNew[$key]['value'][6]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][6]['level']) . "%)";
+                $funnelArrayNew[$key]['value'][6]['percent'] = "";
+                $funnelArrayNew[$key]['value'][7]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][7]['level']) . "%)";
             } else {
                 $funnelArrayNew[$key]['value'][0]['height'] = 100;
                 $funnelArrayNew[$key]['value'][1]['height'] = 100;
@@ -526,6 +555,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 $funnelArrayNew[$key]['value'][4]['height'] = 100;
                 $funnelArrayNew[$key]['value'][5]['height'] = 100;
                 $funnelArrayNew[$key]['value'][6]['height'] = 100;
+                $funnelArrayNew[$key]['value'][7]['height'] = 100;
                 $funnelArrayNew[$key]['value'][0]['percent'] = "";
                 $funnelArrayNew[$key]['value'][1]['percent'] = "";
                 $funnelArrayNew[$key]['value'][2]['percent'] = "";
@@ -533,31 +563,32 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 $funnelArrayNew[$key]['value'][4]['percent'] = "";
                 $funnelArrayNew[$key]['value'][5]['percent'] = "";
                 $funnelArrayNew[$key]['value'][6]['percent'] = "";
+                $funnelArrayNew[$key]['value'][7]['percent'] = "";
             }
 
-            $funnelArrayNew[$key]['value'][7]['text'] = "Средняя наценка:<br>";
-            $funnelArrayNew[$key]['value'][7]['title'] = "Средняя наценка:";
-            $funnelArrayNew[$key]['value'][7]['level'] = round($sumECharge / $funnelArrayNew[$key]['value'][5]['level'],2) . " %";;
-            $funnelArrayNew[$key]['value'][7]['height'] = 100;
-            $funnelArrayNew[$key]['value'][7]['percent'] = "";
-
-            $funnelArrayNew[$key]['value'][8]['text'] = "Средний чек:<br>";
-            $funnelArrayNew[$key]['value'][8]['title'] = "Средний чек:";
-            $funnelArrayNew[$key]['value'][8]['level'] = round($revenues / $funnelArrayNew[$key]['value'][5]['level']) . " ₽";
+            $funnelArrayNew[$key]['value'][8]['text'] = "Средняя наценка:<br>";
+            $funnelArrayNew[$key]['value'][8]['title'] = "Средняя наценка:";
+            $funnelArrayNew[$key]['value'][8]['level'] = round($sumECharge / $funnelArrayNew[$key]['value'][5]['level'],2) . " %";;
             $funnelArrayNew[$key]['value'][8]['height'] = 100;
             $funnelArrayNew[$key]['value'][8]['percent'] = "";
 
-            $funnelArrayNew[$key]['value'][9]['text'] = "Средний доход:<br>";
-            $funnelArrayNew[$key]['value'][9]['title'] = "Средний доход:";
-            $funnelArrayNew[$key]['value'][9]['level'] = round($sumProfit / $funnelArrayNew[$key]['value'][5]['level']) . " ₽";
+            $funnelArrayNew[$key]['value'][9]['text'] = "Средний чек:<br>";
+            $funnelArrayNew[$key]['value'][9]['title'] = "Средний чек:";
+            $funnelArrayNew[$key]['value'][9]['level'] = round($revenues / $funnelArrayNew[$key]['value'][5]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][9]['height'] = 100;
             $funnelArrayNew[$key]['value'][9]['percent'] = "";
 
-            $funnelArrayNew[$key]['value'][10]['text'] = "Доход итоговый:<br>";
-            $funnelArrayNew[$key]['value'][10]['title'] = "Доход итоговый:";
-            $funnelArrayNew[$key]['value'][10]['level'] = round($sumProfit) . " ₽";
+            $funnelArrayNew[$key]['value'][10]['text'] = "Средний доход:<br>";
+            $funnelArrayNew[$key]['value'][10]['title'] = "Средний доход:";
+            $funnelArrayNew[$key]['value'][10]['level'] = round($sumProfit / $funnelArrayNew[$key]['value'][5]['level']) . " ₽";
             $funnelArrayNew[$key]['value'][10]['height'] = 100;
             $funnelArrayNew[$key]['value'][10]['percent'] = "";
+
+            $funnelArrayNew[$key]['value'][11]['text'] = "Доход итоговый:<br>";
+            $funnelArrayNew[$key]['value'][11]['title'] = "Доход итоговый:";
+            $funnelArrayNew[$key]['value'][11]['level'] = round($sumProfit) . " ₽";
+            $funnelArrayNew[$key]['value'][11]['height'] = 100;
+            $funnelArrayNew[$key]['value'][11]['percent'] = "";
         }
 
         return $funnelArrayNew;
