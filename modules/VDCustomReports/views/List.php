@@ -353,7 +353,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[0]['value'][3]['height'] = ceil($koef * $funnelArrayNew[0]['value'][3]['level']);
             $funnelArrayNew[0]['value'][4]['height'] = ceil($koef * $funnelArrayNew[0]['value'][4]['level']);
             $funnelArrayNew[0]['value'][0]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][0]['level']) . "%)";
-            $funnelArrayNew[0]['value'][1]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][1]['level']) . "%)";
+            $funnelArrayNew[0]['value'][1]['percent'] = "";
             $funnelArrayNew[0]['value'][2]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][2]['level']) . "%)";
             $funnelArrayNew[0]['value'][3]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][3]['level']) . "%)";
             $funnelArrayNew[0]['value'][4]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[0]['value'][4]['level']) . "%)";
@@ -467,7 +467,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 $funnelArrayNew[$key]['value'][3]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][3]['level']);
                 $funnelArrayNew[$key]['value'][4]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][4]['level']);
                 $funnelArrayNew[$key]['value'][0]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][0]['level']) . "%)";
-                $funnelArrayNew[$key]['value'][1]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][1]['level']) . "%)";
+                $funnelArrayNew[$key]['value'][1]['percent'] = "";
                 $funnelArrayNew[$key]['value'][2]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][2]['level']) . "%)";
                 $funnelArrayNew[$key]['value'][3]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][3]['level']) . "%)";
                 $funnelArrayNew[$key]['value'][4]['percent'] = "(конверсия " . round($koefp * $funnelArrayNew[$key]['value'][4]['level']) . "%)";
