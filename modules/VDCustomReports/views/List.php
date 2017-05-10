@@ -2773,12 +2773,12 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
     {
         $addQuery = $this->addQueryFilter();
         if (empty($this->filter_data['office'])) {
-            $sql = "SELECT FLOOR(SUM(p.amount)) as cacheflow, FLOOR(SUM(p.amount-pcf.cf_1256)) as margin, (SUM(p.amount-pcf.cf_1256)/SUM(p.amount)*100) as procent, o.office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            $sql = "SELECT ROUND(SUM(p.amount)) as cacheflow, ROUND(SUM(p.amount-pcf.cf_1256)) as margin, (SUM(p.amount-pcf.cf_1256)/SUM(p.amount)*100) as procent, o.office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery . " group by  pcf.cf_1215";
         } else {
-            $sql = "select FLOOR(SUM(p.amount)) as cacheflow, FLOOR(SUM(p.amount-pcf.cf_1256)) as margin, (SUM(p.amount-pcf.cf_1256)/SUM(p.amount)*100) as procent, CONCAT(o.first_name, ' ', o.last_name) as office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            $sql = "select ROUND(SUM(p.amount)) as cacheflow, ROUND(SUM(p.amount-pcf.cf_1256)) as margin, (SUM(p.amount-pcf.cf_1256)/SUM(p.amount)*100) as procent, CONCAT(o.first_name, ' ', o.last_name) as office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_users as o ON o.id = c1.smownerid
             where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery . " group by  c1.smownerid";
@@ -2814,7 +2814,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
         $graf = new grafConstructorRadar($row_percent, array('Всего' => 'Всего'), 'statAvgPercent', $color, "Наценка с " . str_replace(',', " по ", $this->filter_data['period']), '');
         array_push($scripts, $graf->Script());
 
-        $sql = "SELECT FLOOR(SUM(p.amount)) as cacheflow, FLOOR(SUM(p.amount-pcf.cf_1256)) as margin, (SUM(p.amount-pcf.cf_1256)/SUM(p.amount)*100) as procent, pcf.cf_1225 as office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+        $sql = "SELECT ROUND(SUM(p.amount)) as cacheflow, ROUND(SUM(p.amount-pcf.cf_1256)) as margin, (SUM(p.amount-pcf.cf_1256)/SUM(p.amount)*100) as procent, pcf.cf_1225 as office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery . " group by  pcf.cf_1225";
@@ -2883,12 +2883,12 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
     {
         $addQuery = $this->addQueryFilter();
         if (empty($this->filter_data['office'])) {
-            $sql = "SELECT FLOOR(AVG(p.amount)) as cacheflow, FLOOR(AVG(p.amount-pcf.cf_1256)) as margin, count(p.amount-pcf.cf_1256) as colbron, sum(p.amount) as sumbron, (AVG(p.amount-pcf.cf_1256)/AVG(p.amount)*100) as procent, o.office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            $sql = "SELECT ROUND(AVG(p.amount)) as cacheflow, ROUND(AVG(p.amount-pcf.cf_1256)) as margin, count(p.amount-pcf.cf_1256) as colbron, sum(p.amount) as sumbron, (AVG(p.amount-pcf.cf_1256)/AVG(p.amount)*100) as procent, o.office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery . " group by  pcf.cf_1215";
         } else {
-            $sql = "select FLOOR(AVG(p.amount)) as cacheflow, sum(p.amount) as sumbron, FLOOR(AVG(p.amount-pcf.cf_1256)) as margin, count(p.amount-pcf.cf_1256) as colbron, (AVG(p.amount-pcf.cf_1256)/AVG(p.amount)*100) as procent, CONCAT(o.first_name, ' ', o.last_name) as office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            $sql = "select ROUND(AVG(p.amount)) as cacheflow, sum(p.amount) as sumbron, ROUND(AVG(p.amount-pcf.cf_1256)) as margin, count(p.amount-pcf.cf_1256) as colbron, (AVG(p.amount-pcf.cf_1256)/AVG(p.amount)*100) as procent, CONCAT(o.first_name, ' ', o.last_name) as office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_users as o ON o.id = c1.smownerid
             where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery . " group by  c1.smownerid";
@@ -2929,7 +2929,7 @@ where c1.deleted=0 and c1.setype = 'Leads' and  (c1.createdtime BETWEEN ? AND ?)
         $graf = new grafConstructorRadar($row_percent, array('Всего' => 'Всего'), 'statAvgPercent', $color, "Средняя наценка с " . str_replace(',', " по ", $this->filter_data['period']), '');
         array_push($scripts, $graf->Script());
 
-        $sql = "SELECT FLOOR(AVG(p.amount)) as cacheflow, FLOOR(AVG(p.amount-pcf.cf_1256)) as margin, (AVG(p.amount-pcf.cf_1256)/AVG(p.amount)*100) as procent, pcf.cf_1225 as office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+        $sql = "SELECT ROUND(AVG(p.amount)) as cacheflow, ROUND(AVG(p.amount-pcf.cf_1256)) as margin, (AVG(p.amount-pcf.cf_1256)/AVG(p.amount)*100) as procent, pcf.cf_1225 as office FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery . " group by  pcf.cf_1225";
@@ -3529,7 +3529,7 @@ where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_
         $sum = count($contact);
         $_add = 'c.contactsubscriptionid IN (' . implode(',', $contact) . ') AND ';
         $sql = "SELECT g.age as country , count(g.crmid) as value from
-(SELECT FLOOR((DATE_FORMAT(FROM_DAYS(TO_DAYS(now()) - TO_DAYS(c.birthday)), '%Y') + 0)/5) as  age, c.contactsubscriptionid as crmid 
+(SELECT ROUND((DATE_FORMAT(FROM_DAYS(TO_DAYS(now()) - TO_DAYS(c.birthday)), '%Y') + 0)/5) as  age, c.contactsubscriptionid as crmid 
 from vtiger_contactsubdetails as c WHERE $_add c.birthday IS NOT NULL) as g
 group by g.age";
         $result = $db->pquery($sql, array());
