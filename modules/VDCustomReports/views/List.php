@@ -541,17 +541,17 @@ class VDCustomReports_List_View extends Vtiger_List_View
         $funnelArrayNew = $this->getFunnels($sqlNewFunnelReservation, $sqlNewFunnelApplication);
 
         $sqlAllFunnelApplication = "SELECT g.eventstatus,g.leadsource, g.meet FROM
-                    (SELECT s.due_date, l.leadid, s.eventstatus, s.activityid, l.leadsource, s.meet
+                    (SELECT s.due_date, l.leadid, s.eventstatus, s.activityid, l.leadsource, cl.meet, cl.crmid
                         FROM vtiger_leaddetails as l
                         INNER JOIN vtiger_crmentity as cl 
                             ON cl.crmid = l.leadid
-                        INNER JOIN (select c1.meet, s1.crmid, s1.activityid, a1.eventstatus, a1.due_date FROM vtiger_seactivityrel as s1 INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid LEFT JOIN vtiger_crmentity as c1 ON c1.crmid = a1.activityid WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery . " ORDER BY a1.activityid DESC) as s 
+                        INNER JOIN (select s1.crmid, s1.activityid, a1.eventstatus, a1.due_date FROM vtiger_seactivityrel as s1 INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid LEFT JOIN vtiger_crmentity as c1 ON c1.crmid = a1.activityid WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?)" . $addQuery . " ORDER BY a1.activityid DESC) as s 
                             ON s.crmid = l.leadid
                         LEFT JOIN vtiger_users as u ON u.id = cl.smownerid
                         LEFT JOIN vtiger_office as o ON o.officeid = u.office
                         WHERE cl.deleted = 0 
                         GROUP BY l.leadid 
-                    ) as g";
+                    ) as g GROUP BY g.crmid";
 
 
         $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus,p.leadsource
