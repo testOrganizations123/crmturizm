@@ -34,7 +34,7 @@ $CHAT_DISPLAY = 'true';
 $USE_RTE = 'true';
 
 // url for customer portal (Example: http://vtiger.com/portal)
-$PORTAL_URL = 'http://vtiger.com/customerportal';
+$PORTAL_URL = 'http://crmturizm.test/customerportal';
 
 // helpdesk support email id and support name (Example: 'support@vtiger.com' and 'vtiger support')
 $HELPDESK_SUPPORT_EMAIL_ID = 'vordoom@inbox.ru';
@@ -54,7 +54,7 @@ $dbconfig['db_server'] = 'localhost';
 $dbconfig['db_port'] = ':3306';
 $dbconfig['db_username'] = 'root';
 $dbconfig['db_password'] = '';
-$dbconfig['db_name'] = 'crmVtiger';
+$dbconfig['db_name'] = 'crmturizmvtiger';
 $dbconfig['db_type'] = 'mysqli';
 $dbconfig['db_status'] = 'true';
 
@@ -85,10 +85,10 @@ $dbconfigoption['ssl'] = false;
 
 $host_name = $dbconfig['db_hostname'];
 
-$site_URL = 'http://crmturizm.ru/';
+$site_URL = 'http://crmturizm.test/';
 
 // root directory path
-$root_directory = 'c:\os\OpenServer\domains\crmturizm';
+$root_directory = 'c:\OpenServer\domains\crmturizm.test';
 
 // cache direcory path
 $cache_dir = 'cache/';
