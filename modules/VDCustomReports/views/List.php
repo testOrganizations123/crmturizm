@@ -425,28 +425,28 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[$key]['value'][0]['title'] = "Входящие заявки:";
             $funnelArrayNew[$key]['value'][0]['level'] = 0;
             //  $funnelArrayNew[$source]['office'] = 0;
-            $funnelArrayNew[$key]['value'][0]['text'] = "Отказано до встречи:<br>";
-            $funnelArrayNew[$key]['value'][0]['title'] = "Отказано до встречи:";
-            $funnelArrayNew[$key]['value'][0]['level'] = 0;
-
-            $funnelArrayNew[$key]['value'][1]['text'] = "Встречи в офисе:<br>";
-            $funnelArrayNew[$key]['value'][1]['title'] = "Встречи в офисе:";
+            $funnelArrayNew[$key]['value'][1]['text'] = "Отказано до встречи:<br>";
+            $funnelArrayNew[$key]['value'][1]['title'] = "Отказано до встречи:";
             $funnelArrayNew[$key]['value'][1]['level'] = 0;
-            $funnelArrayNew[$key]['value'][1]['height'] = 1;
 
-            $funnelArrayNew[$key]['value'][0]['text'] = "Отказно после встречи:<br>";
-            $funnelArrayNew[$key]['value'][0]['title'] = "Отказно после встречи:";
-            $funnelArrayNew[$key]['value'][0]['level'] = 0;
-
-            $funnelArrayNew[$key]['value'][2]['text'] = "Не закрытые на продажу<br>заявки: ";
-            $funnelArrayNew[$key]['value'][2]['title'] = "Не закрытые на продажу заявки:";
+            $funnelArrayNew[$key]['value'][2]['text'] = "Встречи в офисе:<br>";
+            $funnelArrayNew[$key]['value'][2]['title'] = "Встречи в офисе:";
             $funnelArrayNew[$key]['value'][2]['level'] = 0;
-            $funnelArrayNew[$key]['value'][3]['text'] = "Закрытые на продажу<br>брони: ";
-            $funnelArrayNew[$key]['value'][3]['title'] = "Закрытые на продажу брони:";
+            $funnelArrayNew[$key]['value'][2]['height'] = 1;
+
+            $funnelArrayNew[$key]['value'][3]['text'] = "Отказно после встречи:<br>";
+            $funnelArrayNew[$key]['value'][3]['title'] = "Отказно после встречи:";
             $funnelArrayNew[$key]['value'][3]['level'] = 0;
-            $funnelArrayNew[$key]['value'][4]['text'] = "Аннулированные туры:<br>";
-            $funnelArrayNew[$key]['value'][4]['title'] = "Аннулированные туры:";
+
+            $funnelArrayNew[$key]['value'][4]['text'] = "Не закрытые на продажу<br>заявки: ";
+            $funnelArrayNew[$key]['value'][4]['title'] = "Не закрытые на продажу заявки:";
             $funnelArrayNew[$key]['value'][4]['level'] = 0;
+            $funnelArrayNew[$key]['value'][5]['text'] = "Закрытые на продажу<br>брони: ";
+            $funnelArrayNew[$key]['value'][5]['title'] = "Закрытые на продажу брони:";
+            $funnelArrayNew[$key]['value'][5]['level'] = 0;
+            $funnelArrayNew[$key]['value'][6]['text'] = "Аннулированные туры:<br>";
+            $funnelArrayNew[$key]['value'][6]['title'] = "Аннулированные туры:";
+            $funnelArrayNew[$key]['value'][6]['level'] = 0;
             $sumECharge = 0;
             $sumProfit = 0;
             $revenues = 0;
