@@ -636,16 +636,25 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     ) as g GROUP BY g.crmid";
 
 
-        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus,p.leadsource
-                        FROM vtiger_potential as p
-                        INNER JOIN vtiger_crmentity as c1 
-                            ON c1.crmid = p.potentialid
-                            INNER JOIN vtiger_potentialscf as pcf
-                            ON pcf.potentialid = p.potentialid
-                            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
-                            LEFT JOIN vtiger_office as o ON o.officeid = u.office
-              WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery . "
-            GROUP BY  c1.crmid";
+//        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus,p.leadsource
+//                        FROM vtiger_potential as p
+//                        INNER JOIN vtiger_crmentity as c1
+//                            ON c1.crmid = p.potentialid
+//                            INNER JOIN vtiger_potentialscf as pcf
+//                            ON pcf.potentialid = p.potentialid
+//                            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+//                            LEFT JOIN vtiger_office as o ON o.officeid = u.office
+//              WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(pcf.cf_1225 AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+//            GROUP BY  c1.crmid";
+
+
+
+        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount , p.amount AS amounta, ((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus, p.leadsource   FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+            left join vtiger_office as o ON o.officeid = pcf.cf_1215
+            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+            where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' " . $addQuery;
+
 
 
         $funnelArrayAll = $this->getFunnels($sqlAllFunnelReservation, $sqlAllFunnelApplication);
