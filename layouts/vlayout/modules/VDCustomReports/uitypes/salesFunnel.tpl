@@ -17,14 +17,14 @@
 
     <div class="funnelBlock">
         {foreach from=json_decode($FUNNELALL) key=i item=value}
-            <div style="height: 700px" class="funnel" id="div_new_{$i}"></div>
+            <div style="height: 900px" class="funnel" id="div_new_{$i}"></div>
             <br>
         {/foreach}
     </div>
 
     <div class="funnelBlock">
         {foreach from=json_decode($FUNNELNEW) key=i item=value}
-            <div style="height: 700px" class="funnel" id="div_{$i}"></div>
+            <div style="height: 900px" class="funnel" id="div_{$i}"></div>
             <br>
         {/foreach}
     </div>
