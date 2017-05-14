@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-29 02:49:17
+<?php /* Smarty version Smarty-3.1.7, created on 2017-05-14 23:26:46
          compiled from "C:\OpenServer\domains\crmturizm.test\includes\runtime/../../layouts/vlayout\modules\Vtiger\MenuBar.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1809858ff79af718904-27621964%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '1ba35428a550cb8e2981df628ccc1be33c823e90' => 
     array (
       0 => 'C:\\OpenServer\\domains\\crmturizm.test\\includes\\runtime/../../layouts/vlayout\\modules\\Vtiger\\MenuBar.tpl',
-      1 => 1493423348,
+      1 => 1494792853,
       2 => 'file',
     ),
   ),
