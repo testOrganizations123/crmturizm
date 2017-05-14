@@ -40,7 +40,7 @@
 							</li>
                                                         {/if}
 						{/foreach}
-                                               
+
                                                  <li class="tabs">
 							<a class="{if $MODULE eq 'VDDialogueDesigner' and ($VIEW eq 'ListScript' or $VIEW eq 'RunScript')} selected {/if}" href="index.php?module=VDDialogueDesigner&view=ListScript"><strong>Скрипты</strong></a>
 						</li>
@@ -51,15 +51,15 @@
                                                     <li class="tabs"><a id="menubar_item_Contacts" href="index.php?module=Contacts&amp;view=List"><strong>Клиенты</strong></a></li>
                                                     <li class="tabs"><a id="menubar_item_MailManager" href="index.php?module=MailManager&amp;view=List"><strong>Менеджер почты</strong></a></li>
 													<li class="tabs"><a id="menubar_item_MailManager" href="index.php?module=VChat&amp;view=List"><strong>Чат</strong></a></li> {* troshichev *}
-                                               
+
 											   {/if}
 					</ul>
-                                        
+
 					<ul class="nav" id="shortNav">
 						<li class="tabs">
 							<a class="alignMiddle {if $MODULE eq 'Home'} selected {/if}" href="{$HOME_MODULE_MODEL->getDefaultUrl()}"><img src="{vimage_path('home.png')}" alt="{vtranslate('LBL_HOME',$moduleName)}" title="{vtranslate('LBL_HOME',$moduleName)}" /></a>
 						</li>
-                                                
+
 						<li class="dropdown tabs" id="collapsedMenu">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#collapsedMenu">
 								{vtranslate('LBL_ALL',$MODULE)}
@@ -99,7 +99,7 @@
 							</div>
 						</li>
 					</ul>
-                                                               
+
 					<ul class="nav modulesList" id="mediumNav">
 						<li class="tabs">
 							<a class="alignMiddle {if $MODULE eq 'Home'} selected {/if}" href="{$HOME_MODULE_MODEL->getDefaultUrl()}"><img src="{vimage_path('home.png')}" alt="{vtranslate('LBL_HOME',$moduleName)}" title="{vtranslate('LBL_HOME',$moduleName)}" /></a>
@@ -125,7 +125,7 @@
                                                     <li class="tabs"><a id="menubar_item_MailManager" href="index.php?module=MailManager&amp;view=List"><strong>Менеджер почты</strong></a></li>
                                                 {/if}
 					</ul>
-                                        
+
                                          {if $USER_MODEL->isAdminUser()}
 					<ul class="nav" id="commonMoreMenu">
 						<li class="dropdown" id="moreMenu">
@@ -179,7 +179,7 @@
 							</a>
 							<div class="dropdown-menu">
 								<div class="shortDropdown">
-								
+
 									<label class="moduleNames"><a id="menubar_item_ClientTypes" href="index.php?module=ClientTypes&amp;view=List">Типы Номеров</a></label>
                                                                         <label class="moduleNames"><a id="menubar_item_ListAccommodations" href="index.php?module=ListAccommodations&amp;view=List">Тип размешения</a></label>
 									{if is_array($USER_MODEL->get('roleid'),$REGION)}
@@ -199,7 +199,7 @@
 							</a>
 							<div class="dropdown-menu">
 								<div class="shortDropdown">
-								
+
 									<label class="moduleNames"><a id="report_leads" href="index.php?module=VDCustomReports&view=List&mode=getLeadsReport">Заявки</a></label>
                                                                         <label class="moduleNames"><a id="report_bron" href="index.php?module=VDCustomReports&view=List&mode=getBookingReport">Брони</a></label>
                                                                         <label class="moduleNames"><a id="report_stat" href="index.php?module=VDCustomReports&view=List&mode=getStatistic">Статистика</a></label>
@@ -211,8 +211,24 @@
                                                                 </div></div>
 						</li>
 					</ul>
-                                       
-                                                        
+
+					<ul class="nav" id="commonMoreMenu234">
+						<li class="dropdown" id="moreMenu234">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#moreMenu234" style="color:#fff">
+								<strong>{vtranslate('Бухгалтерия',$MODULE)}&nbsp;</strong>
+								<b class="caret"></b>
+							</a>
+							<div class="dropdown-menu">
+								<div class="shortDropdown">
+
+									<label class="moduleNames"><a id="report_leads" href="/index.php?module=Accounting&view=List">Учет рабочего времени</a></label>
+
+								</div>
+                            </div>
+						</li>
+					</ul>
+
+
 				</div>
 				<div class="span3 marginLeftZero pull-right" id="headerLinks">
 					<span id="headerLinksBig" class="pull-right headerLinksContainer">
