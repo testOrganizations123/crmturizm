@@ -1,5 +1,3 @@
-console.log(window.funnelDataNew);
-console.log(window.funnelDataAll);
 
 for (var i=0; i< window.funnelDataNew.length; i++) {
     AmCharts.makeChart("div_" + i, {
@@ -29,6 +27,13 @@ for (var i=0; i< window.funnelDataNew.length; i++) {
 }
 
 for (i=0; i< window.funnelDataAll.length; i++) {
+
+    for(j=0; j< window.funnelDataAll[i].value.length; j++){
+        if (window.funnelDataAll[i].value[j].level == 0){
+            window.funnelDataAll[i].value[j].height = 1;
+        }
+    }
+
     AmCharts.makeChart("div_new_" + i, {
         "type": "funnel",
         "dataProvider": window.funnelDataAll[i].value,
