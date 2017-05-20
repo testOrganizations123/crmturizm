@@ -1,5 +1,7 @@
 webix.ready(function () {
 
+
+
         var dtable = new webix.ui({
             container: "tableHours",
             view: "datatable",
