@@ -374,7 +374,7 @@ class Accounting_List_View extends Vtiger_Index_View
             unset($arrOfficeIds[$keyNull]);
             array_push($arrOfficeIds, $item);
         }
-        
+        $arrOfficeIds = array_values($arrOfficeIds);
         //формируем строки таблицы
 
 
@@ -399,7 +399,6 @@ class Accounting_List_View extends Vtiger_Index_View
             }
             $tableOffice[$keyO]['bodyTable'] = $bodyTableArray;
         }
-
 
         $viewer->assign('DATAHEADER', json_encode([
             "year" => $date->format('Y'),
