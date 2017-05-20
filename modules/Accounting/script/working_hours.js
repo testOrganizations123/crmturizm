@@ -19,17 +19,50 @@ webix.ready(function () {
 
                     var time = cell.value.replace(/ /g, "");
 
-                    if (time && parseInt(time) != time){
+                    var availableChars = [
+                        "к",
+                        "К",
+                        "от",
+                        "ОТ",
+                        "у",
+                        "У",
+                        "ДУ",
+                        "ду",
+                        "р",
+                        "Р",
+                        "ож",
+                        "ОЖ",
+                        "до",
+                        "ДО",
+                        "рт",
+                        "РТ"
+                    ];
+
+                    if (time && parseInt(time) != time && !in_array(time, availableChars)){
                         $(function () {
                             new PNotify({
                                 title: 'Error!',
                                 text: 'Ошибка валидации',
                                 delay: 4000
                             });
-
-
                         });
                         var record = dtable.getItem(coordinates.row);
+                        record[coordinates.column] = cell.old;
+                        dtable.refresh();
+
+                        return;
+                    }
+
+                    if (!in_array(time, availableChars) && parseInt(time) > 24){
+                            $(function () {
+                                new PNotify({
+                                    title: 'Error!',
+                                    text: 'Время не может быть больше 24',
+                                    delay: 4000
+                                });
+                            });
+
+                        record = dtable.getItem(coordinates.row);
                         record[coordinates.column] = cell.old;
                         dtable.refresh();
 
@@ -56,7 +89,6 @@ webix.ready(function () {
                                         delay: 4000
                                     });
 
-
                                 });
                             }
                         },
@@ -70,6 +102,12 @@ webix.ready(function () {
 });
 
 
+function in_array(what, where) {
+    for(var i=0; i<where.length; i++)
+        if(what == where[i])
+            return true;
+    return false;
+}
 
 
 
