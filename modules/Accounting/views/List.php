@@ -49,7 +49,7 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         $now = date('m.Y');
 
-        $this->filter_data['period'] =  $now;
+        $this->filter_data['period'] = $now;
     }
 
     function setDefaultFiltre()
@@ -168,26 +168,25 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         $sql = "";
         if (!empty($this->filter_data['region']) || !empty($this->filter_data['office']) || !empty($this->filter_data['user'])) {
-                $sql .= "AND u.id IN";
-                if (!empty($this->filter_data['user'])) {
-                    $sql .= " (" . $this->filter_data['user'] . ")";
-                } else if (!empty($this->filter_data['office'])) {
+            $sql .= "AND u.id IN";
+            if (!empty($this->filter_data['user'])) {
+                $sql .= " (" . $this->filter_data['user'] . ")";
+            } else if (!empty($this->filter_data['office'])) {
 
-                        $this->office_data = $this->filter_data['office'];
-                        // echo '<pre>';print_r($this->office_data);echo '</pre>';die();
-                        $users = $this->getUsersOffice();
-                        $sql .= " (" . implode(',', $users) . ")";
-                } else if (!empty($this->filter_data['region'])) {
-                    $this->office_data = $this->office_to_region[$this->filter_data['region']];
-                    $users = $this->getUsersOffice();
-                    $sql .= " (" . implode(',', $users) . ")";
-                }
+                $this->office_data = $this->filter_data['office'];
+                // echo '<pre>';print_r($this->office_data);echo '</pre>';die();
+                $users = $this->getUsersOffice();
+                $sql .= " (" . implode(',', $users) . ")";
+            } else if (!empty($this->filter_data['region'])) {
+                $this->office_data = $this->office_to_region[$this->filter_data['region']];
+                $users = $this->getUsersOffice();
+                $sql .= " (" . implode(',', $users) . ")";
+            }
 
 
         }
         return $sql;
     }
-
 
 
     function getUsersOffice()
@@ -246,7 +245,8 @@ class Accounting_List_View extends Vtiger_Index_View
         return $raw;
     }
 
-    public function workingHoursEdit(Vtiger_Request $request, Vtiger_Viewer $viewer){
+    public function workingHoursEdit(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
 
 
         $day = $request->get("day");
@@ -260,7 +260,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $record = $this->getSQLArrayResult($sql, []);
 
-        if (count($record)){
+        if (count($record)) {
             $id = $record[0]["id"];
             if ($time) {
                 $sql = "UPDATE working_time SET date = '$year-$month-$day', user = '$user', time = '$time'  WHERE id = '$id'";
@@ -280,24 +280,25 @@ class Accounting_List_View extends Vtiger_Index_View
         die();
     }
 
-    public function removeFirstZero($str){
-        if ($str[0] =='0'){
+    public function removeFirstZero($str)
+    {
+        if ($str[0] == '0') {
             return substr($str, 1, strlen($str));
         } else return $str;
     }
 
-    public function workingHours(Vtiger_Request $request, Vtiger_Viewer $viewer){
-
+    public function workingHours(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
 
 
         $addQuery = $this->addQueryFilter();
 
 
-
         $date = DateTime::createFromFormat('m.Y', $this->filter_data['period']);
 
         //считаем количество дней в месяце
-        $countDays =cal_days_in_month(CAL_GREGORIAN, $date->format('m'), $date->format('Y'));
+
+        $countDays = cal_days_in_month(CAL_GREGORIAN, $date->format('m'), $date->format('Y'));
 
 
         //для выборки с начала и до конца месяца
@@ -311,7 +312,7 @@ class Accounting_List_View extends Vtiger_Index_View
             "header" => "Сотрудник",
             "width" => 270
         ];
-        for ($i = 1; $i<=$countDays; $i++){
+        for ($i = 1; $i <= $countDays; $i++) {
             $headerTableArray[] = [
                 "id" => "$i",
                 "header" => "$i",
@@ -336,7 +337,7 @@ class Accounting_List_View extends Vtiger_Index_View
         //группируем данные по пользователям и приводим к удобному массиву
         $usersTimesArray = [];
 
-        foreach ($workerTimesArray as $workerTime){
+        foreach ($workerTimesArray as $workerTime) {
 
             if (!$usersTimesArray[$workerTime["user"]]) $usersTimesArray[$workerTime["user"]] = [];
 
@@ -353,12 +354,25 @@ class Accounting_List_View extends Vtiger_Index_View
         $bodyTableArray = [];
 
         $arrOfficeIds = [];
+        $arrId = [];
         foreach ($users as $key => $value) {
-            if (!in_array($value['officeid'], $arrOfficeIds)) {
+            if (!in_array($value['officeid'], $arrId)) {
+                if ($value['office'] == null) {
+                    $value['office'] = 'Без офиса';
+                    $keyNull = $key;
+                }
+                $arrId[] = $value['officeid'];
                 $arrOfficeIds[$key]['id'] = $value['officeid'];
                 $arrOfficeIds[$key]['office'] = $value['office'];
 
             }
+        }
+
+
+        if (isset($keyNull)) {
+            $item = $arrOfficeIds[$keyNull];
+            unset($arrOfficeIds[$keyNull]);
+            array_push($arrOfficeIds, $item);
         }
 
         //формируем строки таблицы
@@ -387,20 +401,17 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
 
-        $viewer->assign('DATAHEADER',json_encode([
-            "year" =>$date->format('Y'),
-            "month" =>$date->format('m'),
+        $viewer->assign('DATAHEADER', json_encode([
+            "year" => $date->format('Y'),
+            "month" => $date->format('m'),
             "headerTable" => $headerTableArray,
         ]));
-
         $viewer->assign('WORKINGHOURS', true);
         $viewer->assign('WORKINGHOURSDATA', json_encode($tableOffice));
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('WORKING', 1);
         return true;
     }
-
-
 
 
 }
