@@ -292,12 +292,12 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $addQuery = $this->addQueryFilter();
 
+        $date = new DateTime("2017-02-01 00:00:00");
 
-        $date = DateTime::createFromFormat('d.m.Y', "1" . $this->filter_data['region']);
-//$date=new DateTime();
         //считаем количество дней в месяце
-        $time = gmmktime($date->format("0, 0, 0, m, d, Y"));
-        $countDays = gmdate("t", $time);
+
+        $countDays =cal_days_in_month(CAL_GREGORIAN, $date->format('m'), $date->format('Y'));
+
 
         //для выборки с начала и до конца месяца
         $dateStringStart = $date->format("Y-m-01 00:00:00");

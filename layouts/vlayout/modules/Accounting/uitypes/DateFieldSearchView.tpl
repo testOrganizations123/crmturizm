@@ -14,6 +14,7 @@
     {if !isset($EDITPLAN) && !isset($PLAN) && !isset($WORKING)}
         {assign var='dateFormat' value=$USER_MODEL->get('date_format')}
         <div class='row-fluid'>
+
             <input type='text' name="filtre[period]" class='span12 listSearchContributor dateField'
                    data-date-format='{$dateFormat}' data-calendar-type='range' value='{$item['data']}'/>
         </div>
@@ -73,6 +74,7 @@
                 </div>
             </div>
         </div>
+
         <script>
             function checkDataLength(data){
                 var str = data.toString();
