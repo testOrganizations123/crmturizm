@@ -307,7 +307,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $headerTableArray[] = [
             "id" => "name",
             "header" => "Сотрудник",
-            "width" => 300
+            "width" => 270
         ];
         for ($i = 1; $i<=$countDays; $i++){
             $headerTableArray[] = [
@@ -317,6 +317,12 @@ class Accounting_List_View extends Vtiger_Index_View
                 "width" => 38
             ];
         }
+
+        $headerTableArray[] = [
+            "id" => "name",
+            "header" => "Итого",
+            "width" => 60
+        ];
 
         //выбираем из базы сохраненные данные по отработанному времени
         $timesQuery = "
