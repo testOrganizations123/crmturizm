@@ -4,8 +4,8 @@
         <br/>
         <br/>
         <div class="listViewEntriesTable row-fluid">
-            <form action="index.php?module=VDCustomReports&view=List&mode={$MODE}" method="GET">
-                <input type="hidden" name="module" value="VDCustomReports">
+            <form action="index.php?module=Accounting&view=List&mode={$MODE}" method="GET">
+                <input type="hidden" name="module" value="Accounting">
                 <input type="hidden" name="view" value="List">
                 <input type="hidden" name="mode" value="{$MODE}">
                 {foreach item=item from=$FILTER}

@@ -163,6 +163,33 @@ class Accounting_List_View extends Vtiger_Index_View
         return array($region, $office, $staf, $period);
     }
 
+
+    function addQueryFilter()
+    {
+        $sql = "";
+        if (!empty($this->filter_data['region']) || !empty($this->filter_data['office']) || !empty($this->filter_data['user'])) {
+                $sql .= "u.id IN";
+                if (!empty($this->filter_data['user'])) {
+                    $sql .= " (" . $this->filter_data['user'] . ")";
+                } else if (!empty($this->filter_data['office'])) {
+
+                        $this->office_data = $this->filter_data['office'];
+                        // echo '<pre>';print_r($this->office_data);echo '</pre>';die();
+                        $users = $this->getUsersOffice();
+                        $sql .= " (" . implode(',', $users) . ")";
+                } else if (!empty($this->filter_data['region'])) {
+                    $this->office_data = $this->office_to_region[$this->filter_data['region']];
+                    $users = $this->getUsersOffice();
+                    $sql .= " (" . implode(',', $users) . ")";
+                }
+
+
+        }
+        return $sql;
+    }
+
+
+
     function getUsersOffice()
     {
         if (is_array($this->office_data)) {
@@ -261,6 +288,10 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function workingHours(Vtiger_Request $request, Vtiger_Viewer $viewer){
 
+
+
+        $addQuery = $this->addQueryFilter();
+var_dump($addQuery);
         $date = new DateTime();
 
         //считаем количество дней в месяце
@@ -307,10 +338,10 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         //выбираем пользователей
-        $usersQuery = "SELECT id, concat(first_name,' ',last_name) as name from vtiger_users";
+        $usersQuery = "SELECT id, concat(first_name,' ',last_name) as name from vtiger_users as u WHERE".$addQuery;
 
         $users = $this->getSQLArrayResult($usersQuery, []);
-
+var_dump($users);
         $bodyTableArray = [];
 
         //формируем строки таблицы
