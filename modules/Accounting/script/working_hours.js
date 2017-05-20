@@ -1,6 +1,9 @@
 webix.ready(function () {
 
+
     window.workerHoursData.forEach(function (table, i, arr) {
+
+        console.log(i);
 
         // table.bodyTable.forEach(function (item, i, arr) {
         //     var sum = 0;
