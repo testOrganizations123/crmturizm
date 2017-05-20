@@ -297,7 +297,6 @@ class Accounting_List_View extends Vtiger_Index_View
         $date = DateTime::createFromFormat('m.Y', $this->filter_data['period']);
 
         //считаем количество дней в месяце
-
         $countDays =cal_days_in_month(CAL_GREGORIAN, $date->format('m'), $date->format('Y'));
 
 
@@ -388,11 +387,12 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
 
-$viewer->assign('DATAHEADER',json_encode([
-    "year" =>$date->format('Y'),
-    "month" =>$date->format('m'),
-    "headerTable" => $headerTableArray,
-]));
+        $viewer->assign('DATAHEADER',json_encode([
+            "year" =>$date->format('Y'),
+            "month" =>$date->format('m'),
+            "headerTable" => $headerTableArray,
+        ]));
+
         $viewer->assign('WORKINGHOURS', true);
         $viewer->assign('WORKINGHOURSDATA', json_encode($tableOffice));
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);

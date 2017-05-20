@@ -1,10 +1,14 @@
 <script>
     window.workerHoursData = {$WORKINGHOURSDATA};
+    window.dataHeader = {$DATAHEADER};
 </script>
 
 <h3>Учет рабочего времени</h3>
 <br>
-<div id="tableHours" style="overflow-x: auto; padding-bottom: 20px"></div>
+
+{foreach item=VALUE key=KEY from=$WORKINGHOURSDATA|@json_decode}
+    <div id="tableHours_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>
+{/foreach}
 
 
 <style>
