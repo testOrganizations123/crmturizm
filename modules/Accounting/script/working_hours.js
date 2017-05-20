@@ -1,6 +1,18 @@
 webix.ready(function () {
 
+    window.workerHoursData.bodyTable.forEach(function(item, i, arr) {
+        var sum = 0;
 
+        Object.keys(item).map(function(objectKey, index) {
+            if (parseInt(item[objectKey]) == item[objectKey] && objectKey != "id" && objectKey != "name") {
+                sum = sum + parseInt(item[objectKey]);
+            }
+        });
+
+
+        item.sum = sum;
+
+    });
 
         var dtable = new webix.ui({
             container: "tableHours",
@@ -13,7 +25,6 @@ webix.ready(function () {
             data: window.workerHoursData.bodyTable,
             on: {
                 onAfterEditStop: function (cell, coordinates) {
-
 
                     if (cell.old == cell.value || (!cell.old && !cell.value)){
                         return;
@@ -92,6 +103,26 @@ webix.ready(function () {
                                     });
 
                                 });
+                            } else {
+                                window.workerHoursData.bodyTable.forEach(function(item, i, arr) {
+                                    if (item.id == coordinates.row){
+                                        item[coordinates.column] = cell.value.replace(/ /g, "");
+                                    }
+
+                                });
+
+                                record = dtable.getItem(coordinates.row);
+
+                                var sum = 0;
+
+                                Object.keys(record).map(function(objectKey, index) {
+                                    if (parseInt(record[objectKey]) == record[objectKey] && objectKey != "id" && objectKey != "name" && objectKey != "sum") {
+                                        sum = sum + parseInt(record[objectKey]);
+                                    }
+                                });
+
+                                record["sum"] = sum;
+                                dtable.refresh();
                             }
                         },
                         dataType: "json"
