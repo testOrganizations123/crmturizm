@@ -291,7 +291,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         $addQuery = $this->addQueryFilter();
-var_dump($addQuery);
+
         $date = new DateTime();
 
         //считаем количество дней в месяце
@@ -338,10 +338,10 @@ var_dump($addQuery);
 
 
         //выбираем пользователей
-        $usersQuery = "SELECT id, concat(first_name,' ',last_name) as name from vtiger_users as u WHERE".$addQuery;
+        $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE ".$addQuery;
 
         $users = $this->getSQLArrayResult($usersQuery, []);
-var_dump($users);
+
         $bodyTableArray = [];
 
         //формируем строки таблицы
