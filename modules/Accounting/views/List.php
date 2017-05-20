@@ -47,9 +47,9 @@ class Accounting_List_View extends Vtiger_Index_View
 
     function setDefaultPeriod()
     {
-        $now = date('d.m.Y');
-        $start = date('d.m.Y', strtotime('-7 days'));
-        $this->filter_data['period'] = $start . ',' . $now;
+        $now = date('m.Y');
+
+        $this->filter_data['period'] =  $now;
     }
 
     function setDefaultFiltre()
@@ -292,10 +292,10 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $addQuery = $this->addQueryFilter();
 
-      
+
 
         $date = DateTime::createFromFormat('m.Y', $this->filter_data['period']);
-//$date=new DateTime();
+
         //считаем количество дней в месяце
 
         $countDays =cal_days_in_month(CAL_GREGORIAN, $date->format('m'), $date->format('Y'));
@@ -347,36 +347,54 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         //выбираем пользователей
-        $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE 1=1 ".$addQuery;
+        $usersQuery = "SELECT o.office, o.officeid, u.id, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
 
         $users = $this->getSQLArrayResult($usersQuery, []);
 
         $bodyTableArray = [];
 
-        //формируем строки таблицы
-        foreach ($users as $user){
-            $ar = [
-                "id" =>$user["id"],
-                "name" =>$user["name"]
-            ];
+        $arrOfficeIds = [];
+        foreach ($users as $key => $value) {
+            if (!in_array($value['officeid'], $arrOfficeIds)) {
+                $arrOfficeIds[$key]['id'] = $value['officeid'];
+                $arrOfficeIds[$key]['office'] = $value['office'];
 
-            //запихиваем в строку данные, которые получили из таблицы рабочее время
-            if (array_key_exists($user["id"], $usersTimesArray)){
-                foreach ($usersTimesArray[$user["id"]] as $key => $value)
-                $ar[$key] = $value;
             }
+        }
 
-            $bodyTableArray[] = $ar;
+        //формируем строки таблицы
+
+
+        $tableOffice = [];
+        foreach ($arrOfficeIds as $keyO => $item) {
+            $tableOffice[$keyO]['nameOffice'] = $item['office'];
+            $bodyTableArray = [];
+            foreach ($users as $user) {
+                $ar = [
+                    "id" => $user["id"],
+                    "name" => $user["name"]
+                ];
+
+                //запихиваем в строку данные, которые получили из таблицы рабочее время
+                if ($item['id'] == $user['officeid']) {
+                    if (array_key_exists($user["id"], $usersTimesArray)) {
+                        foreach ($usersTimesArray[$user["id"]] as $key => $value)
+                            $ar[$key] = $value;
+                    }
+                }
+                $bodyTableArray[] = $ar;
+            }
+            $tableOffice[$keyO]['bodyTable'] = $bodyTableArray;
         }
 
 
+$viewer->assign('DATAHEADER',json_encode([
+    "year" =>$date->format('Y'),
+    "month" =>$date->format('m'),
+    "headerTable" => $headerTableArray,
+]));
         $viewer->assign('WORKINGHOURS', true);
-        $viewer->assign('WORKINGHOURSDATA', json_encode([
-            "headerTable" => $headerTableArray,
-            "bodyTable" => $bodyTableArray,
-            "year" =>$date->format('Y'),
-            "month" =>$date->format('m')
-        ]));
+        $viewer->assign('WORKINGHOURSDATA', json_encode($tableOffice));
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('WORKING', 1);
         return true;
