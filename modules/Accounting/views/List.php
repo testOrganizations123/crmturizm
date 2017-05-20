@@ -168,7 +168,7 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         $sql = "";
         if (!empty($this->filter_data['region']) || !empty($this->filter_data['office']) || !empty($this->filter_data['user'])) {
-                $sql .= "u.id IN";
+                $sql .= "AND u.id IN";
                 if (!empty($this->filter_data['user'])) {
                     $sql .= " (" . $this->filter_data['user'] . ")";
                 } else if (!empty($this->filter_data['office'])) {
@@ -338,7 +338,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         //выбираем пользователей
-        $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE ".$addQuery;
+        $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE 1=1 ".$addQuery;
 
         $users = $this->getSQLArrayResult($usersQuery, []);
 
