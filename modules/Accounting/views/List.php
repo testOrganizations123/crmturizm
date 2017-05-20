@@ -47,13 +47,13 @@ class Accounting_List_View extends Vtiger_Index_View
 
     function setDefaultPeriod()
     {
-        $now = date('d.m.Y');
-        $start = date('d.m.Y', strtotime('-7 days'));
-        $this->filter_data['period'] = $start . ',' . $now;
+        $now = date('m.Y');
+        $this->filter_data['period'] = $now;
     }
 
     function setDefaultFiltre()
     {
+
         if (empty($this->filter_data['period'])) {
             $this->setDefaultPeriod();
         }
@@ -158,7 +158,7 @@ class Accounting_List_View extends Vtiger_Index_View
             "label" => "Период",
             "tpl" => 'uitypes/DateFieldSearchView.tpl',
             "name" => 'period',
-            "data" => $this->filter_data['period']
+            "data" => '1.01'
         );
         return array($region, $office, $staf, $period);
     }
@@ -293,7 +293,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $addQuery = $this->addQueryFilter();
 
 
-        $date = DateTime::createFromFormat('d.Y', $this->filter_data['region']);
+        $date = DateTime::createFromFormat('m.Y', $this->filter_data['period']);
 //$date=new DateTime();
         //считаем количество дней в месяце
         $time = gmmktime($date->format("0, 0, 0, m, d, Y"));
@@ -375,7 +375,7 @@ class Accounting_List_View extends Vtiger_Index_View
             "year" =>$date->format('Y'),
             "month" =>$date->format('m')
         ]));
-
+        $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('WORKING', 1);
         return true;
     }

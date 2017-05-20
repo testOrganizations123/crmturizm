@@ -1,6 +1,6 @@
 {strip}
     <div id="listViewContents" class="VDDialogueDesigner_container listViewPageDiv listViewContentDiv"
-         style="padding-left: 3%;padding-right: 3%">
+         style="padding-right: 3%">
         <br/>
         <br/>
         <div class="listViewEntriesTable row-fluid">
