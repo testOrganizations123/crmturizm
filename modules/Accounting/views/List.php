@@ -181,9 +181,33 @@ class Accounting_List_View extends Vtiger_Index_View
         return $raw;
     }
     public function workingHours(Vtiger_Request $request, $viewer){
+
+        $viewer->assign('WORKING', 1);
         return true;
 
     }
 
+    function addScript_workingHours($jsFileNames)
+    {
 
+        return $jsFileNames;
+    }
+
+    function getHeaderScripts(Vtiger_Request $request)
+    {
+        $headerScriptInstances = parent::getHeaderScripts($request);
+        $moduleName = $request->getModule();
+        $jsFileNames = array();
+        $mode = $request->get('mode');
+        if (!empty($mode)) {
+            $function = 'addScript_' . $mode;
+            $jsFileNames = $this->$function($jsFileNames);
+        }
+        $jsScriptInstances = $this->checkAndConvertJsScripts($jsFileNames);
+
+
+        $headerScriptInstances = array_merge($headerScriptInstances, $jsScriptInstances);
+
+        return $headerScriptInstances;
+    }
 }

@@ -11,13 +11,14 @@
 -->*}
 {strip}
 
-    {if !isset($EDITPLAN) && !isset($PLAN)}
+    {if !isset($EDITPLAN) && !isset($PLAN) && !isset($WORKING)}
         {assign var='dateFormat' value=$USER_MODEL->get('date_format')}
         <div class='row-fluid'>
             <input type='text' name="filtre[period]" class='span12 listSearchContributor dateField'
                    data-date-format='{$dateFormat}' data-calendar-type='range' value='{$item['data']}'/>
         </div>
     {else}
+
         <div class='row-fluid' style="position: relative">
             <input type='text' id="monthPeriod" name="filtre[period]" value="{$MONTHPERIOD}" class='span12 listSearchContributor' style="text-align: right; cursor:pointer; background: white" onclick="setTimeout(function(){
             $('#myPicker').css('display', 'block');

@@ -221,7 +221,7 @@
 							<div class="dropdown-menu">
 								<div class="shortDropdown">
 
-									<label class="moduleNames"><a id="report_leads" href="/index.php?module=Accounting&view=List">Учет рабочего времени</a></label>
+									<label class="moduleNames"><a id="report_leads" href="/index.php?module=Accounting&view=List&mode=workingHours">Учет рабочего времени</a></label>
 
 								</div>
                             </div>

@@ -57,7 +57,11 @@
 
         </div>
     </div>
-
+    <script>
+        {foreach item=script from=$ADDSCRIPTS}
+        {$script}
+        {/foreach}
+    </script>
 {/strip}
 {literal}
     <style>
