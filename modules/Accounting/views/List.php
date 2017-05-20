@@ -180,9 +180,164 @@ class Accounting_List_View extends Vtiger_Index_View
         }
         return $raw;
     }
-    public function workingHours(Vtiger_Request $request, $viewer){
-        return true;
 
+    function getHeaderScripts(Vtiger_Request $request)
+    {
+        $headerScriptInstances = parent::getHeaderScripts($request);
+        $jsFileNames = array();
+        $mode = $request->get('mode');
+        if (!empty($mode)) {
+            $function = 'addScript_' . $mode;
+            $jsFileNames = $this->$function($jsFileNames);
+        }
+        $jsScriptInstances = $this->checkAndConvertJsScripts($jsFileNames);
+        $headerScriptInstances = array_merge($headerScriptInstances, $jsScriptInstances);
+
+        return $headerScriptInstances;
+    }
+
+    function addScript_workingHours($jsFileNames)
+    {
+        array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
+        array_push($jsFileNames, "modules.Accounting.script.working_hours");
+        return $jsFileNames;
+    }
+
+    function getSQLArrayResult($sql, $arrayParams)
+    {
+
+        $db = PearDatabase::getInstance();
+        $result = $db->pquery($sql, $arrayParams);
+
+        $numRows = $db->num_rows($result);
+        $raw = [];
+        for ($i = 0; $i < $numRows; $i++) {
+            $raw[$i] = $db->query_result_rowdata($result, $i);
+
+        }
+
+        return $raw;
+    }
+
+    public function workingHoursEdit(Vtiger_Request $request, Vtiger_Viewer $viewer){
+
+
+        $day = $request->get("day");
+        $month = $request->get("month");
+        $year = $request->get("year");
+        $user = $request->get("user");
+        $time = $request->get("time");
+
+
+        $sql = ("SELECT id FROM working_time WHERE user = '$user' AND date = '$year-$month-$day'");
+
+        $record = $this->getSQLArrayResult($sql, []);
+
+        if (count($record)){
+            $id = $record[0]["id"];
+            if ($time) {
+                $sql = "UPDATE working_time SET date = '$year-$month-$day', user = '$user', time = '$time'  WHERE id = '$id'";
+            } else {
+                $sql = "DELETE FROM working_time WHERE id = '$id'";
+            }
+        } else {
+            if ($time) {
+                $sql = "INSERT INTO working_time (user, date, time) VALUES('$user', '$year-$month-$day', '$time')";
+            }
+        }
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+        echo json_encode('success');
+        die();
+    }
+
+    public function removeFirstZero($str){
+        if ($str[0] =='0'){
+            return substr($str, 1, strlen($str));
+        } else return $str;
+    }
+
+    public function workingHours(Vtiger_Request $request, Vtiger_Viewer $viewer){
+
+        $date = new DateTime();
+
+        //считаем количество дней в месяце
+        $time = gmmktime($date->format("0, 0, 0, m, d, Y"));
+        $countDays = gmdate("t", $time);
+
+        //для выборки с начала и до конца месяца
+        $dateStringStart = $date->format("Y-m-01 00:00:00");
+        $dateStringFinish = $date->format("Y-m-$countDays 23:59:59");
+
+        //шапка таблицы
+        $headerTableArray = [];
+        $headerTableArray[] = [
+            "id" => "name",
+            "header" => "Сотрудник",
+            "width" => 300
+        ];
+        for ($i = 1; $i<=$countDays; $i++){
+            $headerTableArray[] = [
+                "id" => "$i",
+                "header" => "$i",
+                "editor" => "text",
+                "width" => 38
+            ];
+        }
+
+        //выбираем из базы сохраненные данные по отработанному времени
+        $timesQuery = "
+                   SELECT *
+                   FROM working_time as wt
+                   WHERE CAST( wt.date AS DATE) BETWEEN '$dateStringStart' AND '$dateStringFinish'";
+
+        $workerTimesArray = $this->getSQLArrayResult($timesQuery, []);
+        //группируем данные по пользователям и приводим к удобному массиву
+        $usersTimesArray = [];
+
+        foreach ($workerTimesArray as $workerTime){
+
+            if (!$usersTimesArray[$workerTime["user"]]) $usersTimesArray[$workerTime["user"]] = [];
+
+            $dateRecord = new DateTime($workerTime["date"]);
+            $usersTimesArray[$workerTime["user"]][$this->removeFirstZero($dateRecord->format("d"))] = $workerTime["time"];
+        }
+
+
+        //выбираем пользователей
+        $usersQuery = "SELECT id, concat(first_name,' ',last_name) as name from vtiger_users";
+
+        $users = $this->getSQLArrayResult($usersQuery, []);
+
+        $bodyTableArray = [];
+
+        //формируем строки таблицы
+        foreach ($users as $user){
+            $ar = [
+                "id" =>$user["id"],
+                "name" =>$user["name"]
+            ];
+
+            //запихиваем в строку данные, которые получили из таблицы рабочее время
+            if (array_key_exists($user["id"], $usersTimesArray)){
+                foreach ($usersTimesArray[$user["id"]] as $key => $value)
+                $ar[$key] = $value;
+            }
+
+            $bodyTableArray[] = $ar;
+        }
+
+
+        $viewer->assign('WORKINGHOURS', true);
+        $viewer->assign('WORKINGHOURSDATA', json_encode([
+            "headerTable" => $headerTableArray,
+            "bodyTable" => $bodyTableArray,
+            "year" =>$date->format('Y'),
+            "month" =>$date->format('m')
+        ]));
+        return true;
     }
 
 

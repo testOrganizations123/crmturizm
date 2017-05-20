@@ -37,80 +37,19 @@
                     </div>
                 </div>
 
-
-                {if isset($FRANCHISECHECKBOX) && $FRANCHISECHECKBOX == true}
-                    <div class="span2"><label>&nbsp;</label>
-                        <div class="row-fluid">
-                            <input type="checkbox" name="franchiseCheckbox" {if $VALCHECKBOX}checked{/if}> Франчайзинг
-                        </div>
-                    </div>
-                {/if}
             </form>
         </div>
         <hr/>
 
         <div class="padding1per row-fluid" style="border:1px solid #ccc;">
-
-
-
-
-
+            {if isset($WORKINGHOURS)}
+                {include file=vtemplate_path("uitypes/workingHours.tpl",$MODULE) }
+            {/if}
         </div>
     </div>
-
 {/strip}
 {literal}
     <style>
-        a.listScript {
-            padding: 40px 20px;
-            display: block;
-            background: rgb(28, 116, 187) none repeat scroll 0% 0%;
-            color: #fff !important;
-            text-align: center;
-            border-radius: 10px;
-        }
 
-        a.listScript h3 {
-            color: #fff;
-        }
-
-        .edit-button {
-            background-color: #5bb75b !important;
-        }
-
-        .tableEditPlan {
-            margin-left: -8px;
-            cursor: pointer;
-            border: 1px solid #aad5fd;
-            height: 27px;
-            width: 98px;
-            padding-right: 5px;
-            margin-top: 2px;
-        }
-
-        .spantable{
-            margin-top: -3px;
-            float: right;
-        }
-
-        .table-info{
-            padding-top: 53px;
-        }
-
-        .w-25{
-            float: right;
-            width: 25%;
-        }
-
-        .abc{
-            display: none;
-        }
-
-        #getTableSum .abc{
-            display: table!important;
-        }
-
-        .brighttheme{background: red;} .brighttheme *{color: white;}.ui-pnotify{ top:36px;right:36px;position:absolute;height:auto;z-index:2}body>.ui-pnotify{position:fixed;z-index:100040}.ui-pnotify-modal-overlay{background-color:rgba(0,0,0,.4);top:0;left:0;position:absolute;height:100%;width:100%;z-index:1}body>.ui-pnotify-modal-overlay{position:fixed;z-index:100039}.ui-pnotify.ui-pnotify-in{display:block!important}.ui-pnotify.ui-pnotify-move{transition:left .5s ease,top .5s ease,right .5s ease,bottom .5s ease}.ui-pnotify.ui-pnotify-fade-slow{transition:opacity .6s linear;opacity:0}.ui-pnotify.ui-pnotify-fade-slow.ui-pnotify.ui-pnotify-move{transition:opacity .6s linear,left .5s ease,top .5s ease,right .5s ease,bottom .5s ease}.ui-pnotify.ui-pnotify-fade-normal{transition:opacity .4s linear;opacity:0}.ui-pnotify.ui-pnotify-fade-normal.ui-pnotify.ui-pnotify-move{transition:opacity .4s linear,left .5s ease,top .5s ease,right .5s ease,bottom .5s ease}.ui-pnotify.ui-pnotify-fade-fast{transition:opacity .2s linear;opacity:0}.ui-pnotify.ui-pnotify-fade-fast.ui-pnotify.ui-pnotify-move{transition:opacity .2s linear,left .5s ease,top .5s ease,right .5s ease,bottom .5s ease}.ui-pnotify.ui-pnotify-fade-in{opacity:1}.ui-pnotify .ui-pnotify-shadow{-webkit-box-shadow:0 6px 28px 0 rgba(0,0,0,.1);-moz-box-shadow:0 6px 28px 0 rgba(0,0,0,.1);box-shadow:0 6px 28px 0 rgba(0,0,0,.1)}.ui-pnotify-container{background-position:0 0;padding:.8em;height:100%;margin:0}.ui-pnotify-container:after{content:" ";visibility:hidden;display:block;height:0;clear:both}.ui-pnotify-container.ui-pnotify-sharp{-webkit-border-radius:0;-moz-border-radius:0;border-radius:0}.ui-pnotify-title{display:block;margin-bottom:.4em;margin-top:0}.ui-pnotify-text{display:block}.ui-pnotify-icon,.ui-pnotify-icon span{display:block;float:left;margin-right:.2em}.ui-pnotify.stack-bottomleft,.ui-pnotify.stack-topleft{left:25px;right:auto}.ui-pnotify.stack-bottomleft,.ui-pnotify.stack-bottomright{bottom:25px;top:auto}.ui-pnotify.stack-modal{left:50%;right:auto;margin-left:-150px}
     </style>
-
 {/literal}

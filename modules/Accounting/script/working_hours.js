@@ -1,98 +1,57 @@
 webix.ready(function () {
 
-    console.log(window.officePlan);
-
-    if (document.getElementById("allPlan")) {
-        initAllPlanTable();
-    }
-
-    if (document.getElementById("officesPlan")) {
-        initOfficeTable();
-    }
-
-    if (document.getElementById("workersPlan")) {
-        initWorkerTable();
-    }
-
-    function initOfficeTable() {
-
         var dtable = new webix.ui({
-            container: "officesPlan",
+            container: "tableHours",
             view: "datatable",
-            columns: [
-                {id: "region", header: "Регион", width: 236},
-                {id: "office", header: "Офис", width: 160},
-                {
-                    id: "plan",
-                    header: "План",
-                    editor: "richselect",
-                    options: [
-                        {"id": "1-й этап", "value": "1-й этап"},
-                        {"id": "2-й этап", "value": "2-й этап"},
-                        {"id": "3-й этап", "value": "3-й этап"},
-                        {"id": "4-й этап", "value": "4-й этап"}
-                    ],
-                    template: "<div class='tableEditPlan'><span class='spantable'>#plan#</span></div>",
-                    width: 110
-                },
-                {
-                    id: "floor1",
-                    header: "1-й этап",
-                    editor: "text",
-                    template: "<div class='tableEditPlan'><span class='spantable'>#floor1#</span></div>",
-                    width: 110
-                },
-                {
-                    id: "floor2",
-                    header: "2-й этап",
-                    editor: "text",
-                    template: "<div class='tableEditPlan'><span class='spantable'>#floor2#</span></div>",
-                    width: 110
-                },
-                {
-                    id: "floor3",
-                    header: "3-й этап",
-                    editor: "text",
-                    template: "<div class='tableEditPlan'><span class='spantable'>#floor3#</span></div>",
-                    width: 110
-                },
-                {
-                    id: "floor4",
-                    header: "4-й этап",
-                    editor: "text",
-                    template: "<div class='tableEditPlan'><span class='spantable'>#floor4#</span></div>",
-                    width: 110
-                }
-            ],
+            width: 1000,
+            columns: window.workerHoursData.headerTable,
             autoheight: true,
             autowidth: true,
             editable: true,
-            data: window.officePlan,
+            data: window.workerHoursData.bodyTable,
             on: {
                 onAfterEditStop: function (cell, coordinates) {
 
 
-                    var record = dtable.getItem(coordinates.row);
-
-                    var column = coordinates.column;
-                    if (column != "plan") {
-                        var value = cell.value.replace(/ /g, "");
-                    } else {
-                        value = cell.value
+                    if (cell.old == cell.value || (!cell.old && !cell.value)){
+                        return;
                     }
-                    var office = coordinates.row;
-                    var monthPeriod = $('#monthPeriod').val();
+
+                    var time = cell.value.replace(/ /g, "");
+
+                    if (time && parseInt(time) != time){
+                        $(function () {
+                            new PNotify({
+                                title: 'Error!',
+                                text: 'Ошибка валидации',
+                                delay: 4000
+                            });
+
+
+                        });
+                        var record = dtable.getItem(coordinates.row);
+                        record[coordinates.column] = cell.old;
+                        dtable.refresh();
+
+                        return;
+                    }
+
+                    var day = coordinates.column;
+                    var user = coordinates.row;
+                    var month = window.workerHoursData.month;
+                    var year = window.workerHoursData.year;
 
                     $.ajax({
                         type: "GET",
-                        url: "/index.php?module=VDCustomReports&view=List&mode=savePlan&value=" + value + "&column=" + column + "&office=" + office + "&monthPeriod=" + monthPeriod,
+                        url: "/index.php?module=Accounting&view=List&mode=workingHoursEdit&time=" + time + "&day=" + day + "&user=" + user + "&month=" + month + "&year=" + year ,
                         success: function (data) {
                             if (data != "success") {
+                                var record = dtable.getItem(coordinates.row);
                                 record[coordinates.column] = cell.old;
                                 dtable.refresh();
                                 $(function () {
                                     new PNotify({
-                                        title: 'Ошибка валидации!',
+                                        title: 'Ошибка сервера!',
                                         text: data,
                                         delay: 4000
                                     });
@@ -108,172 +67,30 @@ webix.ready(function () {
             }
         });
 
-        dtable.sort("#region#", "asc", "string");
-    }
-
-
-    function initAllPlanTable() {
-
-        // dtable = new webix.ui({
-        //     container: "allPlan",
-        //     view: "datatable",
-        //     columns: [
-        //         {id: "", header: "", width: 396},
-        //         {
-        //             id: "plan",
-        //             header: "План",
-        //             editor: "text",
-        //             template: "<div class='tableEditPlan'><span class='spantable'>#plan#</span></span></div>",
-        //             width: 110
-        //         },
-        //         {
-        //             id: "floor1",
-        //             header: "1-й этап",
-        //             editor: "text",
-        //             template: "<div class='tableEditPlan'><span class='spantable'>#floor1#</span></div>",
-        //             width: 110
-        //         },
-        //         {
-        //             id: "floor2",
-        //             header: "2-й этап",
-        //             editor: "text",
-        //             template: "<div class='tableEditPlan'><span class='spantable'>#floor2#</span></div>",
-        //             width: 110
-        //         },
-        //         {
-        //             id: "floor3",
-        //             header: "3-й этап",
-        //             editor: "text",
-        //             template: "<div class='tableEditPlan'><span class='spantable'>#floor3#</span></div>",
-        //             width: 110
-        //         },
-        //         {
-        //             id: "floor4",
-        //             header: "4-й этап",
-        //             editor: "text",
-        //             template: "<div class='tableEditPlan'><span class='spantable'>#floor4#</span></div>",
-        //             width: 110
-        //         }
-        //     ],
-        //     autoheight: true,
-        //     autowidth: true,
-        //     editable: true,
-        //     data: window.allPlan,
-        //     on: {
-        //         onAfterEditStop: function (cell, coordinates) {
-        //
-        //             var value = cell.value.replace(/ /g, "");
-        //             var column = coordinates.column;
-        //             var monthPeriod = $('#monthPeriod').val();
-        //
-        //             $.ajax({
-        //                 type: "GET",
-        //                 url: "http://crmturizm.vordoom.net/index.php?module=VDCustomReports&view=List&mode=saveAllPlan&value=" + value + "&column=" + column + "&monthPeriod=" + monthPeriod,
-        //                 dataType: "script"
-        //             });
-        //         }
-        //     }
-        // });
-
-    }
-
-
-    function initWorkerTable() {
-
-        dtable = new webix.ui({
-            container: "workersPlan",
-            view: "datatable",
-            columns: [
-                {id: "worker", header: "Сотрудник", width: 236},
-                {id: "office", header: "Офис", width: 160},
-                {
-                    id: "plan",
-                    header: "План",
-                    editor: "richselect",
-                    options: [
-                        {"id": "1-й этап", "value": "1-й этап"},
-                        {"id": "2-й этап", "value": "2-й этап"},
-                        {"id": "3-й этап", "value": "3-й этап"},
-                        {"id": "4-й этап", "value": "4-й этап"}
-                    ],
-                    template: "<div class='tableEditPlan'><span class='spantable'>#plan#</span></div>",
-                    width: 110
-                },
-                {
-                    id: "floor1",
-                    header: "1-й этап",
-                    editor: "text",
-                    template: "<div class='tableEditPlan'><span class='spantable'>#floor1#</span></div>",
-                    width: 110
-                },
-                {
-                    id: "floor2",
-                    header: "2-й этап",
-                    editor: "text",
-                    template: "<div class='tableEditPlan'><span class='spantable'>#floor2#</span></div>",
-                    width: 110
-                },
-                {
-                    id: "floor3",
-                    header: "3-й этап",
-                    editor: "text",
-                    template: "<div class='tableEditPlan'><span class='spantable'>#floor3#</span></div>",
-                    width: 110
-                },
-                {
-                    id: "floor4",
-                    header: "4-й этап",
-                    editor: "text",
-                    template: "<div class='tableEditPlan'><span class='spantable'>#floor4#</span></div>",
-                    width: 110
-                }
-            ],
-            autoheight: true,
-            autowidth: true,
-            editable: true,
-            data: window.workerPlan,
-            on: {
-                onAfterEditStop: function (cell, coordinates) {
-
-                    var record = dtable.getItem(coordinates.row);
-
-                    var column = coordinates.column;
-                    if (column != "plan") {
-                        var value = cell.value.replace(/ /g, "");
-                    } else {
-                        value = cell.value
-                    }
-
-                    var worker = coordinates.row;
-                    var monthPeriod = $('#monthPeriod').val();
-
-
-                    $.ajax({
-                        type: "GET",
-                        url: "/index.php?module=VDCustomReports&view=List&mode=saveWorkerPlan&value=" + value + "&column=" + column + "&worker=" + worker + "&monthPeriod=" + monthPeriod,
-                        dataType: "json",
-                        success: function (data) {
-                            if (data != "success") {
-                                record[coordinates.column] = cell.old;
-                                dtable.refresh();
-                                $(function () {
-                                    new PNotify({
-                                        title: 'Ошибка валидации!',
-                                        text: data,
-                                        delay: 4000
-                                    });
-
-                                });
-                            }
-                        },
-                    })
-                }
-            }
-        });
-
-        dtable.sort("#worker#", "asc", "string");
-    }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* PNotify modules included in this custom build file:
