@@ -292,7 +292,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $addQuery = $this->addQueryFilter();
 
-        $date = new DateTime("2017-02-01 00:00:00");
+      
 
         $date = DateTime::createFromFormat('m.Y', $this->filter_data['period']);
 //$date=new DateTime();
