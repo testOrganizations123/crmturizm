@@ -293,7 +293,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $addQuery = $this->addQueryFilter();
 
 
-        $date = DateTime::createFromFormat('d.Y', $this->filter_data['region']);
+        $date = DateTime::createFromFormat('d.m.Y', "1" . $this->filter_data['region']);
 //$date=new DateTime();
         //считаем количество дней в месяце
         $time = gmmktime($date->format("0, 0, 0, m, d, Y"));

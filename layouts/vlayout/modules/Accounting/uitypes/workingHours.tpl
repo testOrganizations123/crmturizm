@@ -8,7 +8,7 @@
 
 
 <style>
-    .webix_column:not(.webix_first){
+    .webix_column:not(.webix_first):not(.webix_last){
         cursor: pointer;
     }
 </style>
