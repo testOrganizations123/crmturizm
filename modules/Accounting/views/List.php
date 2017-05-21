@@ -313,9 +313,34 @@ class Accounting_List_View extends Vtiger_Index_View
             "width" => 270
         ];
         for ($i = 1; $i <= $countDays; $i++) {
+            $dayCode = date('w', strtotime($i . "." . $date->format('m.Y')));
+
+            switch ($dayCode) {
+                case 1:
+                    $day = "Пн";
+                    break;
+                case 2:
+                    $day = "Вт";
+                    break;
+                case 3:
+                    $day = "Ср";
+                    break;
+                case 4:
+                    $day = "Чт";
+                    break;
+                case 5:
+                    $day = "Пт";
+                    break;
+                case 6:
+                    $day = "Сб";
+                    break;
+                case 0:
+                    $day = "Вс";
+                    break;
+            }
             $headerTableArray[] = [
                 "id" => "$i",
-                "header" => "$i",
+                "header" => ["$i",$day],
                 "editor" => "text",
                 "width" => 38
             ];
@@ -406,7 +431,7 @@ class Accounting_List_View extends Vtiger_Index_View
             $tableOffice[$keyO]['headerTable'] = $headerTableArray;
             $tableOffice[$keyO]['bodyTable'] = $bodyTableArray;
 
-    }
+        }
 
         $viewer->assign('DATAHEADER', json_encode([
             "year" => $date->format('Y'),
