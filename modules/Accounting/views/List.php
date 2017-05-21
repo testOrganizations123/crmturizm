@@ -382,23 +382,30 @@ class Accounting_List_View extends Vtiger_Index_View
         foreach ($arrOfficeIds as $keyO => $item) {
             $tableOffice[$keyO]['nameOffice'] = $item['office'];
             $bodyTableArray = [];
-            foreach ($users as $user) {
-                $ar = [
-                    "id" => $user["id"],
-                    "name" => $user["name"]
-                ];
 
-                //запихиваем в строку данные, которые получили из таблицы рабочее время
+            foreach ($users as $user) {
+                $ar = [];
                 if ($item['id'] == $user['officeid']) {
+
+                    $ar = [
+                        "id" => $user["id"],
+                        "name" => $user["name"]
+                    ];
+
+                    // запихиваем в строку данные, которые получили из таблицы рабочее время
+                    $key = null;
                     if (array_key_exists($user["id"], $usersTimesArray)) {
-                        foreach ($usersTimesArray[$user["id"]] as $key => $value)
+                        foreach ($usersTimesArray[$user["id"]] as $key => $value) {
                             $ar[$key] = $value;
+                        }
                     }
+                    $bodyTableArray[] = $ar;
                 }
-                $bodyTableArray[] = $ar;
+
             }
             $tableOffice[$keyO]['bodyTable'] = $bodyTableArray;
-        }
+
+    }
 
         $viewer->assign('DATAHEADER', json_encode([
             "year" => $date->format('Y'),
