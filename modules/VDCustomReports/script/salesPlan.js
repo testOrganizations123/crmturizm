@@ -1,7 +1,5 @@
 webix.ready(function () {
 
-    console.log(window.officePlan);
-
     if (document.getElementById("allPlan")) {
         initAllPlanTable();
     }
