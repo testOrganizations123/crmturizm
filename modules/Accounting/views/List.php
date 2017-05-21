@@ -340,7 +340,7 @@ class Accounting_List_View extends Vtiger_Index_View
             }
             $headerTableArray[] = [
                 "id" => "$i",
-                "header" => ["$i",$day],
+                "header" => [$day,"$i"],
                 "editor" => "text",
                 "width" => 39
             ];
