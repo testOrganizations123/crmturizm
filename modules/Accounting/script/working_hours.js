@@ -19,7 +19,6 @@ webix.ready(function () {
 
         });
 
-        if (i == 0)
         var dtable = new webix.ui({
             container: "tableHours_" + i,
             view: "datatable",
