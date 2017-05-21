@@ -276,13 +276,13 @@ class Accounting_List_View extends Vtiger_Index_View
 
         if (count($record)) {
             $id = $record[0]["id"];
-            if ($time) {
+            if ($time || $time==0) {
                 $sql = "UPDATE working_time SET date = '$year-$month-$day', user = '$user', time = '$time'  WHERE id = '$id'";
             } else {
                 $sql = "DELETE FROM working_time WHERE id = '$id'";
             }
         } else {
-            if ($time) {
+            if ($time || $time == 0) {
                 $sql = "INSERT INTO working_time (user, date, time) VALUES('$user', '$year-$month-$day', '$time')";
             }
         }
