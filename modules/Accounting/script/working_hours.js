@@ -72,13 +72,13 @@ webix.ready(function () {
                     }
 
                     if (!in_array(time, availableChars) && parseInt(time) > 24) {
-                        $(function () {
-                            new PNotify({
-                                title: 'Error!',
-                                text: 'Время не может быть больше 24',
-                                delay: 4000
-                            });
-                        });
+                        // $(function () {
+                        //     new PNotify({
+                        //         title: 'Error!',
+                        //         text: 'Время не может быть больше 24',
+                        //         delay: 4000
+                        //     });
+                        // });
 
                         record = dtable.getItem(coordinates.row);
                         record[coordinates.column] = cell.old;

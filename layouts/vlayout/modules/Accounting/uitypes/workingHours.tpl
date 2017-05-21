@@ -8,6 +8,7 @@
 
 {foreach item=VALUE key=KEY from=$WORKINGHOURSDATA|json_decode}
     <div style="font-size: medium">{$VALUE->nameOffice}</div>
+    <br>
     <div id="tableHours_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>
 {/foreach}
 
