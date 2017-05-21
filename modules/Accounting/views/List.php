@@ -209,7 +209,7 @@ class Accounting_List_View extends Vtiger_Index_View
     }
 
     function getOfficeUser(){
-        
+       $sql = "SELECT officeid.o FROM vtiger_office as o LEFT JOIN vtiger_users as u WHERE u.id=".$this->filter_data['user'];
     }
 
     function getHeaderScripts(Vtiger_Request $request)
