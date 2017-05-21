@@ -328,7 +328,7 @@ class Accounting_List_View extends Vtiger_Index_View
         ];
         for ($i = 1; $i <= $countDays; $i++) {
             $dayCode = date('w', strtotime($i . "." . $date->format('m.Y')));
-
+$css ="{}";
             switch ($dayCode) {
                 case 1:
                     $day = "Пн";
@@ -347,16 +347,19 @@ class Accounting_List_View extends Vtiger_Index_View
                     break;
                 case 6:
                     $day = "Сб";
+                    $css = ['background'=> "#d2e3ef"];
                     break;
                 case 0:
                     $day = "Вс";
+                    $css = ['background'=> "#d2e3ef"];
                     break;
             }
             $headerTableArray[] = [
                 "id" => "$i",
                 "header" => [$day, "$i"],
                 "editor" => "text",
-                "width" => 39
+                "width" => 39,
+                "css"=>$css
             ];
         }
 
