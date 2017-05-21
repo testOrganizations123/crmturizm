@@ -170,6 +170,7 @@ class Accounting_List_View extends Vtiger_Index_View
         if (!empty($this->filter_data['region']) || !empty($this->filter_data['office']) || !empty($this->filter_data['user'])) {
             $sql .= "AND u.id IN";
             if (!empty($this->filter_data['user'])) {
+
                 $sql .= " (" . $this->filter_data['user'] . ")";
             } else if (!empty($this->filter_data['office'])) {
 
@@ -205,6 +206,10 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
         return $raw;
+    }
+
+    function getOfficeUser(){
+        
     }
 
     function getHeaderScripts(Vtiger_Request $request)
