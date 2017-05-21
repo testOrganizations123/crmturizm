@@ -57,13 +57,13 @@ webix.ready(function () {
                     ];
 
                     if (time && parseInt(time) != time && !in_array(time, availableChars)) {
-                        $(function () {
-                            new PNotify({
-                                title: 'Error!',
-                                text: 'Ошибка валидации',
-                                delay: 4000
-                            });
-                        });
+                        // $(function () {
+                        //     new PNotify({
+                        //         title: 'Error!',
+                        //         text: 'Ошибка валидации',
+                        //         delay: 4000
+                        //     });
+                        // });
                         var record = dtable.getItem(coordinates.row);
                         record[coordinates.column] = cell.old;
                         dtable.refresh();
