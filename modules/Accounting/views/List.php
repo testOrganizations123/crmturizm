@@ -174,8 +174,8 @@ class Accounting_List_View extends Vtiger_Index_View
 
                 if (!$office) {
                     $sql = "AND u.office = '' ";
-                }else{
-                    $sql = "AND u.office IN (" .$office . ")";
+                } else {
+                    $sql = "AND u.office IN (" . $office . ")";
                 }
             } else if (!empty($this->filter_data['office'])) {
 
@@ -303,7 +303,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function workingHours(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
-        
+
 
         $addQuery = $this->addQueryFilter();
 
@@ -328,7 +328,7 @@ class Accounting_List_View extends Vtiger_Index_View
         ];
         for ($i = 1; $i <= $countDays; $i++) {
             $dayCode = date('w', strtotime($i . "." . $date->format('m.Y')));
-$css ="{}";
+            $css = "";
             switch ($dayCode) {
                 case 1:
                     $day = "Пн";
@@ -347,11 +347,11 @@ $css ="{}";
                     break;
                 case 6:
                     $day = "Сб";
-                    $css = ['background'=> "#d2e3ef"];
+                    $css = ['background' => "#d2e3ef"];
                     break;
                 case 0:
                     $day = "Вс";
-                    $css = ['background'=> "#d2e3ef"];
+                    $css = ['background' => "#d2e3ef"];
                     break;
             }
             $headerTableArray[] = [
@@ -359,7 +359,7 @@ $css ="{}";
                 "header" => [$day, "$i"],
                 "editor" => "text",
                 "width" => 39,
-                "css"=>$css
+                "css" => $css
             ];
         }
 
