@@ -310,7 +310,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $headerTableArray[] = [
             "id" => "name",
             "header" => "Сотрудник",
-            "width" => 270
+            "width" => 240
         ];
         for ($i = 1; $i <= $countDays; $i++) {
             $dayCode = date('w', strtotime($i . "." . $date->format('m.Y')));
@@ -342,7 +342,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "id" => "$i",
                 "header" => ["$i",$day],
                 "editor" => "text",
-                "width" => 38
+                "width" => 39
             ];
         }
 
