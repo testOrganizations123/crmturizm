@@ -403,6 +403,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
 
             }
+            $tableOffice[$keyO]['headerTable'] = $headerTableArray;
             $tableOffice[$keyO]['bodyTable'] = $bodyTableArray;
 
     }

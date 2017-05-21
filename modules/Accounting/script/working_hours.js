@@ -3,7 +3,7 @@ webix.ready(function () {
 
     window.workerHoursData.forEach(function (table, i, arr) {
 
-        console.log(table);
+
 
         table.bodyTable.forEach(function (item, i, arr) {
             var sum = 0;
@@ -23,11 +23,11 @@ webix.ready(function () {
             container: "tableHours_" + i,
             view: "datatable",
             width: 1000,
-            columns: window.dataHeader.headerTable,
+            columns:table.headerTable ,
             autoheight: true,
             autowidth: true,
             editable: true,
-            data: table.bodyTable,
+            data:  table.bodyTable,
             on: {
                 onAfterEditStop: function (cell, coordinates) {
 
