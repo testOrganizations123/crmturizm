@@ -1,6 +1,6 @@
 <script>
     window.workerHoursData = {$WORKINGHOURSDATA};
-
+    window.dataHeader = {$DATAHEADER};
 </script>
 
 <h3>Учет рабочего времени</h3>
