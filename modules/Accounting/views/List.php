@@ -170,8 +170,13 @@ class Accounting_List_View extends Vtiger_Index_View
         if (!empty($this->filter_data['region']) || !empty($this->filter_data['office']) || !empty($this->filter_data['user'])) {
             $sql .= "AND u.id IN";
             if (!empty($this->filter_data['user'])) {
+                $office = $this->getOfficeUser()[0]['officeid'];
 
-                $sql .= " (" . $this->filter_data['user'] . ")";
+                if (!$office) {
+                    $sql = "AND u.office = '' ";
+                }else{
+                    $sql = "AND u.office IN (" .$office . ")";
+                }
             } else if (!empty($this->filter_data['office'])) {
 
                 $this->office_data = $this->filter_data['office'];
@@ -208,8 +213,12 @@ class Accounting_List_View extends Vtiger_Index_View
         return $raw;
     }
 
-    function getOfficeUser(){
-       $sql = "SELECT officeid.o FROM vtiger_office as o LEFT JOIN vtiger_users as u WHERE u.id=".$this->filter_data['user'];
+    function getOfficeUser()
+    {
+        $sql = "SELECT o.officeid from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE  u.id=" . $this->filter_data['user'];
+
+        $raw = $this->getSQLArrayResult($sql, array());
+        return $raw;
     }
 
     function getHeaderScripts(Vtiger_Request $request)
@@ -294,7 +303,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function workingHours(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
-
+        
 
         $addQuery = $this->addQueryFilter();
 
@@ -345,7 +354,7 @@ class Accounting_List_View extends Vtiger_Index_View
             }
             $headerTableArray[] = [
                 "id" => "$i",
-                "header" => [$day,"$i"],
+                "header" => [$day, "$i"],
                 "editor" => "text",
                 "width" => 39
             ];
