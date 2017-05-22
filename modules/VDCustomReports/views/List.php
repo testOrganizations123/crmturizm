@@ -311,13 +311,13 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
 
 
-        $funnelArrayNew[0]['value'][5]['text'] = "Закрытые на продажу<br>брони: ";
-        $funnelArrayNew[0]['value'][5]['title'] = "Закрытые на продажу брони:";
+        $funnelArrayNew[0]['value'][5]['text'] = "Количество подтвержденных<br>броней: ";
+        $funnelArrayNew[0]['value'][5]['title'] = "Количество подтвержденных броней:";
         $funnelArrayNew[0]['value'][5]['level'] = 0;
         $funnelArrayNew[0]['value'][5]['height'] = 1;
 
-        $funnelArrayNew[0]['value'][6]['text'] = "Количество подтвержденных<br>броней: ";
-        $funnelArrayNew[0]['value'][6]['title'] = "Количество подтвержденных броней:";
+        $funnelArrayNew[0]['value'][6]['text'] = "Количество не подтвержденных<br>броней: ";
+        $funnelArrayNew[0]['value'][6]['title'] = "Количество не подтвержденных броней:";
         $funnelArrayNew[0]['value'][6]['level'] = 0;
         $funnelArrayNew[0]['value'][6]['height'] = 1;
 
@@ -354,7 +354,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 $funnelArrayNew[0]['value'][5]['level'] += 1;
             }
 
-            if ($item['eventstatus'] != 'Closed Lost'){
+            if ($item['eventstatus'] == 'Договор заключен'){
                 $funnelArrayNew[0]['value'][6]['level'] += 1;
             }
 
@@ -459,12 +459,12 @@ class VDCustomReports_List_View extends Vtiger_List_View
             $funnelArrayNew[$key]['value'][4]['text'] = "Не закрытые на продажу<br>заявки: ";
             $funnelArrayNew[$key]['value'][4]['title'] = "Не закрытые на продажу заявки:";
             $funnelArrayNew[$key]['value'][4]['level'] = 0;
-            $funnelArrayNew[$key]['value'][5]['text'] = "Закрытые на продажу<br>брони: ";
-            $funnelArrayNew[$key]['value'][5]['title'] = "Закрытые на продажу брони:";
+            $funnelArrayNew[$key]['value'][5]['text'] = "Количество подтвержденных<br>броней: ";
+            $funnelArrayNew[$key]['value'][5]['title'] = "Количество подтвержденных броней:";
             $funnelArrayNew[$key]['value'][5]['level'] = 0;
 
-            $funnelArrayNew[$key]['value'][6]['text'] = "Количество подтвержденных<br>броней: ";
-            $funnelArrayNew[$key]['value'][6]['title'] = "Количество подтвержденных броней:";
+            $funnelArrayNew[$key]['value'][6]['text'] = "Количество не подтвержденных<br>броней: ";
+            $funnelArrayNew[$key]['value'][6]['title'] = "Количество не подтвержденных броней:";
             $funnelArrayNew[$key]['value'][6]['level'] = 0;
 
             $funnelArrayNew[$key]['value'][7]['text'] = "Аннулированные туры:<br>";
@@ -507,7 +507,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                         $funnelArrayNew[$key]['value'][5]['level'] += 1;
                     }
 
-                    if ($item['eventstatus'] != 'Closed Lost') {
+                    if ($item['eventstatus'] == 'Договор заключен') {
                         $funnelArrayNew[$key]['value'][6]['level'] += 1;
                     }
                     if ($item['eventstatus'] == 'Closed Lost') {
