@@ -459,6 +459,21 @@ class Accounting_List_View extends Vtiger_Index_View
         $viewer->assign('WORKINGHOURSDATA', json_encode($tableOffice));
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('WORKING', 1);
+
+        //узнаем, пользователь обычный менеджер(может стажер) или управляющий
+        $db = PearDatabase::getInstance();
+        $userModel = Users_Record_Model::getCurrentUserModel();
+        $userRole = $userModel->getRole();
+        $sqlRole = "SELECT depth FROM vtiger_role WHERE roleid = '$userRole'";
+        $result = $db->pquery($sqlRole, array());
+        $depth = $db->query_result_rowdata($result, "depth");
+        if ($depth["depth"] > 4) {
+            $viewer->assign('WRITINGACCESS', json_encode(false));
+        } else {
+            $viewer->assign('WRITINGACCESS', json_encode(true));
+        }
+
+
         return true;
     }
 
