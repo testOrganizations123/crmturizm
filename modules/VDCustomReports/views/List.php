@@ -595,8 +595,9 @@ class VDCustomReports_List_View extends Vtiger_List_View
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    LEFT JOIN vtiger_potential as p ON p.cf_1532 = l.leadid
-                                    INNER JOIN vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+                                    LEFT JOIN vtiger_potentialscf as pcf ON pcf.cf_1532 = l.leadid
+                                    LEFT JOIN vtiger_potential as p ON p.potentialid = pcf.potentialid
+                                    
                                     WHERE a1.eventstatus != 'Held' and p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST(c1.createdtime AS DATE) BETWEEN ? AND ?)" . $addQuery . "
             GROUP BY  c1.crmid";
 
@@ -613,8 +614,9 @@ class VDCustomReports_List_View extends Vtiger_List_View
                              LEFT JOIN vtiger_crmentity as cl ON cl.crmid = a1.activityid 
                              WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?) ORDER BY a1.activityid DESC) as s 
                             ON s.crmid = l.leadid
-                        LEFT JOIN vtiger_potential as p ON p.cf_1532= l.leadid
-                        INNER JOIN vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+                            
+                        LEFT JOIN vtiger_potentialscf as pcf ON pcf.cf_1532 = l.leadid
+                        LEFT JOIN vtiger_potential as p ON p.potentialid = pcf.potentialid
                         LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                         LEFT JOIN vtiger_office as o ON o.officeid = u.office
                         WHERE c1.deleted = 0 and p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты'" . $addQuery . "
