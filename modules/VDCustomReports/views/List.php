@@ -264,12 +264,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
         return $raw;
     }
 
-    public function getFunnels($sqlApplication)
+    public function getFunnels($resultReservation, $resultApplication)
     {
-
-        // $resultReservation = $this->getSQLArrayResult($sqlReservation, [$this->date_start, $this->date_finish]);
-        $resultApplication = $this->getSQLArrayResult($sqlApplication, [$this->date_start, $this->date_finish]);
-
 
         $sourceArray = array('Встреча в офисе', 'Входящий звонок', 'Обратный звонок', 'Заказ с поисковика на сайте', 'Соц. Сети', 'Заявка с сайта на покупку тура', 'Заявка с сайта на подбор тура', 'Одноклассники', 'ВКонтакте', 'ICQ', 'Почтовая рассылка', 'Другое');
 
@@ -310,6 +306,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
         $funnelArrayNew[0]['value'][4]['height'] = 1;
 
 
+
         $funnelArrayNew[0]['value'][5]['text'] = "Количество подтвержденных<br>броней: ";
         $funnelArrayNew[0]['value'][5]['title'] = "Количество подтвержденных броней:";
         $funnelArrayNew[0]['value'][5]['level'] = 0;
@@ -331,7 +328,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
         foreach ($resultApplication as $item) {
 
             $funnelArrayNew[0]['value'][0]['level'] += 1;
-            if (!$item['meet'] && $item['eventstatus'] == "Отказ") {
+            if (!$item['meet'] && $item['eventstatus']=="Отказ"){
                 $funnelArrayNew[0]['value'][1]['level'] += 1;
             }
 
@@ -347,18 +344,20 @@ class VDCustomReports_List_View extends Vtiger_List_View
             }
 
 
-            if (isset($item['status']) && $item['status'] == 'Closed Won' || $item['status'] == 'Бронь потверждена' || $item['status'] == 'Бронь оплачена') {
+        }
+        foreach ($resultReservation as $item) {
+            if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                 $funnelArrayNew[0]['value'][5]['level'] += 1;
             }
 
-            if (isset($item['status']) && $item['status'] == 'Договор заключен') {
+            if ($item['eventstatus'] == 'Договор заключен'){
                 $funnelArrayNew[0]['value'][6]['level'] += 1;
             }
 
-            if (isset($item['status']) && $item['status'] == 'Closed Lost') {
+            if ($item['eventstatus'] == 'Closed Lost') {
                 $funnelArrayNew[0]['value'][7]['level'] += 1;
             }
-            if (isset($item['status']) && $item['status'] == 'Closed Won' || $item['status'] == 'Бронь потверждена' || $item['status'] == 'Бронь оплачена') {
+            if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                 if (isset($item['echarge'])) {
                     $sumECharge += $item['echarge'];
                 }
@@ -372,8 +371,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
         }
 
-        if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level'] + $funnelArrayNew[0]['value'][5]['level'] + $funnelArrayNew[0]['value'][6]['level'] + $funnelArrayNew[0]['value'][7]['level']) > 0) {
-            $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level'] + $funnelArrayNew[0]['value'][5]['level'] + $funnelArrayNew[0]['value'][6]['level'] + $funnelArrayNew[0]['value'][7]['level']);
+        if (($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']+$funnelArrayNew[0]['value'][5]['level']+$funnelArrayNew[0]['value'][6]['level']+$funnelArrayNew[0]['value'][7]['level']) > 0) {
+            $koef = 400 / ($funnelArrayNew[0]['value'][0]['level'] + $funnelArrayNew[0]['value'][1]['level'] + $funnelArrayNew[0]['value'][2]['level'] + $funnelArrayNew[0]['value'][3]['level'] + $funnelArrayNew[0]['value'][4]['level']+$funnelArrayNew[0]['value'][5]['level']+$funnelArrayNew[0]['value'][6]['level']+$funnelArrayNew[0]['value'][7]['level']);
             $koefp = 100 / $funnelArrayNew[0]['value'][0]['level'];
             $funnelArrayNew[0]['value'][0]['height'] = ceil($koef * $funnelArrayNew[0]['value'][0]['level']);
             $funnelArrayNew[0]['value'][1]['height'] = ceil($koef * $funnelArrayNew[0]['value'][1]['level']);
@@ -477,7 +476,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 if ($item['leadsource'] == $source) {
                     $funnelArrayNew[$key]['value'][0]['level'] += 1;
 
-                    if (!$item['meet'] && $item['eventstatus'] == "Отказ") {
+                    if (!$item['meet'] && $item['eventstatus']=="Отказ"){
                         $funnelArrayNew[$key]['value'][1]['level'] += 1;
                     }
 
@@ -493,19 +492,24 @@ class VDCustomReports_List_View extends Vtiger_List_View
                     if ($item['eventstatus'] != 'Продажа') {
                         $funnelArrayNew[$key]['value'][4]['level'] += 1;
                     }
-
-
-                    if ($item['status'] == 'Closed Won' || $item['status'] == 'Бронь потверждена' || $item['status'] == 'Бронь оплачена') {
+                }
+            }
+            foreach ($resultReservation as $item) {
+                if (!$item['leadsource']) {
+                    $item['leadsource'] = 'Другое';
+                }
+                if ($item['leadsource'] == $source) {
+                    if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                         $funnelArrayNew[$key]['value'][5]['level'] += 1;
                     }
 
-                    if ($item['status'] == 'Договор заключен') {
+                    if ($item['eventstatus'] == 'Договор заключен') {
                         $funnelArrayNew[$key]['value'][6]['level'] += 1;
                     }
-                    if ($item['status'] == 'Closed Lost') {
+                    if ($item['eventstatus'] == 'Closed Lost') {
                         $funnelArrayNew[$key]['value'][7]['level'] += 1;
                     }
-                    if ($item['status'] == 'Closed Won' || $item['status'] == 'Бронь потверждена' || $item['status'] == 'Бронь оплачена') {
+                    if ($item['eventstatus'] == 'Closed Won' || $item['eventstatus']=='Бронь потверждена' || $item['eventstatus']=='Бронь оплачена') {
                         if (isset($item['echarge'])) {
                             $sumECharge += $item['echarge'];
                         }
@@ -520,8 +524,8 @@ class VDCustomReports_List_View extends Vtiger_List_View
                 }
             }
 
-            if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][4]['level'] + $funnelArrayNew[$key]['value'][5]['level'] + $funnelArrayNew[$key]['value'][6]['level'] + $funnelArrayNew[$key]['value'][7]['level']) > 0) {
-                $koef = 500 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][4]['level'] + $funnelArrayNew[$key]['value'][5]['level'] + $funnelArrayNew[$key]['value'][6]['level'] + $funnelArrayNew[$key]['value'][7]['level']);
+            if (($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][4]['level']+$funnelArrayNew[$key]['value'][5]['level']+$funnelArrayNew[$key]['value'][6]['level']+$funnelArrayNew[$key]['value'][7]['level']) > 0) {
+                $koef = 500 / ($funnelArrayNew[$key]['value'][0]['level'] + $funnelArrayNew[$key]['value'][1]['level'] + $funnelArrayNew[$key]['value'][2]['level'] + $funnelArrayNew[$key]['value'][3]['level'] + $funnelArrayNew[$key]['value'][4]['level']+$funnelArrayNew[$key]['value'][5]['level']+$funnelArrayNew[$key]['value'][6]['level']+$funnelArrayNew[$key]['value'][7]['level']);
                 $koefp = 100 / $funnelArrayNew[$key]['value'][0]['level'];
                 $funnelArrayNew[$key]['value'][0]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][0]['level']);
                 $funnelArrayNew[$key]['value'][1]['height'] = ceil($koef * $funnelArrayNew[$key]['value'][1]['level']);
@@ -560,7 +564,7 @@ class VDCustomReports_List_View extends Vtiger_List_View
 
             $funnelArrayNew[$key]['value'][8]['text'] = "Средняя наценка:<br>";
             $funnelArrayNew[$key]['value'][8]['title'] = "Средняя наценка:";
-            $funnelArrayNew[$key]['value'][8]['level'] = round($sumECharge / $funnelArrayNew[$key]['value'][5]['level'], 2) . " %";;
+            $funnelArrayNew[$key]['value'][8]['level'] = round($sumECharge / $funnelArrayNew[$key]['value'][5]['level'],2) . " %";;
             $funnelArrayNew[$key]['value'][8]['height'] = 100;
             $funnelArrayNew[$key]['value'][8]['percent'] = "";
 
@@ -590,19 +594,20 @@ class VDCustomReports_List_View extends Vtiger_List_View
     {
 
         $addQuery = $this->addQueryFilter();
-        $sqlNewFunnelApplication = "SELECT a1.eventstatus, l.leadsource, c1.meet, p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,
-                     ((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge,  p.sales_stage AS status FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as c1 ON c1.crmid = l.leadid
+        $sqlNewFunnelApplication = "SELECT l.leadid as id,  a1.eventstatus, l.leadsource, c1.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as c1 ON c1.crmid = l.leadid
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                                    LEFT JOIN vtiger_potentialscf as pcf ON pcf.cf_1532 = l.leadid
-                                    LEFT JOIN vtiger_potential as p ON p.potentialid = pcf.potentialid
-                                    WHERE a1.eventstatus != 'Held'and ((p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты') or p.potentialtype is null) and (CAST(c1.createdtime AS DATE) BETWEEN ? AND ?)".$addQuery ."GROUP BY  c1.crmid";
+                                    WHERE a1.eventstatus != 'Held' and (CAST(c1.createdtime AS DATE) BETWEEN ? AND ?)" . $addQuery . "
+            GROUP BY  c1.crmid";
+
+        $resultApplicationNew = $this->getSQLArrayResult($sqlNewFunnelApplication, [$this->date_start, $this->date_finish]);
 
 
-        $sqlAllFunnelApplication = "SELECT g.eventstatus,g.leadsource, g.meet, g.amount, g.amounta, g.echarge, g.status FROM
-                    (SELECT s.due_date, l.leadid, s.eventstatus, s.activityid, l.leadsource, c1.meet, c1.crmid, p.amount-pcf.cf_1256 AS amount, p.amount AS amounta,
-                     ((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge,  p.sales_stage AS status
+
+
+        $sqlAllFunnelApplication = "SELECT g.leadid as id, g.eventstatus,g.leadsource, g.meet FROM
+                    (SELECT s.due_date, l.leadid, s.eventstatus, s.activityid, l.leadsource, c1.meet, c1.crmid
                         FROM vtiger_leaddetails as l
                         INNER JOIN vtiger_crmentity as c1 
                             ON c1.crmid = l.leadid
@@ -612,47 +617,69 @@ class VDCustomReports_List_View extends Vtiger_List_View
                              LEFT JOIN vtiger_crmentity as cl ON cl.crmid = a1.activityid 
                              WHERE (CAST(a1.due_date AS DATE) BETWEEN ? AND ?) ORDER BY a1.activityid DESC) as s 
                             ON s.crmid = l.leadid
-                            
-                        LEFT JOIN vtiger_potentialscf as pcf ON pcf.cf_1532 = l.leadid
-                        LEFT JOIN vtiger_potential as p ON p.potentialid = pcf.potentialid
                         LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                         LEFT JOIN vtiger_office as o ON o.officeid = u.office
-                        WHERE c1.deleted = 0 and ((p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты') or p.potentialtype is null)" . $addQuery . "
+                        WHERE c1.deleted = 0 " . $addQuery . "
                         GROUP BY l.leadid 
                     ) as g GROUP BY g.crmid";
 
-        $arr = explode(' ', $addQuery);
+        $resultApplicationAll = $this->getSQLArrayResult($sqlAllFunnelApplication, [$this->date_start, $this->date_finish]);
+
+        $arr = explode(' ',$addQuery);
 
 
-        if ($arr[2] == 'u.office') {
+        if ($arr[2] == 'u.office'){
             $arr[2] = 'pcf.cf_1215';
         }
 
-        $addQuery = implode(' ', $arr);
+        $addQuery = implode(' ',$arr);
 
-//        $sqlNewFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount, p.amount AS amounta, ((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus,p.leadsource
-//                        FROM vtiger_potential as p
-//                        INNER JOIN vtiger_crmentity as c1
-//                            ON c1.crmid = p.potentialid
-//                            INNER JOIN vtiger_potentialscf as pcf
-//                            ON pcf.potentialid = p.potentialid
-//                            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
-//                            LEFT JOIN vtiger_office as o ON o.officeid = u.office
-//
-//
-//                  WHERE p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты'  and (CAST(c1.createdtime AS DATE) BETWEEN ? AND ?)
-//                " . $addQuery . "
-//            GROUP BY  c1.crmid";
-//
-//
-//        $sqlAllFunnelReservation = "SELECT p.amount-pcf.cf_1256 AS amount , p.amount AS amounta, ((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus, p.leadsource   FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
-//            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
-//            left join vtiger_office as o ON o.officeid = pcf.cf_1215
-//            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
-//            where c1.deleted=0 and p.potentialtype <> 'Авиа билеты' and p.potentialtype <> 'ЖД билеты' and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?)  " . $addQuery;
+        $newApplications = "0";
 
-        $funnelArrayNew = $this->getFunnels($sqlNewFunnelApplication);
-        $funnelArrayAll = $this->getFunnels($sqlAllFunnelApplication);
+        foreach ($resultApplicationNew as $application){
+            $newApplications .= ",".$application["id"];
+        }
+
+        $sqlNewFunnelReservation = "
+            SELECT p.amount-pcf.cf_1256 AS amount , p.amount AS amounta, ((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus, p.leadsource   
+            FROM vtiger_potential as p 
+            INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+            left join vtiger_office as o ON o.officeid = pcf.cf_1215
+            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+            INNER JOIN vtiger_leaddetails as l ON pcf.cf_1532 = l.leadid
+            where c1.deleted=0 
+                  and p.potentialtype <> 'Авиа билеты' 
+                  and p.potentialtype <> 'ЖД билеты' 
+                  and l.leadid in ($newApplications)
+                  $addQuery";
+
+        $resultReservationNew = $this->getSQLArrayResult($sqlNewFunnelReservation, []);
+
+        $allApplications = "0";
+
+        foreach ($resultApplicationAll as $application){
+            $allApplications .= ",".$application["id"];
+        }
+
+        $sqlAllFunnelReservation = "
+            SELECT p.amount-pcf.cf_1256 AS amount , p.amount AS amounta, ((p.amount-pcf.cf_1256)/(p.amount)*100) as  echarge, p.sales_stage AS eventstatus, p.leadsource   
+            FROM vtiger_potential as p 
+            INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+            left join vtiger_office as o ON o.officeid = pcf.cf_1215
+            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+            INNER JOIN vtiger_leaddetails as l ON pcf.cf_1532 = l.leadid
+            where c1.deleted=0 
+                  and p.potentialtype <> 'Авиа билеты' 
+                  and p.potentialtype <> 'ЖД билеты' 
+                  and l.leadid in ($allApplications)
+                  $addQuery";
+
+        $resultReservationAll = $this->getSQLArrayResult($sqlAllFunnelReservation, []);
+
+        $funnelArrayNew = $this->getFunnels($resultReservationNew, $resultApplicationNew);
+        $funnelArrayAll = $this->getFunnels($resultReservationAll, $resultApplicationAll);
 
 
         $viewer->assign('FUNNELNEW', json_encode($funnelArrayNew));
