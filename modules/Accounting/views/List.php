@@ -32,7 +32,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
     function checkPermission(Vtiger_Request $request)
     {
-        return true;
+        return false;
     }
 
     public function preProcess(Vtiger_Request $request)

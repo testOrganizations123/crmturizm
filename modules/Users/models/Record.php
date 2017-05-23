@@ -270,7 +270,7 @@ class Users_Record_Model extends Vtiger_Record_Model {
 	public function getAccessibleUsersForModule($module) {
 		$currentUser = Users_Record_Model::getCurrentUserModel();
 		$curentUserPrivileges = Users_Privileges_Model::getCurrentUserPrivilegesModel();
-                if ($module == 'VDCustomReports'){
+                if ($module == 'VDCustomReports' || $module == 'Accounting'){
                               $module = 'Leads';
                           }         
 
@@ -299,7 +299,7 @@ class Users_Record_Model extends Vtiger_Record_Model {
 	public function getAccessibleGroupForModule($module) {
 		$currentUser = Users_Record_Model::getCurrentUserModel();
 		$curentUserPrivileges = Users_Privileges_Model::getCurrentUserPrivilegesModel();
-                if ($module == 'VDCustomReports'){
+                if ($module == 'VDCustomReports'  || $module == 'Accounting'){
                               $module = 'Leads';
                           }  
 		if($currentUser->isAdminUser() || $curentUserPrivileges->hasGlobalWritePermission()) {
