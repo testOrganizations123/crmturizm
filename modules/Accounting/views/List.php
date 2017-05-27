@@ -477,5 +477,9 @@ class Accounting_List_View extends Vtiger_Index_View
         return true;
     }
 
+    public function holidays(){
+
+    }
+
 
 }

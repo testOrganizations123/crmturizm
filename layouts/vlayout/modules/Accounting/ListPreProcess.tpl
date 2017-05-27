@@ -25,6 +25,11 @@
                                     <strong>Учет рабочего времени</strong>
                                 </a>
                             </p>
+                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=holidays'" id="Contacts_sideBar_link_LBL_DASHBOARD" class="{if $MODE eq 'holidays'}selectedQuickLink{else}unSelectedQuickLink{/if}">
+                                <a class="quickLinks" href="index.php?module=Accounting&view=List&mode=holidays">
+                                    <strong>Праздничные дни</strong>
+                                </a>
+                            </p>
 
                         </div>
                      
