@@ -477,8 +477,16 @@ class Accounting_List_View extends Vtiger_Index_View
         return true;
     }
 
-    public function holidays(){
+    public function holidays(Vtiger_Request $request, Vtiger_Viewer $viewer){
+        $viewer->assign('HOLIDAYS', true);
+        return true;
+    }
 
+    function addScript_holidays($jsFileNames)
+    {
+        array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
+        array_push($jsFileNames, "modules.Accounting.script.holidays");
+        return $jsFileNames;
     }
 
 
