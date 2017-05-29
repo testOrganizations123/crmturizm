@@ -1,4 +1,7 @@
+<script>
+    window.holidays = {$HOLIDAYS};
 
+</script>
 <h3>Праздничные дни</h3>
 <br>
 <div id="tableHolidays"  style="overflow-x: auto; display: inline-block; padding-bottom: 20px"></div>

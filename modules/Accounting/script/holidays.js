@@ -32,12 +32,7 @@ webix.ready(function () {
             {id: "holiday", header: "Праздник", width: 400}
         ],
         select:"row",
-        data:[
-            {id: 1, date: "01.01.2016", holiday: "Праздник"},
-            {id: 2, date: "01.02.2016", holiday: "Праздник"},
-            {id: 3, date: "01.03.2016", holiday: "Праздник"},
-            {id: 3, date: "01.04.2016", holiday: "Праздник"}
-        ]
+        data:window.holidays
     });
 
 

@@ -276,7 +276,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         if (count($record)) {
             $id = $record[0]["id"];
-            if ($time || $time==0) {
+            if ($time || $time == 0) {
                 $sql = "UPDATE working_time SET date = '$year-$month-$day', user = '$user', time = '$time'  WHERE id = '$id'";
             } else {
                 $sql = "DELETE FROM working_time WHERE id = '$id'";
@@ -477,8 +477,22 @@ class Accounting_List_View extends Vtiger_Index_View
         return true;
     }
 
-    public function holidays(Vtiger_Request $request, Vtiger_Viewer $viewer){
-        $viewer->assign('HOLIDAYS', true);
+    public function holidays(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+        $holidayQuery = "SELECT * FROM holidays";
+
+        $holidays = $this->getSQLArrayResult($holidayQuery,"");
+        $holidaysArr = [];
+        foreach ($holidays as $key=>$item){
+            $holidaysArr[$key]['id'] = $item['id'];
+            $holidaysArr[$key]['holiday'] = $item['name'];
+            $holidaysArr[$key]['date'] = $item['date'];
+
+        }
+
+
+        $viewer->assign('HOLIDAYS', json_encode($holidaysArr));
         return true;
     }
 
