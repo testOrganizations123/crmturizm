@@ -8,12 +8,16 @@
 
 <div style="font-size: medium">Кемерово</div>
 <br>
-<div id="tableVacation"></div>
+<h4>Основной отпуск</h4>
+<div id="tableVacation" style="margin-top: 2px"></div>
+<br>
+<h4>Рекламный тур</h4>
+<div id="tableVacationPromo" style="margin-top: 2px"></div>
 
 
 <style>
 
-    #tableVacation *{
+    #tableVacation *, #tableVacationPromo *{
         font-size: 14px;
     }
 
