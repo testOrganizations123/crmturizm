@@ -1,3 +1,4 @@
+var dtable;
 webix.ready(function () {
 
 
@@ -20,36 +21,74 @@ webix.ready(function () {
     // });
 
 
-
-    webix.ui({
-        id:"data",
-        view:"datatable",
-        container:"tableHolidays",
-            autoheight: true,
-            autowidth: true,
+    dtable = webix.ui({
+        id: "data",
+        view: "datatable",
+        container: "tableHolidays",
+        autoheight: true,
+        autowidth: true,
         columns: [
             {id: "date", header: "Дата", width: 120},
-            {id: "holiday", header: "Праздник", width: 400}
+            {id: "holiday", header: "Праздник", width: 400},
+            {id:"", template:"<input class='delbtn' type='button' value='Delete'>",css:"padding_less",width:100}
         ],
-        select:"row",
-        data:window.holidays
+        select: "row",
+        data: window.holidays
     });
-
-
 
 
 });
 
 function addData() {
+
+    var date = document.getElementById("date").value;
+    var holiday = document.getElementById("holiday").value;
+    $.ajax({
+        type: 'get',
+        url: '/index.php?module=Accounting&view=List&mode=addHoliday&date=' + date + '&holiday=' + holiday,
+        success: function (data) {
+            if (data.status == 'success') {
+
+                $$("data").add({
+                    date: date,
+                    holiday: holiday
+
+                }, 0);
+
+            }
+
+        }
+
+    });
+
     $$("data").add({
-        date: document.getElementById("date").value,
-        holiday: document.getElementById("holiday").value
-    },0)
+        date: date,
+        holiday: holiday
+
+    }, 0);
+    dtable.markSorting("date", "asc");
+
 }
-function removeData(){
-    if(!$$("data").getSelectedId()){
+function removeData() {
+
+    if (!$$("data").getSelectedId()) {
         webix.message("No item is selected!");
         return;
     }
-    $$("data").remove($$("data").getSelectedId());
+    var row = $$("data").getSelectedId();
+
+    $.ajax({
+        type: 'get',
+        url: '/index.php?module=Accounting&view=List&mode=deleteHoliday&id='+row.id,
+        success: function (data) {
+            if (data.status == 'success') {
+                $$("data").remove($$("data").getSelectedId());
+
+            }
+
+        }
+
+    });
+
+
 }

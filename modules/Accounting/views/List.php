@@ -480,11 +480,11 @@ class Accounting_List_View extends Vtiger_Index_View
     public function holidays(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
 
-        $holidayQuery = "SELECT * FROM holidays";
+        $holidayQuery = "SELECT * FROM holidays ORDER BY date";
 
-        $holidays = $this->getSQLArrayResult($holidayQuery,"");
+        $holidays = $this->getSQLArrayResult($holidayQuery, "");
         $holidaysArr = [];
-        foreach ($holidays as $key=>$item){
+        foreach ($holidays as $key => $item) {
             $holidaysArr[$key]['id'] = $item['id'];
             $holidaysArr[$key]['holiday'] = $item['name'];
             $holidaysArr[$key]['date'] = $item['date'];
@@ -494,6 +494,45 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $viewer->assign('HOLIDAYS', json_encode($holidaysArr));
         return true;
+    }
+
+    public function addHoliday(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+        $date = $request->get('date');
+        $holiday = $request->get('holiday');
+        $sql = "INSERT INTO holidays (date, name) VALUES('$date', '$holiday')";
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+        $holidayQuery = "SELECT * FROM holidays ORDER BY date";
+
+        $holidays = $this->getSQLArrayResult($holidayQuery, "");
+        $holidaysArr = [];
+        foreach ($holidays as $key => $item) {
+            $holidaysArr[$key]['id'] = $item['id'];
+            $holidaysArr[$key]['holiday'] = $item['name'];
+            $holidaysArr[$key]['date'] = $item['date'];
+
+        }
+
+
+
+
+        echo json_encode(['status'=>'success','data'=>$holidaysArr ]);
+        die();
+    }
+
+    public function deleteHoliday(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+        $id = $request->get('id');
+
+        $sql = "DELETE FROM working_time WHERE id = '$id'";
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+        echo json_encode(['status'=>'success']);
+        die();
+
     }
 
     function addScript_holidays($jsFileNames)
