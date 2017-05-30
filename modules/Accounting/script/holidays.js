@@ -17,7 +17,6 @@ webix.ready(function () {
         data: window.holidays
     });
     dtable.on_click.delbtn = function (e, id, trg) {
-        webix.message("Delete row: " + id);
         $.ajax({
             type: 'get',
             url: '/index.php?module=Accounting&view=List&mode=deleteHoliday&id=' + id,
