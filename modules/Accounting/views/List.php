@@ -526,7 +526,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $id = $request->get('id');
 
-        $sql = "DELETE FROM working_time WHERE id = '$id'";
+        $sql = "DELETE FROM holidays WHERE id = '$id'";
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
 

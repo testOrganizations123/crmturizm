@@ -11,7 +11,6 @@
     Дата <input type="text" id="date" value=""><br>
     Праздник <input type="text" id="holiday" value=""><br>
     <div  style="display: inline-block"><input type="button" value="Добавить" onclick="addData()"></div>
-    <div  style="display: inline-block"><input type="button" value="Удалить" onclick="removeData()"></div>
 
 </form>
 </div>
