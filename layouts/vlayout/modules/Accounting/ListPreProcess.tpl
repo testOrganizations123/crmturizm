@@ -20,17 +20,21 @@
                     <div class="sideBarContents">
                         <div class="quickLinksDiv">
                             
-                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=workingHours'" id="Contacts_sideBar_link_LBL_DASHBOARD" class="{if $MODE eq 'workingHours'}selectedQuickLink{else}unSelectedQuickLink{/if}">
+                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=workingHours'" class="{if $MODE eq 'workingHours'}selectedQuickLink{else}unSelectedQuickLink{/if}">
                                 <a class="quickLinks" href="index.php?module=Accounting&view=List&mode=workingHours">
                                     <strong>Учет рабочего времени</strong>
                                 </a>
                             </p>
-                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=holidays'" id="Contacts_sideBar_link_LBL_DASHBOARD" class="{if $MODE eq 'holidays'}selectedQuickLink{else}unSelectedQuickLink{/if}">
+                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=vacationSchedule'" class="{if $MODE eq 'vacationSchedule'}selectedQuickLink{else}unSelectedQuickLink{/if}">
+                                <a class="quickLinks" href="index.php?module=Accounting&view=List&mode=vacationSchedule">
+                                    <strong>График отпусков</strong>
+                                </a>
+                            </p>
+                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=holidays'" class="{if $MODE eq 'holidays'}selectedQuickLink{else}unSelectedQuickLink{/if}">
                                 <a class="quickLinks" href="index.php?module=Accounting&view=List&mode=holidays">
                                     <strong>Праздничные дни</strong>
                                 </a>
                             </p>
-
                         </div>
                      
                         
