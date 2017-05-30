@@ -5,12 +5,12 @@
 
 <h3>Праздничные дни</h3>
 <br>
-<div id="tableHolidays"  style="overflow-x: auto; display: inline-block; padding-bottom: 20px"></div>
-<div style="display: inline-block">
+<div id="tableHolidays"  style="overflow-x: auto; display: inline-block; vertical-align: top; padding-bottom: 20px"></div>
+<div style="display: inline-block; vertical-align: top; margin-top: -18px;">
 <form style="margin-left:20px;width:200px">
     Дата <input type="text" id="date" value=""><br>
     Праздник <input type="text" id="holiday" value=""><br>
-    <div  style="display: inline-block"><input type="button" value="Добавить" onclick="addData()"></div>
+    <div  style="display: inline-block; "><input type="button" class="btn" value="Добавить" onclick="addData()"></div>
 
 </form>
 </div>
