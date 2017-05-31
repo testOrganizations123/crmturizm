@@ -45,6 +45,9 @@
             {if isset($WORKINGHOURS)}
                 {include file=vtemplate_path("uitypes/workingHours.tpl",$MODULE) }
             {/if}
+            {if isset($VACATIONSCHEDULE)}
+                {include file=vtemplate_path("uitypes/vacationSchedule.tpl",$MODULE) }
+            {/if}
             {if isset($HOLIDAYS)}
                 {include file=vtemplate_path("uitypes/holidays.tpl",$MODULE) }
             {/if}

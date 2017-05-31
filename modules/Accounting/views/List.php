@@ -552,5 +552,16 @@ class Accounting_List_View extends Vtiger_Index_View
         return $jsFileNames;
     }
 
+    function addScript_vacationSchedule($jsFileNames){
+        array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
+        array_push($jsFileNames, "modules.Accounting.script.vacation_schedule");
+        return $jsFileNames;
+    }
+
+    public function vacationSchedule(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+        $viewer->assign('VACATIONSCHEDULE', true);
+    }
+
 
 }
