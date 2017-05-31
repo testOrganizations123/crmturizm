@@ -160,6 +160,16 @@ class Accounting_List_View extends Vtiger_Index_View
             "name" => 'period',
             "data" => $this->filter_data['period']
         );
+        if ($this->mode == 'holidays'){
+            $period = array(
+                "label" => "Период",
+                "tpl" => 'uitypes/YearFieldSearchView.tpl',
+                "name" => 'period',
+                "data" => $this->filter_data['period']
+            );
+
+            return array($period);
+        }
         return array($region, $office, $staf, $period);
     }
 
