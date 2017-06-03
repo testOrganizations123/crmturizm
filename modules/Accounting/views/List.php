@@ -514,9 +514,6 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-
-
-
         echo json_encode(['status'=>'success','data'=>$holidaysArr ]);
         die();
     }
@@ -550,7 +547,91 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function vacationSchedule(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
-        $viewer->assign('VACATIONSCHEDULE', true);
+        $addQuery = $this->addQueryFilter();
+
+        $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
+
+        $users = $this->getSQLArrayResult($usersQuery, []);
+
+        $people = [];
+
+
+        foreach ($users as $user) {
+
+                $person = [
+                    "id" => $user["id"],
+                    "worker" => $user["name"],
+                    "position" => $user["title"],
+                    "start1" =>  '',
+                    "duration1" =>  0,
+                    "finish1" =>  '',
+                    "start2" =>  '',
+                    "duration2" =>  0,
+                    "finish2" =>  '',
+                    "start3" =>  '',
+                    "duration3" =>  0,
+                    "finish3" => '',
+                    "start4" =>  '',
+                    "duration4" =>  0,
+                    "finish4" =>  '',
+                    "allowed" =>  0,
+                    "spent" =>  0,
+                    "left" =>  0,
+                    "\$cellCss" => [
+                        "start1" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
+                        "duration1" => [ "background" =>"rgba(242, 222, 255, 0.20)" ],
+                        "finish1" => [ "background" =>"rgba(242, 222, 255, 0.20)" ],
+                        "start3" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
+                        "duration3" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
+                        "finish3" =>  ["background" => "rgba(242, 222, 255, 0.12)"],
+                        "allowed" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+                        "spent" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+                        "left" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+                        "worker" =>  ["background" =>"rgba(0, 128, 0, 0.03)"]
+                    ]
+
+                ];
+
+                $people[] = $person;
+        }
+
+//        $people = [
+//            [
+//                "id" => "1",
+//                "worker" => "Негров Андрей Владимирович",
+//                "position" => "Управляющий офисом",
+//                "start1" =>  '01.01.2016',
+//                "duration1" =>  '17',
+//                "finish1" =>  '17.01.2016',
+//                "start2" =>  '01.01.2016',
+//                "duration2" =>  '17',
+//                "finish2" =>  '17.01.2016',
+//                "start3" =>  '17.01.2016',
+//                "duration3" =>  '17',
+//                "finish3" => '01.01.2016',
+//                "start4" =>  '17.01.2016',
+//                "duration4" =>  '17',
+//                "finish4" =>  '01.01.2016',
+//                "allowed" =>  28,
+//                "spent" =>  22,
+//                "left" =>  6,
+//                "\$cellCss" => [
+//                    "start1" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
+//                    "duration1" => [ "background" =>"rgba(242, 222, 255, 0.20)" ],
+//                    "finish1" => [ "background" =>"rgba(242, 222, 255, 0.20)" ],
+//                    "start3" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
+//                    "duration3" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
+//                    "finish3" =>  ["background" => "rgba(242, 222, 255, 0.12)"],
+//                    "allowed" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+//                    "spent" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+//                    "left" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+//                    "worker" =>  ["background" =>"rgba(0, 128, 0, 0.03)"]
+//                   ]
+//            ]
+//        ];
+
+
+        $viewer->assign('VACATIONSCHEDULE', json_encode(["vacation" => $people, "promotionalTour" => $people]));
     }
 
 

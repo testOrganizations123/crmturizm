@@ -1,5 +1,5 @@
 <script>
-    {*window.workerHoursData = {$WORKINGHOURSDATA};*}
+    window.vacationSchedule = {$VACATIONSCHEDULE};
 </script>
 
 <h3>График отпусков</h3>
@@ -21,15 +21,22 @@
         font-size: 14px;
     }
 
-    .tableVacation {
+    .tableVacation, .tableAllowed{
         cursor: pointer;
         border: 1px solid #aad5fd;
         height: 85%;
-        width: 85px;
         margin-left: -9px;
         margin-top: 2px;
         text-align: center;
         line-height: 35px;
+    }
+
+    .tableVacation {
+        width: 85px;
+    }
+
+    .tableAllowed{
+        width: 35px;
     }
 </style>
 
