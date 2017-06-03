@@ -160,6 +160,16 @@ class Accounting_List_View extends Vtiger_Index_View
             "name" => 'period',
             "data" => $this->filter_data['period']
         );
+        if ($this->mode == 'holidays'){
+            $period = array(
+                "label" => "Период",
+                "tpl" => 'uitypes/YearFieldSearchView.tpl',
+                "name" => 'period',
+                "data" => $this->filter_data['period']
+            );
+
+            return array($period);
+        }
         return array($region, $office, $staf, $period);
     }
 
@@ -536,12 +546,21 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
         array_push($jsFileNames, "modules.Accounting.script.holidays");
+        array_push($jsFileNames, "modules.Accounting.datepicker.js.datepiker");
         return $jsFileNames;
     }
 
     function addScript_vacationSchedule($jsFileNames){
+
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.amcharts");
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.serial");
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.gantt");
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.plugins.export.export");
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.themes.light");
+
         array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
         array_push($jsFileNames, "modules.Accounting.script.vacation_schedule");
+
         return $jsFileNames;
     }
 

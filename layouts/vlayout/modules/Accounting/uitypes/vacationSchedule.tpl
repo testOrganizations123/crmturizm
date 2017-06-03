@@ -14,11 +14,20 @@
 <h4>Рекламный тур</h4>
 <div id="tableVacationPromo" style="margin-top: 2px"></div>
 
+<h4>График</h4>
+<div id="chart" style="margin-top: 2px"></div>
 
 <style>
+
+    #chart {
+        width: 100%;
+        height: 500px;
+    }
+
     #tableVacation *, #tableVacationPromo *{
         font-size: 14px;
     }
 </style>
 
 <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css">
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
