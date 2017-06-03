@@ -160,7 +160,7 @@ class Accounting_List_View extends Vtiger_Index_View
             "name" => 'period',
             "data" => $this->filter_data['period']
         );
-        if ($this->mode == 'holidays') {
+        if ($this->mode == 'holidays'){
             $period = array(
                 "label" => "Период",
                 "tpl" => 'uitypes/YearFieldSearchView.tpl',
@@ -524,7 +524,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-        echo json_encode(['status' => 'success', 'data' => $holidaysArr]);
+        echo json_encode(['status'=>'success','data'=>$holidaysArr ]);
         die();
     }
 
@@ -537,7 +537,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
 
-        echo json_encode(['status' => 'success']);
+        echo json_encode(['status'=>'success']);
         die();
 
     }
@@ -550,8 +550,7 @@ class Accounting_List_View extends Vtiger_Index_View
         return $jsFileNames;
     }
 
-    function addScript_vacationSchedule($jsFileNames)
-    {
+    function addScript_vacationSchedule($jsFileNames){
 
         array_push($jsFileNames, "modules.VDCustomReports.amcharts.amcharts");
         array_push($jsFileNames, "modules.VDCustomReports.amcharts.serial");
@@ -585,45 +584,45 @@ class Accounting_List_View extends Vtiger_Index_View
 
         foreach ($users as $user) {
 
-            $person = [
-                "id" => $user["id"],
-                "worker" => $user["name"],
-                "position" => $user["title"],
-                "start1" => '',
-                "duration1" => 0,
-                "finish1" => '',
-                "start2" => '',
-                "duration2" => 0,
-                "finish2" => '',
-                "start3" => '',
-                "duration3" => 0,
-                "finish3" => '',
-                "start4" => '',
-                "duration4" => 0,
-                "finish4" => '',
-                "allowed" => 0,
-                "spent" => 0,
-                "left" => 0,
-                "\$cellCss" => [
-                    "start1" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "duration1" => ["background" => "rgba(242, 222, 255, 0.20)"],
-                    "finish1" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start3" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "finish2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "finish4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "duration3" => ["background" => "rgba(242, 222, 255, 0.20)"],
-                    "finish3" => ["background" => "rgba(242, 222, 255, 0.12)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "allowed" => ["background" => "rgba(255, 0, 0, 0.03)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "spent" => ["background" => "rgba(255, 0, 0, 0.03)"],
-                    "left" => ["background" => "rgba(255, 0, 0, 0.03)"],
-                    "worker" => ["background" => "rgba(0, 128, 0, 0.03)"]
-                ]
+                $person = [
+                    "id" => $user["id"],
+                    "worker" => $user["name"],
+                    "position" => $user["title"],
+                    "start1" =>  '',
+                    "duration1" =>  0,
+                    "finish1" =>  '',
+                    "start2" =>  '',
+                    "duration2" =>  0,
+                    "finish2" =>  '',
+                    "start3" =>  '',
+                    "duration3" =>  0,
+                    "finish3" => '',
+                    "start4" =>  '',
+                    "duration4" =>  0,
+                    "finish4" =>  '',
+                    "allowed" =>  0,
+                    "spent" =>  0,
+                    "left" =>  0,
+                    "\$cellCss" => [
+                        "start1" =>  ["background" => "rgba(242, 222, 255, 0.20)", "cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                        "duration1" => [ "background" =>"rgba(242, 222, 255, 0.20)" ],
+                        "finish1" => [ "background" =>"rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                        "start3" =>  ["background" => "rgba(242, 222, 255, 0.20)", "cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                        "start2" =>  ["cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                        "finish2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                        "start4" =>  ["cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                        "finish4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                        "duration3" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
+                        "finish3" =>  ["background" => "rgba(242, 222, 255, 0.12)", "cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                        "allowed" =>  ["background" => "rgba(255, 0, 0, 0.03)", "cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                        "spent" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+                        "left" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+                        "worker" =>  ["background" =>"rgba(0, 128, 0, 0.03)"]
+                    ]
 
-            ];
+                ];
 
-            foreach ($vacationArray as $vacation) {
+            foreach ($vacationArray as $vacation){
 
                 if ($vacation["worker"] == $user["id"]) {
 
@@ -632,54 +631,38 @@ class Accounting_List_View extends Vtiger_Index_View
                     if ($vacation["start1"]) {
                         $dateStart1Obj = new DateTime($vacation["start1"]);
                         $dateStart1 = $dateStart1Obj->format("Y / m / d");
-                    } else {
-                        $dateStart1 = '';
-                    }
+                    } else { $dateStart1 = ''; }
                     if ($vacation["finish1"]) {
                         $dateFinish1Obj = new DateTime($vacation["finish1"]);
                         $dateFinish1 = $dateFinish1Obj->format("Y / m / d");
-                    } else {
-                        $dateFinish1 = '';
-                    }
+                    } else { $dateFinish1 = ''; }
 
                     if ($vacation["start2"]) {
                         $dateStart2Obj = new DateTime($vacation["start2"]);
                         $dateStart2 = $dateStart2Obj->format("Y / m / d");
-                    } else {
-                        $dateStart2 = '';
-                    }
+                    } else { $dateStart2 = ''; }
                     if ($vacation["finish2"]) {
                         $dateFinish2Obj = new DateTime($vacation["finish2"]);
                         $dateFinish2 = $dateFinish2Obj->format("Y / m / d");
-                    } else {
-                        $dateFinish2 = '';
-                    }
+                    } else { $dateFinish2 = ''; }
 
                     if ($vacation["start3"]) {
                         $dateStart3Obj = new DateTime($vacation["start3"]);
                         $dateStart3 = $dateStart3Obj->format("Y / m / d");
-                    } else {
-                        $dateStart3 = '';
-                    }
+                    } else { $dateStart3 = ''; }
                     if ($vacation["finish3"]) {
                         $dateFinish3Obj = new DateTime($vacation["finish3"]);
                         $dateFinish3 = $dateFinish3Obj->format("Y / m / d");
-                    } else {
-                        $dateFinish3 = '';
-                    }
+                    } else { $dateFinish3 = ''; }
 
                     if ($vacation["start4"]) {
                         $dateStart4Obj = new DateTime($vacation["start4"]);
                         $dateStart4 = $dateStart4Obj->format("Y / m / d");
-                    } else {
-                        $dateStart4 = '';
-                    }
+                    } else { $dateStart4 = ''; }
                     if ($vacation["finish4"]) {
                         $dateFinish4Obj = new DateTime($vacation["finish4"]);
                         $dateFinish4 = $dateFinish4Obj->format("Y / m / d");
-                    } else {
-                        $dateFinish4 = '';
-                    }
+                    } else { $dateFinish4 = ''; }
 
                     $person["start1"] = $dateStart1;
                     $person["finish1"] = $dateFinish1;
@@ -694,48 +677,129 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
 
-            $people[] = $person;
+
+
+
+                $people[] = $person;
         }
 
-//        $people = [
-//            [
-//                "id" => "1",
-//                "worker" => "Негров Андрей Владимирович",
-//                "position" => "Управляющий офисом",
-//                "start1" =>  '01.01.2016',
-//                "duration1" =>  '17',
-//                "finish1" =>  '17.01.2016',
-//                "start2" =>  '01.01.2016',
-//                "duration2" =>  '17',
-//                "finish2" =>  '17.01.2016',
-//                "start3" =>  '17.01.2016',
-//                "duration3" =>  '17',
-//                "finish3" => '01.01.2016',
-//                "start4" =>  '17.01.2016',
-//                "duration4" =>  '17',
-//                "finish4" =>  '01.01.2016',
-//                "allowed" =>  28,
-//                "spent" =>  22,
-//                "left" =>  6,
-//                "\$cellCss" => [
-//                    "start1" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
-//                    "duration1" => [ "background" =>"rgba(242, 222, 255, 0.20)" ],
-//                    "finish1" => [ "background" =>"rgba(242, 222, 255, 0.20)" ],
-//                    "start3" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
-//                    "duration3" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
-//                    "finish3" =>  ["background" => "rgba(242, 222, 255, 0.12)"],
-//                    "allowed" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
-//                    "spent" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
-//                    "left" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
-//                    "worker" =>  ["background" =>"rgba(0, 128, 0, 0.03)"]
-//                   ]
-//            ]
-//        ];
+
+
+        // То же самое, только для ТУРОВ
+        $vacationQuery = "
+                   SELECT *
+                   FROM vacation_promotional_tour as wt
+                   WHERE year = 2017";
+
+        $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
+
+        $peopleTour = [];
+
+        foreach ($users as $user) {
+
+            $person = [
+                "id" => $user["id"],
+                "worker" => $user["name"],
+                "position" => $user["title"],
+                "start1" =>  '',
+                "duration1" =>  0,
+                "finish1" =>  '',
+                "start2" =>  '',
+                "duration2" =>  0,
+                "finish2" =>  '',
+                "start3" =>  '',
+                "duration3" =>  0,
+                "finish3" => '',
+                "start4" =>  '',
+                "duration4" =>  0,
+                "finish4" =>  '',
+                "allowed" =>  0,
+                "spent" =>  0,
+                "left" =>  0,
+                "\$cellCss" => [
+                    "start1" =>  ["background" => "rgba(242, 222, 255, 0.20)", "cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                    "duration1" => [ "background" =>"rgba(242, 222, 255, 0.20)" ],
+                    "finish1" => [ "background" =>"rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                    "start3" =>  ["background" => "rgba(242, 222, 255, 0.20)", "cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                    "start2" =>  ["cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                    "finish2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                    "start4" =>  ["cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                    "finish4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                    "duration3" =>  ["background" => "rgba(242, 222, 255, 0.20)"],
+                    "finish3" =>  ["background" => "rgba(242, 222, 255, 0.12)", "cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                    "allowed" =>  ["background" => "rgba(255, 0, 0, 0.03)", "cursor"=> "pointer", "border" => "1px solid #aad5fd!important"],
+                    "spent" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+                    "left" =>  ["background" => "rgba(255, 0, 0, 0.03)"],
+                    "worker" =>  ["background" =>"rgba(0, 128, 0, 0.03)"]
+                ]
+
+            ];
+
+            foreach ($vacationArray as $vacation){
+
+                if ($vacation["worker"] == $user["id"]) {
+
+                    $a = 5;
+
+                    if ($vacation["start1"]) {
+                        $dateStart1Obj = new DateTime($vacation["start1"]);
+                        $dateStart1 = $dateStart1Obj->format("Y / m / d");
+                    } else { $dateStart1 = ''; }
+                    if ($vacation["finish1"]) {
+                        $dateFinish1Obj = new DateTime($vacation["finish1"]);
+                        $dateFinish1 = $dateFinish1Obj->format("Y / m / d");
+                    } else { $dateFinish1 = ''; }
+
+                    if ($vacation["start2"]) {
+                        $dateStart2Obj = new DateTime($vacation["start2"]);
+                        $dateStart2 = $dateStart2Obj->format("Y / m / d");
+                    } else { $dateStart2 = ''; }
+                    if ($vacation["finish2"]) {
+                        $dateFinish2Obj = new DateTime($vacation["finish2"]);
+                        $dateFinish2 = $dateFinish2Obj->format("Y / m / d");
+                    } else { $dateFinish2 = ''; }
+
+                    if ($vacation["start3"]) {
+                        $dateStart3Obj = new DateTime($vacation["start3"]);
+                        $dateStart3 = $dateStart3Obj->format("Y / m / d");
+                    } else { $dateStart3 = ''; }
+                    if ($vacation["finish3"]) {
+                        $dateFinish3Obj = new DateTime($vacation["finish3"]);
+                        $dateFinish3 = $dateFinish3Obj->format("Y / m / d");
+                    } else { $dateFinish3 = ''; }
+
+                    if ($vacation["start4"]) {
+                        $dateStart4Obj = new DateTime($vacation["start4"]);
+                        $dateStart4 = $dateStart4Obj->format("Y / m / d");
+                    } else { $dateStart4 = ''; }
+                    if ($vacation["finish4"]) {
+                        $dateFinish4Obj = new DateTime($vacation["finish4"]);
+                        $dateFinish4 = $dateFinish4Obj->format("Y / m / d");
+                    } else { $dateFinish4 = ''; }
+
+                    $person["start1"] = $dateStart1;
+                    $person["finish1"] = $dateFinish1;
+                    $person["start2"] = $dateStart2;
+                    $person["finish2"] = $dateFinish2;
+                    $person["start3"] = $dateStart3;
+                    $person["finish3"] = $dateFinish3;
+                    $person["start4"] = $dateStart4;
+                    $person["finish4"] = $dateFinish4;
+                    $person["allowed"] = $vacation["allowed"];
+                }
+            }
+
+
+
+            $peopleTour[] = $person;
+        }
+
+
         $dataProvider = [];
         foreach ($users as $key => $user) {
 
             $dataProvider[$key]["category"] = $user['name'];
-           $segments  = [];
+            $segments  = [];
             foreach ($vacationArray as $vacation){
                 if ($vacation["worker"] == $user["id"]) {
 
@@ -801,8 +865,104 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
 
-        $viewer->assign('VACATIONSCHEDULE', json_encode(["vacation" => $people, "promotionalTour" => $people]));
+
+
+
+
+
+        $viewer->assign('VACATIONSCHEDULE', json_encode(["vacation" => $people, "promotionalTour" => $peopleTour]));
     }
 
+
+    public function editVacation(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+
+        $value = $request->get("value");
+        $year = $request->get("year");
+        $column = $request->get("column");
+        $worker = $request->get("worker");
+
+
+        if (strlen($value) > 20){
+
+            $date = substr($value, 0, strpos($value, '('));
+            $new_string = "";
+            $string = $date;
+            $words="4";
+            $array=explode(" ",$string);
+            for($i=0;$i<$words;$i++)
+            {
+                $new_string.=$array[$i]." ";
+            }
+            $need=trim($new_string);
+
+            $d = DateTime::createFromFormat('D M d Y', $need);
+            $value = $d->format("Y-m-d");
+
+
+        }
+
+        $sql = ("SELECT id FROM vacation WHERE year = '$year' AND worker = '$worker'");
+
+        $record = $this->getSQLArrayResult($sql, []);
+
+        if (count($record)) {
+            $sql = "UPDATE vacation SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
+        } else {
+            $sql = "INSERT INTO vacation (worker, year, $column) VALUES('$worker', '$year', '$value')";
+        }
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+        echo json_encode('success');
+        die();
+    }
+
+    public function editVacationTour(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+
+        $value = $request->get("value");
+        $year = $request->get("year");
+        $column = $request->get("column");
+        $worker = $request->get("worker");
+
+
+        $sql = ("SELECT id FROM vacation_promotional_tour WHERE year = '$year' AND worker = '$worker'");
+
+        $record = $this->getSQLArrayResult($sql, []);
+
+        if (count($record)) {
+            $sql = "UPDATE vacation_promotional_tour SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
+        } else {
+            if ($column != 'allowed'){
+
+                $date = substr($value, 0, strpos($value, '('));
+                $new_string = "";
+                $string = $date;
+                $words="4";
+                $array=explode(" ",$string);
+                for($i=0;$i<$words;$i++)
+                {
+                    $new_string.=$array[$i]." ";
+                }
+                $need=trim($new_string);
+
+                $d = DateTime::createFromFormat('D M d Y', $need);
+                $value = $d->format("Y-m-d");
+
+
+            }
+            $sql = "INSERT INTO vacation_promotional_tour (worker, year, $column) VALUES('$worker', '$year', '$value')";
+        }
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+        echo json_encode('success');
+        die();
+    }
 
 }
