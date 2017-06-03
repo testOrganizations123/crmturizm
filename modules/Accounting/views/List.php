@@ -610,38 +610,38 @@ class Accounting_List_View extends Vtiger_Index_View
                     $a = 5;
 
                     if ($vacation["datestart1"]) {
-                        $dateStart1Obj = new DateTime($vacation["datestart1"]);
+                        $dateStart1Obj = new DateTime($vacation["start1"]);
                         $dateStart1 = $dateStart1Obj->format("Y / m / d");
                     } else { $dateStart1 = ''; }
                     if ($vacation["datefinish1"]) {
-                        $dateFinish1Obj = new DateTime($vacation["datefinish1"]);
+                        $dateFinish1Obj = new DateTime($vacation["finish1"]);
                         $dateFinish1 = $dateFinish1Obj->format("Y / m / d");
                     } else { $dateFinish1 = ''; }
 
                     if ($vacation["datestart2"]) {
-                        $dateStart2Obj = new DateTime($vacation["datestart2"]);
+                        $dateStart2Obj = new DateTime($vacation["start2"]);
                         $dateStart2 = $dateStart2Obj->format("Y / m / d");
                     } else { $dateStart2 = ''; }
                     if ($vacation["datefinish2"]) {
-                        $dateFinish2Obj = new DateTime($vacation["datefinish2"]);
+                        $dateFinish2Obj = new DateTime($vacation["finish2"]);
                         $dateFinish2 = $dateFinish2Obj->format("Y / m / d");
                     } else { $dateFinish2 = ''; }
 
                     if ($vacation["datestart3"]) {
-                        $dateStart3Obj = new DateTime($vacation["datestart3"]);
+                        $dateStart3Obj = new DateTime($vacation["start3"]);
                         $dateStart3 = $dateStart3Obj->format("Y / m / d");
                     } else { $dateStart3 = ''; }
                     if ($vacation["datefinish3"]) {
-                        $dateFinish3Obj = new DateTime($vacation["datefinish3"]);
+                        $dateFinish3Obj = new DateTime($vacation["finish3"]);
                         $dateFinish3 = $dateFinish3Obj->format("Y / m / d");
                     } else { $dateFinish3 = ''; }
 
                     if ($vacation["datestart4"]) {
-                        $dateStart4Obj = new DateTime($vacation["datestart4"]);
+                        $dateStart4Obj = new DateTime($vacation["start4"]);
                         $dateStart4 = $dateStart4Obj->format("Y / m / d");
                     } else { $dateStart4 = ''; }
                     if ($vacation["datefinish4"]) {
-                        $dateFinish4Obj = new DateTime($vacation["datefinish4"]);
+                        $dateFinish4Obj = new DateTime($vacation["finish4"]);
                         $dateFinish4 = $dateFinish4Obj->format("Y / m / d");
                     } else { $dateFinish4 = ''; }
 
