@@ -549,6 +549,7 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
         array_push($jsFileNames, "modules.Accounting.script.holidays");
+        array_push($jsFileNames, "modules.Accounting.datepicker.js.datepiker");
         return $jsFileNames;
     }
 
