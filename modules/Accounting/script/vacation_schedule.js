@@ -52,7 +52,7 @@ webix.ready(function () {
 
                 $.ajax({
                     type: "GET",
-                    url: "/index.php?module=VDCustomReports&view=List&mode=savePlan&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
+                    url: "/index.php?module=Accounting&view=List&mode=editVacation&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
                     success: function (data) {
                         if (data != "success") {
                             record[coordinates.column] = cell.old;
@@ -64,10 +64,7 @@ webix.ready(function () {
                                     delay: 4000
                                 });
 
-
                             });
-                        } else {
-
                         }
                     },
                     dataType: "json"
@@ -119,14 +116,12 @@ webix.ready(function () {
                 var record = dtable.getItem(coordinates.row);
 
                 var column = coordinates.column;
-
                 var value = cell.value;
-
                 var worker = coordinates.row;
 
                 $.ajax({
                     type: "GET",
-                    url: "/index.php?module=VDCustomReports&view=List&mode=savePlan&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
+                    url: "/index.php?module=Accounting&view=List&mode=editVacationTour&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
                     success: function (data) {
                         if (data != "success") {
                             record[coordinates.column] = cell.old;
@@ -137,7 +132,6 @@ webix.ready(function () {
                                     text: data,
                                     delay: 4000
                                 });
-
 
                             });
                         }
