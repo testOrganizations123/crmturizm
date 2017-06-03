@@ -551,8 +551,16 @@ class Accounting_List_View extends Vtiger_Index_View
     }
 
     function addScript_vacationSchedule($jsFileNames){
+
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.amcharts");
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.serial");
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.gantt");
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.plugins.export.export");
+        array_push($jsFileNames, "modules.VDCustomReports.amcharts.themes.light");
+
         array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
         array_push($jsFileNames, "modules.Accounting.script.vacation_schedule");
+
         return $jsFileNames;
     }
 
