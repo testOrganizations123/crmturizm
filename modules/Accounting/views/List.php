@@ -49,11 +49,14 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         $now = date('m.Y');
 
-        $this->filter_data['period'] = $now;
+            $this->filter_data['period'] = $now;
+
     }
 
     function setDefaultFiltre()
+
     {
+
         if (empty($this->filter_data['period'])) {
             $this->setDefaultPeriod();
         }
@@ -510,7 +513,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-
+        $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('HOLIDAYS', json_encode($holidaysArr));
         return true;
     }
@@ -845,7 +848,7 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
         $offices[]=array_shift($offices);
-
+        $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('VACATIONSCHEDULE', json_encode($offices));
     }
 

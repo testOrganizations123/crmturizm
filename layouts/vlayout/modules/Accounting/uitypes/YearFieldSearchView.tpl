@@ -10,10 +10,14 @@
  ********************************************************************************/
 -->*}
 
+
+
     <div class='row-fluid' id ="dateFilter" style="position: relative">
 
 
     </div>
+
+<input type="hidden" name="filtre[period]" id ='dateHidden'>
 
 
 
