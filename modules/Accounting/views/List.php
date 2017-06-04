@@ -846,7 +846,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $offices[]=array_shift($offices);
 
-        $viewer->assign('VACATIONSCHEDULE', json_encode(["offices" => $offices]));
+        $viewer->assign('VACATIONSCHEDULE', json_encode($offices));
     }
 
 

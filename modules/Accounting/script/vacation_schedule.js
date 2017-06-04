@@ -5,218 +5,236 @@ webix.ready(function () {
     //format in grid
     var show_date = webix.Date.dateToStr("%d.%m.%Y");
 
+    window.offices.forEach(function (table, i, arr) {
 
-    var dtable = new webix.ui({
-        container: "tableVacation",
-        view: "datatable",
-        columns: [
-            {id: "worker", header: "Сотрудник", width: 250},
-            {id: "position", header: "Должность", width: 220},
-            {
-                id: "start1",
-                header: [{text: "1-я часть отпуска", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
-                width: 90,
-                editor: "date",
-                format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor
-            },
-            {id: "duration1", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {
-                id: "finish1", header: ["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat: show_editor, editParse: parse_editor
-            },
-            {
-                id: "start2",
-                header: [{text: "2-я часть отпуска", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
-                width: 90,
-                editor: "date",
-                format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor
-            },
-            {id: "duration2", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {
-                id: "finish2", header: ["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat: show_editor, editParse: parse_editor
-            },
-            {
-                id: "start3",
-                header: [{text: "3-я часть отпуска", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
-                width: 90,
-                editor: "date",
-                format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor
-            },
-            {id: "duration3", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {
-                id: "finish3", header: ["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat: show_editor, editParse: parse_editor
-            },
-            {
-                id: "start4",
-                header: [{text: "4-я часть отпуска", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
-                width: 90,
-                editor: "date",
-                format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor
-            },
-            {id: "duration4", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {
-                id: "finish4", header: ["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat: show_editor, editParse: parse_editor
-            },
-            {id: "allowed", header: {text: "Положено", rotate: true}, width: 40, editor: "text"},
-            {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
-            {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
-        ],
-        autoheight: true,
-        autowidth: true,
-        editable: true,
-        rowHeight: 40,
-        data: window.vacationSchedule.vacation,
-        on: {
-            onAfterEditStop: function (cell, coordinates) {
-                loadChart();
-                var record = dtable.getItem(coordinates.row);
+        var dtable = new webix.ui({
+            container: "tableVacation_" + i,
+            view: "datatable",
+            columns: [
+                {id: "worker", header: "Сотрудник", width: 250},
+                {id: "position", header: "Должность", width: 220},
+                {
+                    id: "start1",
+                    header: [{
+                        text: "1-я часть отпуска",
+                        colspan: 3,
+                        css: {"text-align": "center!important"}
+                    }, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration1", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish1", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start2",
+                    header: [{
+                        text: "2-я часть отпуска",
+                        colspan: 3,
+                        css: {"text-align": "center!important"}
+                    }, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration2", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish2", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start3",
+                    header: [{
+                        text: "3-я часть отпуска",
+                        colspan: 3,
+                        css: {"text-align": "center!important"}
+                    }, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration3", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish3", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start4",
+                    header: [{
+                        text: "4-я часть отпуска",
+                        colspan: 3,
+                        css: {"text-align": "center!important"}
+                    }, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration4", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish4", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {id: "allowed", header: {text: "Положено", rotate: true}, width: 40, editor: "text"},
+                {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
+                {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
+            ],
+            autoheight: true,
+            autowidth: true,
+            editable: true,
+            rowHeight: 40,
+            data: table.vacation,
+            on: {
+                onAfterEditStop: function (cell, coordinates) {
+                    loadChart();
+                    var record = dtable.getItem(coordinates.row);
 
-                var column = coordinates.column;
-                var value = cell.value;
-                var worker = coordinates.row;
+                    var column = coordinates.column;
+                    var value = cell.value;
+                    var worker = coordinates.row;
 
-                $.ajax({
-                    type: "GET",
-                    url: "/index.php?module=Accounting&view=List&mode=editVacation&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
-                    success: function (data) {
-                        if (data != "success") {
-                            record[coordinates.column] = cell.old;
-                            dtable.refresh();
-                            $(function () {
-                                new PNotify({
-                                    title: 'Ошибка валидации!',
-                                    text: data,
-                                    delay: 4000
+                    $.ajax({
+                        type: "GET",
+                        url: "/index.php?module=Accounting&view=List&mode=editVacation&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
+                        success: function (data) {
+                            if (data != "success") {
+                                record[coordinates.column] = cell.old;
+                                dtable.refresh();
+                                $(function () {
+                                    new PNotify({
+                                        title: 'Ошибка валидации!',
+                                        text: data,
+                                        delay: 4000
+                                    });
+
                                 });
-
-                            });
-                        }
-                    },
-                    dataType: "json"
-                });
+                            }
+                        },
+                        dataType: "json"
+                    });
 
 
+                }
             }
-        }
-    });
+        });
 
-    var dtablePromo = new webix.ui({
-        container: "tableVacationPromo",
-        view: "datatable",
-        columns: [
-            {id: "worker", header: "Сотрудник", width: 250},
-            {id: "position", header: "Должность", width: 220},
-            {
-                id: "start1",
-                header: [{text: "Рекламный тур 1", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
-                width: 90,
-                editor: "date",
-                format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor
-            },
-            {id: "duration1", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {
-                id: "finish1", header: ["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat: show_editor, editParse: parse_editor
-            },
-            {
-                id: "start2",
-                header: [{text: "Рекламный тур 2", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
-                width: 90,
-                editor: "date",
-                format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor
-            },
-            {id: "duration2", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {
-                id: "finish2", header: ["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat: show_editor, editParse: parse_editor
-            },
-            {
-                id: "start3",
-                header: [{text: "Рекламный тур 3", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
-                width: 90,
-                editor: "date",
-                format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor
-            },
-            {id: "duration3", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {
-                id: "finish3", header: ["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat: show_editor, editParse: parse_editor
-            },
-            {
-                id: "start4",
-                header: [{text: "Рекламный тур 4", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
-                width: 90,
-                editor: "date",
-                format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor
-            },
-            {id: "duration4", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {
-                id: "finish4", header: ["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat: show_editor, editParse: parse_editor
-            },
-            {id: "allowed", header: {text: "Положено", rotate: true}, editor: "text", width: 40},
-            {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
-            {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
-        ],
-        autoheight: true,
-        autowidth: true,
-        editable: true,
-        rowHeight: 40,
-        data: window.vacationSchedule.promotionalTour,
-        on: {
-            onAfterEditStop: function (cell, coordinates) {
+        var dtablePromo = new webix.ui({
+            container: "tableVacationPromo_" + i,
+            view: "datatable",
+            columns: [
+                {id: "worker", header: "Сотрудник", width: 250},
+                {id: "position", header: "Должность", width: 220},
+                {
+                    id: "start1",
+                    header: [{text: "Рекламный тур 1", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration1", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish1", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start2",
+                    header: [{text: "Рекламный тур 2", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration2", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish2", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start3",
+                    header: [{text: "Рекламный тур 3", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration3", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish3", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start4",
+                    header: [{text: "Рекламный тур 4", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration4", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish4", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {id: "allowed", header: {text: "Положено", rotate: true}, editor: "text", width: 40},
+                {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
+                {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
+            ],
+            autoheight: true,
+            autowidth: true,
+            editable: true,
+            rowHeight: 40,
+            data: table.promotionalTour,
+            on: {
+                onAfterEditStop: function (cell, coordinates) {
 
-                var record = dtable.getItem(coordinates.row);
+                    var record = dtable.getItem(coordinates.row);
 
-                var column = coordinates.column;
-                var value = cell.value;
-                var worker = coordinates.row;
+                    var column = coordinates.column;
+                    var value = cell.value;
+                    var worker = coordinates.row;
 
-                $.ajax({
-                    type: "GET",
-                    url: "/index.php?module=Accounting&view=List&mode=editVacationTour&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
-                    success: function (data) {
-                        if (data != "success") {
-                            record[coordinates.column] = cell.old;
-                            dtable.refresh();
-                            $(function () {
-                                new PNotify({
-                                    title: 'Ошибка валидации!',
-                                    text: data,
-                                    delay: 4000
+                    $.ajax({
+                        type: "GET",
+                        url: "/index.php?module=Accounting&view=List&mode=editVacationTour&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
+                        success: function (data) {
+                            if (data != "success") {
+                                record[coordinates.column] = cell.old;
+                                dtable.refresh();
+                                $(function () {
+                                    new PNotify({
+                                        title: 'Ошибка валидации!',
+                                        text: data,
+                                        delay: 4000
+                                    });
+
                                 });
-
-                            });
-                        }
+                            }
 
 
-                       
-                    },
-                    dataType: "json"
-                });
+                        },
+                        dataType: "json"
+                    });
 
 
+                }
             }
-        }
+        });
+
     });
 
 });
