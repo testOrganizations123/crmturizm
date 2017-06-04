@@ -1,7 +1,18 @@
 
 webix.ready(function () {
 
-
+if (window.writingAccess){
+    var column = [
+        {id: "date", header: "Дата", width: 120},
+        {id: "holiday", header: "Праздник", width: 400},
+        {id: "", template: "<span class='delbtn' style='font-size: 20px; cursor: pointer'>X</span>", width: 45}
+    ]
+} else {
+    column = [
+        {id: "date", header: "Дата", width: 120},
+        {id: "holiday", header: "Праздник", width: 400}
+    ]
+}
 
     dtable = webix.ui({
         id: "data",
@@ -9,11 +20,7 @@ webix.ready(function () {
         container: "tableHolidays",
         autoheight: true,
         autowidth: true,
-        columns: [
-            {id: "date", header: "Дата", width: 120},
-            {id: "holiday", header: "Праздник", width: 400},
-            {id: "", template: "<span class='delbtn' style='font-size: 20px; cursor: pointer'>X</span>", width: 45}
-        ],
+        columns: column,
         data: window.holidays
     });
     dtable.on_click.delbtn = function (e, id, trg) {
