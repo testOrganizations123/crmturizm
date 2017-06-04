@@ -41,8 +41,8 @@ webix.ready(function () {
 
 function addData() {
 
-    var date = document.getElementById("date").value;
-    var holiday = document.getElementById("holiday").value;
+    var date = $("#date").find('.webix_inp_static').html();
+    var holiday = $("#holiday").val();
     $.ajax({
         type: 'get',
         url: '/index.php?module=Accounting&view=List&mode=addHoliday&date=' + date + '&holiday=' + holiday,
@@ -56,6 +56,8 @@ function addData() {
 
                 }, 0);
                 dtable.sort("date", "asc");
+                $("#date").find('.webix_inp_static').html("");
+                 $("#holiday").val("");
 
             }
 
@@ -65,3 +67,26 @@ function addData() {
 
 
 }
+var arrDate = window.dateStart.split('.');
+var i = arrDate.length;
+
+
+var dateFilter = webix.ui({
+    container: "dateFilter",
+
+
+    view:"datepicker",align:"right",value : arrDate[i-1],type:"year", format:"%Y"
+
+});
+
+dateFilter.attachEvent("onChange", function(newv, oldv){
+   $('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
+});
+
+var dateWebix = webix.ui({
+    container: "date",
+
+
+    view:"datepicker",align:"right", format:"%Y-%m-%d"
+
+});

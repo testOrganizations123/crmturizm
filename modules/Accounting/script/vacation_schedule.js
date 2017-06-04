@@ -1341,11 +1341,17 @@ function in_array(what, where) {
 }));
 
 loadChart();
-
-webix.ui({
+var arrDate = window.dateStart.split('.');
+var i = arrDate.length;
+var dateFilter = webix.ui({
     container: "dateFilter",
 
 
-    view:"datepicker",align:"right",value:new Date,type:"year", format:"%Y"
+    view:"datepicker",align:"right",value:arrDate[i-1],type:"year", format:"%Y"
 
+});
+
+dateFilter.attachEvent("onChange", function(newv, oldv){
+ 
+    $('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
 });

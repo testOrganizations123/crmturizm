@@ -1,5 +1,6 @@
 <script>
     window.vacationSchedule = {$VACATIONSCHEDULE};
+    window.dateStart = '{$MONTHPERIOD}';
 </script>
 
 <h3>График отпусков</h3>
