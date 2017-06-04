@@ -581,6 +581,49 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         $addQuery = $this->addQueryFilter();
 
+        //узнаем, пользователь обычный менеджер(может стажер) или управляющий
+        $db = PearDatabase::getInstance();
+        $userModel = Users_Record_Model::getCurrentUserModel();
+        $userRole = $userModel->getRole();
+        $sqlRole = "SELECT depth FROM vtiger_role WHERE roleid = '$userRole'";
+        $result = $db->pquery($sqlRole, array());
+
+        $depth = $db->query_result_rowdata($result, "depth");
+        if ($depth["depth"] > 4) {
+            $viewer->assign('WRITINGACCESS','false');
+            $style = [
+                "start1" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "duration1" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "finish1" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "start3" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "duration3" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "finish3" => ["background" => "rgba(242, 222, 255, 0.12)"],
+                "allowed" => ["background" => "rgba(255, 0, 0, 0.03)"],
+                "spent" => ["background" => "rgba(255, 0, 0, 0.03)"],
+                "left" => ["background" => "rgba(255, 0, 0, 0.03)"],
+                "worker" => ["background" => "rgba(0, 128, 0, 0.03)"]
+            ];
+        } else {
+            $viewer->assign('WRITINGACCESS', 'true');
+
+            $style = [
+                "start1" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "duration1" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "finish1" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "start3" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "start2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "finish2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "start4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "finish4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "duration3" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "finish3" => ["background" => "rgba(242, 222, 255, 0.12)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "allowed" => ["background" => "rgba(255, 0, 0, 0.03)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "spent" => ["background" => "rgba(255, 0, 0, 0.03)"],
+                "left" => ["background" => "rgba(255, 0, 0, 0.03)"],
+                "worker" => ["background" => "rgba(0, 128, 0, 0.03)"]
+            ];
+        }
+
         $vacationQuery = "
                    SELECT *
                    FROM vacation as wt
@@ -623,22 +666,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "allowed" => 0,
                 "spent" => 0,
                 "left" => 0,
-                "\$cellCss" => [
-                    "start1" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "duration1" => ["background" => "rgba(242, 222, 255, 0.20)"],
-                    "finish1" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start3" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "finish2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "finish4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "duration3" => ["background" => "rgba(242, 222, 255, 0.20)"],
-                    "finish3" => ["background" => "rgba(242, 222, 255, 0.12)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "allowed" => ["background" => "rgba(255, 0, 0, 0.03)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "spent" => ["background" => "rgba(255, 0, 0, 0.03)"],
-                    "left" => ["background" => "rgba(255, 0, 0, 0.03)"],
-                    "worker" => ["background" => "rgba(0, 128, 0, 0.03)"]
-                ]
+                "\$cellCss" => $style
 
             ];
 
@@ -729,22 +757,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "allowed" => 0,
                 "spent" => 0,
                 "left" => 0,
-                "\$cellCss" => [
-                    "start1" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "duration1" => ["background" => "rgba(242, 222, 255, 0.20)"],
-                    "finish1" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start3" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "finish2" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "start4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "finish4" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "duration3" => ["background" => "rgba(242, 222, 255, 0.20)"],
-                    "finish3" => ["background" => "rgba(242, 222, 255, 0.12)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "allowed" => ["background" => "rgba(255, 0, 0, 0.03)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-                    "spent" => ["background" => "rgba(255, 0, 0, 0.03)"],
-                    "left" => ["background" => "rgba(255, 0, 0, 0.03)"],
-                    "worker" => ["background" => "rgba(0, 128, 0, 0.03)"]
-                ]
+                "\$cellCss" => $style
 
             ];
 
@@ -850,6 +863,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $offices[]=array_shift($offices);
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('VACATIONSCHEDULE', json_encode($offices));
+
     }
 
 
