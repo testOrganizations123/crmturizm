@@ -1344,8 +1344,8 @@ loadChart();
 
 webix.ui({
     container: "dateFilter",
-    view:"toolbar",
-    elements:[
-        {view:"datepicker",align:"right",type:"year"}
-    ]
+
+
+        view:"datepicker",align:"right",type:"year"
+
 });
