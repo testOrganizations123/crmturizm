@@ -1346,6 +1346,6 @@ webix.ui({
     container: "dateFilter",
 
 
-        view:"datepicker",align:"right",type:"year"
+    view:"datepicker",align:"right",value:new Date,type:"year", format:"%Y"
 
 });
