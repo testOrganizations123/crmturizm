@@ -16,8 +16,52 @@ function updateChart() {
     })
 }
 
+function dateDiff( date1, date2 ) {
+    return ((date2-date1)/86400000);
+}
+
+
+function countDays(line){
+        if (line.start1 && line.finish1){
+            line.duration1 = dateDiff(new Date(line.start1), new Date(line.finish1)) + 1;
+        } else {
+            line.duration1 = 0;
+        }
+        if (line.start2 && line.finish2){
+            line.duration2 = dateDiff(new Date(line.start2), new Date(line.finish2)) + 1;
+        } else {
+            line.duration2 = 0;
+        }
+        if (line.start3 && line.finish3){
+            line.duration3 = dateDiff(new Date(line.start3), new Date(line.finish3)) + 1;
+        } else {
+            line.duration3 = 0;
+        }
+        if (line.start4 && line.finish4){
+            line.duration4 = dateDiff(new Date(line.start4), new Date(line.finish4)) + 1;
+        } else {
+            line.duration4 = 0;
+        }
+
+        line.spent = parseInt(line.duration1) + parseInt(line.duration2) + parseInt(line.duration3) + parseInt(line.duration4);
+        line.left = parseInt(line.allowed) - parseInt(line.spent);
+
+        return line;
+}
+
+function parseDate(input, format) {
+    format = format || 'yyyy-mm-dd'; // default format
+    var parts = input.match(/(\d+)/g),
+        i = 0, fmt = {};
+    // extract date-part indexes from the format
+    format.replace(/(yyyy|dd|mm)/g, function(part) { fmt[part] = i++; });
+
+    return new Date(parts[fmt['yyyy']], parts[fmt['mm']]-1, parts[fmt['dd']]);
+}
 
 webix.ready(function () {
+
+    var self = this;
 
     var show_editor = webix.Date.dateToStr("%Y / %m / %d");
     var parse_editor = webix.Date.strToDate("%Y / %m / %d");
@@ -25,6 +69,14 @@ webix.ready(function () {
     var show_date = webix.Date.dateToStr("%d.%m.%Y");
 
     window.offices.forEach(function (table, i, arr) {
+
+        offices[i].vacation.forEach(function (vac, j, arr) {
+            offices[i].vacation[j] = self.countDays(vac);
+        });
+
+        offices[i].promotionalTour.forEach(function (vac, j, arr) {
+            offices[i].promotionalTour[j] = self.countDays(vac);
+        });
 
         var dtable = new webix.ui({
             container: "tableVacation_" + i,
@@ -114,6 +166,33 @@ webix.ready(function () {
             rowHeight: 40,
             data: table.vacation,
             on: {
+                onAfterEditStart: function(){
+                    var elements = $('.webix_cal_footer');
+
+                    var elem2 = elements.find('.webix_cal_icon');
+                    elem2.click(function(){
+
+                        setTimeout(function () {
+                            $('#tableVacation_0').click();
+                            setTimeout(function () {
+                                $('#listViewContents').click();
+                                setTimeout(function () {
+                                    $('#listViewContents').click();
+                                    setTimeout(function () {
+                                        $('#listViewContents').click();
+                                        setTimeout(function () {
+                                            $('#listViewContents').click();
+                                            setTimeout(function () {
+                                                $('#listViewContents').click();
+                                            }, 100);
+                                        }, 100);
+                                    }, 100);
+                                }, 100);
+                            }, 100);
+                        }, 100);
+
+                    });
+                },
                 onAfterEditStop: function (cell, coordinates) {
                     updateChart();
                     var record = dtable.getItem(coordinates.row);
@@ -122,9 +201,20 @@ webix.ready(function () {
                     var value = cell.value;
                     var worker = coordinates.row;
 
+                    if (column === "allowed"){
+                        value = value.trim();
+
+                        if (value === "") {
+                            value = '0';
+                            record[coordinates.column] = '0';
+                        }
+                    }
+
+                    var year = $('#dateFilter').find('.webix_inp_static')[0].innerHTML;
+
                     $.ajax({
                         type: "GET",
-                        url: "/index.php?module=Accounting&view=List&mode=editVacation&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
+                        url: "/index.php?module=Accounting&view=List&mode=editVacation&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + year,
                         success: function (data) {
                             if (data != "success") {
                                 record[coordinates.column] = cell.old;
@@ -138,7 +228,34 @@ webix.ready(function () {
 
                             });
 
-                        }
+                        } else {
+                                table.vacation.forEach(function (item, i, arr) {
+                                    if (item.id == coordinates.row) {
+
+                                            if (coordinates.column != 'allowed') {
+
+                                                console.log(cell.value);
+                                                if (cell.value.length == undefined){
+                                                    val = $.datepicker.formatDate('yy-mm-dd 00:00:00', cell.value);
+                                                    console.log(val);
+                                                } else if (cell.value.length == 0) {
+                                                    val = '';
+                                                } else {
+                                                    val = cell.value.replace(/ /g, "");
+                                                    val = val.substr(0, val.length - 5) + " 00:00:00";
+                                                }
+                                            } else {
+                                                val = cell.value.replace(/ /g, "");
+                                            }
+
+                                            item[coordinates.column] = val;
+                                            table.vacation[i] = self.countDays(item);
+
+                                    }
+                                });
+
+                                dtable.refresh();
+                            }
                     },
                     dataType: "json"
                 });
@@ -220,22 +337,59 @@ webix.ready(function () {
             rowHeight: 40,
             data: table.promotionalTour,
             on: {
+                onAfterEditStart: function(){
+                    var elements = $('.webix_cal_footer');
+
+                    var elem2 = elements.find('.webix_cal_icon');
+                    elem2.click(function(){
+                        setTimeout(function () {
+                            $('#tableVacation_0').click();
+                            setTimeout(function () {
+                                $('#listViewContents').click();
+                                setTimeout(function () {
+                                    $('#listViewContents').click();
+                                    setTimeout(function () {
+                                        $('#listViewContents').click();
+                                        setTimeout(function () {
+                                            $('#listViewContents').click();
+                                            setTimeout(function () {
+                                                $('#listViewContents').click();
+                                            }, 100);
+                                        }, 100);
+                                    }, 100);
+                                }, 100);
+                            }, 100);
+                        }, 100);
+                    });
+                },
                 onAfterEditStop: function (cell, coordinates) {
 
-                    var record = dtable.getItem(coordinates.row);
+                    updateChart();
+                    var record = dtablePromo.getItem(coordinates.row);
 
                     var column = coordinates.column;
                     var value = cell.value;
                     var worker = coordinates.row;
 
+                    if (column === "allowed"){
+                        value = value.trim();
+
+                        if (value === "") {
+                            value = '0';
+                            record[coordinates.column] = '0';
+                        }
+                    }
+
+                    var year = $('#dateFilter').find('.webix_inp_static')[0].innerHTML;
+
                     $.ajax({
                         type: "GET",
-                        url: "/index.php?module=Accounting&view=List&mode=editVacationTour&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
+                        url: "/index.php?module=Accounting&view=List&mode=editVacationTour&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + year,
                         success: function (data) {
                             updateChart();
                             if (data != "success") {
                                 record[coordinates.column] = cell.old;
-                                dtable.refresh();
+                                dtablePromo.refresh();
                                 $(function () {
                                     new PNotify({
                                         title: 'Ошибка валидации!',
@@ -245,7 +399,32 @@ webix.ready(function () {
 
                             });
 
-                        }
+                        } else {
+                                table.promotionalTour.forEach(function (item, i, arr) {
+                                    if (item.id == coordinates.row) {
+
+                                        if (coordinates.column != 'allowed') {
+
+                                            if (cell.value.length == undefined){
+                                                val = $.datepicker.formatDate('yy-mm-dd 00:00:00', cell.value);
+                                            } else if (cell.value.length == 0) {
+                                                val = '';
+                                            } else {
+                                                val = cell.value.replace(/ /g, "");
+                                                val = val.substr(0, val.length - 5) + " 00:00:00";
+                                            }
+                                        } else {
+                                            val = cell.value.replace(/ /g, "");
+                                        }
+
+                                        item[coordinates.column] = val;
+                                        table.promotionalTour[i] = self.countDays(item);
+
+                                    }
+                                });
+
+                                dtablePromo.refresh();
+                            }
 
 
                     },
@@ -1339,7 +1518,6 @@ function loadChart() {
         url: "/index.php?module=Accounting&view=List&mode=loadChart",
         success: function (responce) {
             var dataProvider = $.parseJSON(responce);
-
             $.each(dataProvider,function (i,value) {
                 chart[i] = AmCharts.makeChart(i, {
                     "type": "gantt",
