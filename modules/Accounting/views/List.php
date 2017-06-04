@@ -49,7 +49,7 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         $now = date('m.Y');
 
-            $this->filter_data['period'] = $now;
+        $this->filter_data['period'] = $now;
 
     }
 
@@ -174,7 +174,7 @@ class Accounting_List_View extends Vtiger_Index_View
             return array($period);
         }
 
-        if ($this->mode == 'vacationSchedule'){
+        if ($this->mode == 'vacationSchedule') {
             $period = array(
                 "label" => "Период",
                 "tpl" => 'uitypes/YearFieldSearchView.tpl',
@@ -606,7 +606,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $depth = $db->query_result_rowdata($result, "depth");
         if ($depth["depth"] > 4) {
-            $viewer->assign('WRITINGACCESS','false');
+            $viewer->assign('WRITINGACCESS', 'false');
             $style = [
                 "start1" => ["background" => "rgba(242, 222, 255, 0.20)"],
                 "duration1" => ["background" => "rgba(242, 222, 255, 0.20)"],
@@ -850,8 +850,8 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
             $flag = 0;
-            foreach ($offices as $key => $off){
-                if ($off["office"] == $user["office"]){
+            foreach ($offices as $key => $off) {
+                if ($off["office"] == $user["office"]) {
                     $offices[$key]["vacation"][] = $personVacation;
                     $offices[$key]["promotionalTour"][] = $personPromo;
 
@@ -876,7 +876,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-        $offices[]=array_shift($offices);
+        $offices[] = array_shift($offices);
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('VACATIONSCHEDULE', json_encode($offices));
 
@@ -907,6 +907,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
 
         $dataProvider = [];
+        $offices = [];
         foreach ($users as $key => $user) {
 
             $dataProvider[$key]["category"] = $user['name'];
@@ -1016,10 +1017,18 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
 
+            if ($user['office'] == null) {
+                $user['office'] = 'Без офиса';
+            }
+
+
+            $offices[$user["office"]][] = $dataProvider[$key];
+
+
         }
 
 
-        echo json_encode($dataProvider);
+        echo json_encode($offices);
         die();
     }
 

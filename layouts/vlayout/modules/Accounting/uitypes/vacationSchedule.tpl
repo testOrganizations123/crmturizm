@@ -19,22 +19,20 @@
     <h4>Рекламный тур</h4>
     <br>
     <div id="tableVacationPromo_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>
-    {*<br>*}
-    {*<h4>График</h4>*}
-    {*<br>*}
-    {*<div id="chart_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>*}
+    <br>
+    <h4>График</h4>
+    <br>
+    <div class="charts" id="{$VALUE->office}" style="overflow-x: auto; padding-bottom: 20px"></div>
 {/foreach}
 
-<br>
 
-<h4>График</h4>
-<div id="chart" style="margin-top: 2px"></div>
+
 
 <style>
 
-    #chart {
+    .charts {
         width: 100%;
-        height: 5000px;
+        height: 400px;
     }
 
     #tableVacation *, #tableVacationPromo *{
