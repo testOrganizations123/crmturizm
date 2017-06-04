@@ -11,8 +11,8 @@ webix.ready(function () {
             container: "tableVacation_" + i,
             view: "datatable",
             columns: [
-                {id: "worker", header: "Сотрудник", width: 250},
-                {id: "position", header: "Должность", width: 220},
+                {id: "worker", header: "Сотрудник", width: 260},
+                {id: "position", header: "Должность", width: 240},
                 {
                     id: "start1",
                     header: [{
@@ -91,7 +91,7 @@ webix.ready(function () {
             ],
             autoheight: true,
             autowidth: true,
-            editable: true,
+            editable: window.writingAccess,
             rowHeight: 40,
             data: table.vacation,
             on: {
@@ -132,8 +132,8 @@ webix.ready(function () {
             container: "tableVacationPromo_" + i,
             view: "datatable",
             columns: [
-                {id: "worker", header: "Сотрудник", width: 250},
-                {id: "position", header: "Должность", width: 220},
+                {id: "worker", header: "Сотрудник", width: 260},
+                {id: "position", header: "Должность", width: 240},
                 {
                     id: "start1",
                     header: [{text: "Рекламный тур 1", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
@@ -196,7 +196,7 @@ webix.ready(function () {
             ],
             autoheight: true,
             autowidth: true,
-            editable: true,
+            editable: window.writingAccess,
             rowHeight: 40,
             data: table.promotionalTour,
             on: {

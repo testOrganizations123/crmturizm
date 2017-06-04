@@ -1,6 +1,8 @@
 <script>
     window.offices = {$VACATIONSCHEDULE};
     window.dateStart = '{$MONTHPERIOD}';
+    window.writingAccess = {$WRITINGACCESS};
+    console.log(window.writingAccess);
 </script>
 
 <h3>График отпусков</h3>
