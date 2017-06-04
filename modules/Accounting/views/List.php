@@ -529,8 +529,6 @@ class Accounting_List_View extends Vtiger_Index_View
         $result = $db->pquery($sqlRole, array());
         $depth = $db->query_result_rowdata($result, "depth");
 
-//        $depth["depth"] = 5;
-
         if ($depth["depth"] > 4) {
             $viewer->assign('WRITINGACCESS', json_encode(false));
         } else {
@@ -605,6 +603,14 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function vacationSchedule(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
+        //TODO: костылек изза костыльного отображения даты в фильтре
+        if(mb_strlen($this->filter_data['period']) == 7) {
+            $date = explode(".", $this->filter_data['period']);
+            $d = $date[1];
+        } else {
+            $d = $this->filter_data['period'];
+        }
+
         $addQuery = $this->addQueryFilter();
 
         //узнаем, пользователь обычный менеджер(может стажер) или управляющий
@@ -653,14 +659,14 @@ class Accounting_List_View extends Vtiger_Index_View
         $vacationQuery = "
                    SELECT *
                    FROM vacation as wt
-                   WHERE year = 2017";
+                   WHERE year = $d";
 
         $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
 
         $vacationPromoQuery = "
                    SELECT *
                    FROM vacation_promotional_tour as wt
-                   WHERE year = 2017";
+                   WHERE year = $d";
 
         $vacationPromoArray = $this->getSQLArrayResult($vacationPromoQuery, []);
 
@@ -895,6 +901,13 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function loadChart(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
+        //TODO: костылек изза костыльного отображения даты в фильтре
+        if(mb_strlen($this->filter_data['period']) == 7) {
+            $date = explode(".", $this->filter_data['period']);
+            $d = $date[1];
+        } else {
+            $d = $this->filter_data['period'];
+        }
 
         $addQuery = $this->addQueryFilter();
 
@@ -905,14 +918,14 @@ class Accounting_List_View extends Vtiger_Index_View
         $vacationPromotionalQuery = "
                    SELECT *
                    FROM vacation_promotional_tour as wt 
-                   WHERE year = 2017";
+                   WHERE year = $d";
 
         $vacationPromotionalArray = $this->getSQLArrayResult($vacationPromotionalQuery, []);
 
         $vacationQuery = "
                    SELECT *
                    FROM vacation as wt
-                   WHERE year = 2017";
+                   WHERE year = $d";
 
         $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
 
@@ -1044,6 +1057,56 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function editVacation(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
+        $value = $request->get("value");
+        $year = $request->get("year");
+        $column = $request->get("column");
+        $worker = $request->get("worker");
+
+
+        if (strlen($value) > 20) {
+
+            $date = substr($value, 0, strpos($value, '('));
+            $new_string = "";
+            $string = $date;
+            $words = "4";
+            $array = explode(" ", $string);
+            for ($i = 0; $i < $words; $i++) {
+                $new_string .= $array[$i] . " ";
+            }
+            $need = trim($new_string);
+
+            $d = DateTime::createFromFormat('D M d Y', $need);
+            $value = $d->format("Y-m-d");
+        }
+
+        $sql = ("SELECT id FROM vacation WHERE year = '$year' AND worker = '$worker'");
+
+        $record = $this->getSQLArrayResult($sql, []);
+
+        if (count($record)) {
+            if ($value == ''){
+                $sql = "UPDATE vacation SET $column = null WHERE  year = '$year' AND worker = '$worker'";
+            } else {
+                $sql = "UPDATE vacation SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
+            }
+
+        } else {
+            if ($value == ''){
+                $sql = "INSERT INTO vacation (worker, year) VALUES('$worker', '$year')";
+            } else {
+                $sql = "INSERT INTO vacation (worker, year, $column) VALUES('$worker', '$year', '$value')";
+            }
+        }
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+        echo json_encode('success');
+        die();
+    }
+
+    public function editVacationTour(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
 
         $value = $request->get("value");
         $year = $request->get("year");
@@ -1069,57 +1132,23 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-        $sql = ("SELECT id FROM vacation WHERE year = '$year' AND worker = '$worker'");
-
-        $record = $this->getSQLArrayResult($sql, []);
-
-        if (count($record)) {
-            $sql = "UPDATE vacation SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
-        } else {
-            $sql = "INSERT INTO vacation (worker, year, $column) VALUES('$worker', '$year', '$value')";
-        }
-
-        $db = PearDatabase::getInstance();
-        $db->pquery($sql, array());
-
-        echo json_encode('success');
-        die();
-    }
-
-    public function editVacationTour(Vtiger_Request $request, Vtiger_Viewer $viewer)
-    {
-
-        $value = $request->get("value");
-        $year = $request->get("year");
-        $column = $request->get("column");
-        $worker = $request->get("worker");
-
-
         $sql = ("SELECT id FROM vacation_promotional_tour WHERE year = '$year' AND worker = '$worker'");
 
         $record = $this->getSQLArrayResult($sql, []);
 
         if (count($record)) {
-            $sql = "UPDATE vacation_promotional_tour SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
-        } else {
-            if ($column != 'allowed') {
-
-                $date = substr($value, 0, strpos($value, '('));
-                $new_string = "";
-                $string = $date;
-                $words = "4";
-                $array = explode(" ", $string);
-                for ($i = 0; $i < $words; $i++) {
-                    $new_string .= $array[$i] . " ";
-                }
-                $need = trim($new_string);
-
-                $d = DateTime::createFromFormat('D M d Y', $need);
-                $value = $d->format("Y-m-d");
-
-
+            if ($value == ''){
+                $sql = "UPDATE vacation_promotional_tour SET $column = null WHERE  year = '$year' AND worker = '$worker'";
+            } else {
+                $sql = "UPDATE vacation_promotional_tour SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
             }
-            $sql = "INSERT INTO vacation_promotional_tour (worker, year, $column) VALUES('$worker', '$year', '$value')";
+
+        } else {
+            if ($value == ''){
+                $sql = "INSERT INTO vacation_promotional_tour (worker, year) VALUES('$worker', '$year')";
+            } else {
+                $sql = "INSERT INTO vacation_promotional_tour (worker, year, $column) VALUES('$worker', '$year', '$value')";
+            }
         }
 
         $db = PearDatabase::getInstance();
