@@ -39,6 +39,20 @@
     #tableVacation *, #tableVacationPromo *{
         font-size: 14px;
     }
+
+    .webix_inp_static {
+        border-radius: 0!important;
+        margin-top: -3px;
+        line-height: 25px!important;
+        height: 28px!important;
+    }
+
+    .webix_input_icon.fa-calendar{
+        border-radius: 0!important;
+        height: 24px!important;
+        padding-top: 4px!important;
+        margin-top: -3px;
+    }
 </style>
 
 <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css">
