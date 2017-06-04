@@ -12,29 +12,65 @@ webix.ready(function () {
         columns: [
             {id: "worker", header: "Сотрудник", width: 250},
             {id: "position", header: "Должность", width: 220},
-            {id: "start1", header:[{text:"1-я часть отпуска", colspan:3, css:{ "text-align":"center!important"}}, "Начало"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "duration1", header:["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {id: "finish1", header:["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "start2", header:[{text:"2-я часть отпуска", colspan:3, css:{ "text-align":"center!important"}}, "Начало"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "duration2", header:["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {id: "finish2", header:["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "start3", header:[{text:"3-я часть отпуска", colspan:3, css:{ "text-align":"center!important"}}, "Начало"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "duration3", header:["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {id: "finish3",header:["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "start4", header:[{text:"4-я часть отпуска", colspan:3, css:{ "text-align":"center!important"}}, "Начало"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "duration4", header:["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {id: "finish4", header:["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "allowed", header:{ text:"Положено", rotate:true }, width: 40, editor: "text"},
-            {id: "spent", header: { text:"Потрачено", rotate:true }, width: 40},
-            {id: "left", header: { text:"Осталось", rotate:true }, width: 40}
+            {
+                id: "start1",
+                header: [{text: "1-я часть отпуска", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                width: 90,
+                editor: "date",
+                format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor
+            },
+            {id: "duration1", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+            {
+                id: "finish1", header: ["", "Конец"], width: 90, editor: "date",
+                format: show_date, editFormat: show_editor, editParse: parse_editor
+            },
+            {
+                id: "start2",
+                header: [{text: "2-я часть отпуска", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                width: 90,
+                editor: "date",
+                format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor
+            },
+            {id: "duration2", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+            {
+                id: "finish2", header: ["", "Конец"], width: 90, editor: "date",
+                format: show_date, editFormat: show_editor, editParse: parse_editor
+            },
+            {
+                id: "start3",
+                header: [{text: "3-я часть отпуска", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                width: 90,
+                editor: "date",
+                format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor
+            },
+            {id: "duration3", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+            {
+                id: "finish3", header: ["", "Конец"], width: 90, editor: "date",
+                format: show_date, editFormat: show_editor, editParse: parse_editor
+            },
+            {
+                id: "start4",
+                header: [{text: "4-я часть отпуска", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                width: 90,
+                editor: "date",
+                format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor
+            },
+            {id: "duration4", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+            {
+                id: "finish4", header: ["", "Конец"], width: 90, editor: "date",
+                format: show_date, editFormat: show_editor, editParse: parse_editor
+            },
+            {id: "allowed", header: {text: "Положено", rotate: true}, width: 40, editor: "text"},
+            {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
+            {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
         ],
         autoheight: true,
         autowidth: true,
@@ -43,7 +79,7 @@ webix.ready(function () {
         data: window.vacationSchedule.vacation,
         on: {
             onAfterEditStop: function (cell, coordinates) {
-
+                loadChart();
                 var record = dtable.getItem(coordinates.row);
 
                 var column = coordinates.column;
@@ -81,29 +117,65 @@ webix.ready(function () {
         columns: [
             {id: "worker", header: "Сотрудник", width: 250},
             {id: "position", header: "Должность", width: 220},
-            {id: "start1", header:[{text:"Рекламный тур 1", colspan:3, css:{ "text-align":"center!important"}}, "Начало"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "duration1", header:["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {id: "finish1", header:["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "start2", header:[{text:"Рекламный тур 2", colspan:3, css:{ "text-align":"center!important"}}, "Начало"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "duration2", header:["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {id: "finish2", header:["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "start3", header:[{text:"Рекламный тур 3", colspan:3, css:{ "text-align":"center!important"}}, "Начало"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "duration3", header:["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {id: "finish3",header:["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "start4", header:[{text:"Рекламный тур 4", colspan:3, css:{ "text-align":"center!important"}}, "Начало"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "duration4", header:["", {text: "дней", rotate: true, height: 55}], width: 40},
-            {id: "finish4", header:["", "Конец"], width: 90, editor: "date",
-                format: show_date, editFormat:	show_editor, editParse:	parse_editor},
-            {id: "allowed", header:{ text:"Положено", rotate:true }, editor: "text", width: 40},
-            {id: "spent", header: { text:"Потрачено", rotate:true }, width: 40},
-            {id: "left", header: { text:"Осталось", rotate:true }, width: 40}
+            {
+                id: "start1",
+                header: [{text: "Рекламный тур 1", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                width: 90,
+                editor: "date",
+                format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor
+            },
+            {id: "duration1", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+            {
+                id: "finish1", header: ["", "Конец"], width: 90, editor: "date",
+                format: show_date, editFormat: show_editor, editParse: parse_editor
+            },
+            {
+                id: "start2",
+                header: [{text: "Рекламный тур 2", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                width: 90,
+                editor: "date",
+                format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor
+            },
+            {id: "duration2", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+            {
+                id: "finish2", header: ["", "Конец"], width: 90, editor: "date",
+                format: show_date, editFormat: show_editor, editParse: parse_editor
+            },
+            {
+                id: "start3",
+                header: [{text: "Рекламный тур 3", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                width: 90,
+                editor: "date",
+                format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor
+            },
+            {id: "duration3", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+            {
+                id: "finish3", header: ["", "Конец"], width: 90, editor: "date",
+                format: show_date, editFormat: show_editor, editParse: parse_editor
+            },
+            {
+                id: "start4",
+                header: [{text: "Рекламный тур 4", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                width: 90,
+                editor: "date",
+                format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor
+            },
+            {id: "duration4", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+            {
+                id: "finish4", header: ["", "Конец"], width: 90, editor: "date",
+                format: show_date, editFormat: show_editor, editParse: parse_editor
+            },
+            {id: "allowed", header: {text: "Положено", rotate: true}, editor: "text", width: 40},
+            {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
+            {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
         ],
         autoheight: true,
         autowidth: true,
@@ -135,6 +207,9 @@ webix.ready(function () {
 
                             });
                         }
+
+
+                       
                     },
                     dataType: "json"
                 });
@@ -145,6 +220,69 @@ webix.ready(function () {
     });
 
 });
+
+
+function loadChart() {
+var chart;
+    $.ajax({
+        url: "/index.php?module=Accounting&view=List&mode=loadChart",
+        success: function (responce) {
+            var dataProvider = $.parseJSON(responce);
+           chart = AmCharts.makeChart("chart", {
+                "type": "gantt",
+                "theme": "light",
+                "marginRight": 70,
+                "period": "DD",
+                "dataDateFormat": "YYYY-MM-DD",
+                "columnWidth": 0.5,
+                "valueAxis": {
+                    "type": "date"
+                },
+                "brightnessStep": 7,
+                "graph": {
+                    "lineAlpha": 1,
+                    "lineColor": "#fff",
+                    "fillAlphas": 0.85
+                },
+                "rotate": true,
+                "categoryField": "category",
+                "segmentsField": "segments",
+                "colorField": "color",
+                "startDateField": "start",
+                "endDateField": "end",
+
+                "dataProvider": dataProvider,
+
+                "chartCursor": {
+                    "cursorColor": "#55bb76",
+                    "valueBalloonsEnabled": false,
+                    "cursorAlpha": 0,
+                    "valueLineAlpha": 0.5,
+                    "valueLineBalloonEnabled": true,
+                    "valueLineEnabled": true,
+                    "zoomable": false,
+                    "valueZoomable": true
+                },
+                "legend": {
+                    "data": [{
+                        "title": "Очередной отпуск",
+                        "color": "#FF0000"
+                    }, {
+                        "title": "Рекламные туры",
+                        "color": "#FFFF00"
+                    }]
+                }
+            });
+
+
+        }
+
+    });
+
+return chart;
+
+}
+
 
 function in_array(what, where) {
     for (var i = 0; i < where.length; i++)
@@ -1202,181 +1340,12 @@ function in_array(what, where) {
     });
 }));
 
+loadChart();
 
-var chart = AmCharts.makeChart("chart", {
-    "type": "gantt",
-    "theme": "light",
-    "marginRight": 70,
-    "period": "DD",
-    "dataDateFormat": "YYYY-MM-DD",
-    "columnWidth": 0.5,
-    "valueAxis": {
-        "type": "date"
-    },
-    "brightnessStep": 7,
-    "graph": {
-        "lineAlpha": 1,
-        "lineColor": "#fff",
-        "fillAlphas": 0.85
-    },
-    "rotate": true,
-    "categoryField": "category",
-    "segmentsField": "segments",
-    "colorField": "color",
-    "startDateField": "start",
-    "endDateField": "end",
-    "dataProvider": [{
-        "category": "Module #1",
-        "segments": [{
-            "start": "2016-01-01",
-            "end": "2016-01-14",
-            "color": "#FFFF00",
-            "task": "Gathering requirements"
-        }, {
-            "start": "2016-01-16",
-            "end": "2016-01-27",
-            "color": "#cc4748",
-            "task": "Producing specifications"
-        }, {
-            "start": "2016-02-05",
-            "end": "2016-04-18",
-            "task": "Development",
-            "color": "#cd82ad"
-        }]
-    }, {
-        "category": "Module #2",
-        "segments": [{
-            "start": "2016-01-08",
-            "end": "2016-01-10",
-            "color": "#cc4748",
-            "task": "Gathering requirements"
-        }, {
-            "start": "2016-01-12",
-            "end": "2016-01-15",
-            "task": "Producing specifications"
-        }, {
-            "start": "2016-01-16",
-            "end": "2016-02-05",
-            "task": "Development"
-        }, {
-            "start": "2016-02-10",
-            "end": "2016-02-18",
-            "task": "Testing and QA"
-        }]
-    }, {
-        "category": "Module #3",
-        "segments": [{
-            "start": "2016-01-02",
-            "end": "2016-01-08",
-            "color": "#cd82ad",
-            "task": "Gathering requirements"
-        }, {
-            "start": "2016-01-08",
-            "end": "2016-01-16",
-            "task": "Producing specifications"
-        }, {
-            "start": "2016-01-19",
-            "end": "2016-03-01",
-            "task": "Development"
-        }, {
-            "start": "2016-03-12",
-            "end": "2016-04-05",
-            "task": "Testing and QA"
-        }]
-    }, {
-        "category": "Module #4",
-        "segments": [{
-            "start": "2016-01-01",
-            "end": "2016-01-19",
-            "color": "#2f4074",
-            "task": "Gathering requirements"
-        }, {
-            "start": "2016-01-19",
-            "end": "2016-02-03",
-            "task": "Producing specifications"
-        }, {
-            "start": "2016-03-20",
-            "end": "2016-04-25",
-            "task": "Development"
-        }, {
-            "start": "2016-04-27",
-            "end": "2016-05-15",
-            "task": "Testing and QA"
-        }]
-    }, {
-        "category": "Module #5",
-        "segments": [{
-            "start": "2016-01-01",
-            "end": "2016-01-12",
-            "color": "#448e4d",
-            "task": "Gathering requirements"
-        }, {
-            "start": "2016-01-12",
-            "end": "2016-01-19",
-            "task": "Producing specifications"
-        }, {
-            "start": "2016-01-19",
-            "end": "2016-03-01",
-            "task": "Development"
-        }, {
-            "start": "2016-03-08",
-            "end": "2016-03-30",
-            "task": "Testing and QA"
-        }]
-    },
-        {
-            "category": "Module #6",
-            "segments": [{
-                "start": "2016-01-01",
-                "end": "2016-01-12",
-                "color": "#448e4d",
-                "task": "Gathering requirements"
-            }, {
-                "start": "2016-01-12",
-                "end": "2016-01-19",
-                "task": "Producing specifications"
-            }, {
-                "start": "2016-01-19",
-                "end": "2016-03-01",
-                "task": "Development"
-            }, {
-                "start": "2016-03-08",
-                "end": "2016-03-30",
-                "task": "Testing and QA"
-            }]
-        }],
-    "valueScrollbar": {
-        "autoGridCount": true
-    },
-    "chartCursor": {
-        "cursorColor": "#55bb76",
-        "valueBalloonsEnabled": false,
-        "cursorAlpha": 0,
-        "valueLineAlpha": 0.5,
-        "valueLineBalloonEnabled": true,
-        "valueLineEnabled": true,
-        "zoomable": false,
-        "valueZoomable": true
-    },
-    "legend": {
-        "data": [{
-            "title": "Module #1",
-            "color": "#b9783f"
-        }, {
-            "title": "Module #2",
-            "color": "#cc4748"
-        }, {
-            "title": "Module #3",
-            "color": "#cd82ad"
-        }, {
-            "title": "Module #4",
-            "color": "#2f4074"
-        }, {
-            "title": "Module #5",
-            "color": "#448e4d"
-        }]
-    },
-    "export": {
-        "enabled": true
-    }
+webix.ui({
+    container: "dateFilter",
+    view:"toolbar",
+    elements:[
+        {view:"datepicker",align:"right",type:"year"}
+    ]
 });
