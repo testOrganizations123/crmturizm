@@ -859,6 +859,10 @@ class Accounting_List_View extends Vtiger_Index_View
                 $user['office'] = 'Без офиса';
             }
 
+            if($user['officeid']==null){
+                $user['officeid']=0;
+            }
+
             $flag = 0;
             foreach ($offices as $key => $off) {
                 if ($off["office"] == $user["office"]) {
@@ -872,7 +876,8 @@ class Accounting_List_View extends Vtiger_Index_View
 
             if ($flag == 0) {
                 $office = [
-                    "office" => $user["office"]
+                    "office" => $user["office"],
+                    "officeId"=>$user["officeid"]
                 ];
 
                 $office["vacation"] = [];
@@ -885,6 +890,22 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
         }
+
+        foreach ($offices as $key=> $item){
+            $i = count($item['vacation']);
+            switch ($i){
+                case 1: $offices[$key]['height'] = 90;break;
+                case 2:$offices[$key]['height'] = 65 * $i;break;
+                case 3:$offices[$key]['height'] = 55 * $i;break;
+                case $i>8:$offices[$key]['height'] = 40 * $i;break;
+                case $i>3:$offices[$key]['height'] = 50 * $i;
+
+            }
+
+
+
+        }
+
 
         $offices[] = array_shift($offices);
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
@@ -1031,8 +1052,10 @@ class Accounting_List_View extends Vtiger_Index_View
                 $user['office'] = 'Без офиса';
             }
 
-
-            $offices[$user["office"]][] = $dataProvider[$key];
+            if($user['officeid']==null){
+                $user['officeid']=0;
+            }
+            $offices[$user["officeid"]][] = $dataProvider[$key];
 
 
         }

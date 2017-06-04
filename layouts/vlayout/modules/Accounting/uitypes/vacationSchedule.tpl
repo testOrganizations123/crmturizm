@@ -22,7 +22,7 @@
     <br>
     <h4>График</h4>
     <br>
-    <div class="charts" id="{$VALUE->office}" style="overflow-x: auto; padding-bottom: 20px"></div>
+    <div class="charts" id="{$VALUE->officeId}" style="overflow-x: auto; padding-bottom: 20px; height: {$VALUE->height}px"></div>
 {/foreach}
 
 
@@ -32,7 +32,6 @@
 
     .charts {
         width: 100%;
-        height: 400px;
     }
 
     #tableVacation *, #tableVacationPromo *{

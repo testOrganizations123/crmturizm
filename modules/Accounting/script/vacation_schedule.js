@@ -5,8 +5,12 @@ function updateChart() {
     $.ajax({
         url: "/index.php?module=Accounting&view=List&mode=loadChart",
         success: function (responce) {
-            chart.dataProvider = $.parseJSON(responce);
-            chart.validateData();
+            var dataProvider = $.parseJSON(responce);
+            $.each(dataProvider,function (i,value) {
+                chart[i].dataProvider = value;
+                chart[i].validateData();
+            });
+
 
         }
     })
@@ -1335,10 +1339,14 @@ function loadChart() {
         url: "/index.php?module=Accounting&view=List&mode=loadChart",
         success: function (responce) {
             var dataProvider = $.parseJSON(responce);
+
             $.each(dataProvider,function (i,value) {
                 chart[i] = AmCharts.makeChart(i, {
                     "type": "gantt",
                     "theme": "light",
+                    "language":'ru',
+                    "autoResize":false,
+                    " autoDisplay":true,
                     "marginRight": 70,
                     "period": "DD",
                     "dataDateFormat": "YYYY-MM-DD",
