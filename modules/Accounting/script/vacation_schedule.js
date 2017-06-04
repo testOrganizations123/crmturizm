@@ -1,3 +1,18 @@
+var chart;
+
+
+function updateChart() {
+    $.ajax({
+        url: "/index.php?module=Accounting&view=List&mode=loadChart",
+        success: function (responce) {
+            chart.dataProvider = $.parseJSON(responce);
+            chart.validateData();
+
+        }
+    })
+}
+
+
 webix.ready(function () {
 
     var show_editor = webix.Date.dateToStr("%Y / %m / %d");
@@ -101,6 +116,7 @@ webix.ready(function () {
                                 });
 
                             });
+                            updateChart()
                         }
                     },
                     dataType: "json"
@@ -206,10 +222,10 @@ webix.ready(function () {
                                 });
 
                             });
+                            updateChart();
                         }
 
 
-                       
                     },
                     dataType: "json"
                 });
@@ -220,68 +236,6 @@ webix.ready(function () {
     });
 
 });
-
-
-function loadChart() {
-var chart;
-    $.ajax({
-        url: "/index.php?module=Accounting&view=List&mode=loadChart",
-        success: function (responce) {
-            var dataProvider = $.parseJSON(responce);
-           chart = AmCharts.makeChart("chart", {
-                "type": "gantt",
-                "theme": "light",
-                "marginRight": 70,
-                "period": "DD",
-                "dataDateFormat": "YYYY-MM-DD",
-                "columnWidth": 0.5,
-                "valueAxis": {
-                    "type": "date"
-                },
-                "brightnessStep": 7,
-                "graph": {
-                    "lineAlpha": 1,
-                    "lineColor": "#fff",
-                    "fillAlphas": 0.85
-                },
-                "rotate": true,
-                "categoryField": "category",
-                "segmentsField": "segments",
-                "colorField": "color",
-                "startDateField": "start",
-                "endDateField": "end",
-
-                "dataProvider": dataProvider,
-
-                "chartCursor": {
-                    "cursorColor": "#55bb76",
-                    "valueBalloonsEnabled": false,
-                    "cursorAlpha": 0,
-                    "valueLineAlpha": 0.5,
-                    "valueLineBalloonEnabled": true,
-                    "valueLineEnabled": true,
-                    "zoomable": false,
-                    "valueZoomable": true
-                },
-                "legend": {
-                    "data": [{
-                        "title": "Очередной отпуск",
-                        "color": "#FF0000"
-                    }, {
-                        "title": "Рекламные туры",
-                        "color": "#FFFF00"
-                    }]
-                }
-            });
-
-
-        }
-
-    });
-
-return chart;
-
-}
 
 
 function in_array(what, where) {
@@ -1340,18 +1294,75 @@ function in_array(what, where) {
     });
 }));
 
-loadChart();
+
 var arrDate = window.dateStart.split('.');
 var i = arrDate.length;
 var dateFilter = webix.ui({
     container: "dateFilter",
 
 
-    view:"datepicker",align:"right",value:arrDate[i-1],type:"year", format:"%Y"
+    view: "datepicker", align: "right", value: arrDate[i - 1], type: "year", format: "%Y"
 
 });
 
-dateFilter.attachEvent("onChange", function(newv, oldv){
- 
+dateFilter.attachEvent("onChange", function (newv, oldv) {
+
     $('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
 });
+loadChart();
+function loadChart() {
+    $.ajax({
+        url: "/index.php?module=Accounting&view=List&mode=loadChart",
+        success: function (responce) {
+            var dataProvider = $.parseJSON(responce);
+            chart = AmCharts.makeChart("chart", {
+                "type": "gantt",
+                "theme": "light",
+                "marginRight": 70,
+                "period": "DD",
+                "dataDateFormat": "YYYY-MM-DD",
+                "columnWidth": 0.5,
+                "valueAxis": {
+                    "type": "date"
+                },
+                "brightnessStep": 7,
+                "graph": {
+                    "lineAlpha": 1,
+                    "lineColor": "#fff",
+                    "fillAlphas": 0.85
+                },
+                "rotate": true,
+                "categoryField": "category",
+                "segmentsField": "segments",
+                "colorField": "color",
+                "startDateField": "start",
+                "endDateField": "end",
+
+                "dataProvider": dataProvider,
+
+                "chartCursor": {
+                    "cursorColor": "#55bb76",
+                    "valueBalloonsEnabled": false,
+                    "cursorAlpha": 0,
+                    "valueLineAlpha": 0.5,
+                    "valueLineBalloonEnabled": true,
+                    "valueLineEnabled": true,
+                    "zoomable": false,
+                    "valueZoomable": true
+                },
+                "legend": {
+                    "data": [{
+                        "title": "Очередной отпуск",
+                        "color": "#FF0000"
+                    }, {
+                        "title": "Рекламные туры",
+                        "color": "#FFFF00"
+                    }]
+                }
+            });
+
+
+        }
+
+    });
+}
