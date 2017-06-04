@@ -501,15 +501,23 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function holidays(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
+        //TODO: костылек изза костыльного отображения даты в фильтре
+        if(mb_strlen($this->filter_data['period']) == 7) {
+            $date = explode(".", $this->filter_data['period']);
+            $d = $date[1];
+        } else {
+            $d = $this->filter_data['period'];
+        }
 
-        $holidayQuery = "SELECT * FROM holidays ORDER BY date";
+        $holidayQuery = "SELECT * FROM holidays where date BETWEEN '$d-01-01' AND '$d-12-31'  ORDER BY date";
 
         $holidays = $this->getSQLArrayResult($holidayQuery, "");
         $holidaysArr = [];
         foreach ($holidays as $key => $item) {
             $holidaysArr[$key]['id'] = $item['id'];
             $holidaysArr[$key]['holiday'] = $item['name'];
-            $holidaysArr[$key]['date'] = $item['date'];
+            $date = new DateTime($item['date']);
+            $holidaysArr[$key]['date'] = $date->format("d.m.Y");
 
         }
 
@@ -536,9 +544,11 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function addHoliday(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
-        $date = $request->get('date');
+        $date = new DateTime($request->get('date'));
+        $d = $date->format("Y-m-d");
+
         $holiday = $request->get('holiday');
-        $sql = "INSERT INTO holidays (date, name) VALUES('$date', '$holiday')";
+        $sql = "INSERT INTO holidays (date, name) VALUES('$d', '$holiday')";
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
         $holidayQuery = "SELECT * FROM holidays ORDER BY date";

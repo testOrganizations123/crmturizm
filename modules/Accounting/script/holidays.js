@@ -94,6 +94,6 @@ var dateWebix = webix.ui({
     container: "date",
 
 
-    view:"datepicker",align:"right", format:"%Y-%m-%d"
+    view:"datepicker",align:"right", format:"%d.%m.%Y"
 
 });
