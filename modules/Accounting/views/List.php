@@ -513,6 +513,22 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
+        //узнаем, пользователь обычный менеджер(может стажер) или управляющий
+        $db = PearDatabase::getInstance();
+        $userModel = Users_Record_Model::getCurrentUserModel();
+        $userRole = $userModel->getRole();
+        $sqlRole = "SELECT depth FROM vtiger_role WHERE roleid = '$userRole'";
+        $result = $db->pquery($sqlRole, array());
+        $depth = $db->query_result_rowdata($result, "depth");
+
+//        $depth["depth"] = 5;
+
+        if ($depth["depth"] > 4) {
+            $viewer->assign('WRITINGACCESS', json_encode(false));
+        } else {
+            $viewer->assign('WRITINGACCESS', json_encode(true));
+        }
+
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('HOLIDAYS', json_encode($holidaysArr));
         return true;

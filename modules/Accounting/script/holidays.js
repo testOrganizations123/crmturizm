@@ -12,7 +12,7 @@ webix.ready(function () {
         columns: [
             {id: "date", header: "Дата", width: 120},
             {id: "holiday", header: "Праздник", width: 400},
-            {id: "", template: "<button class='delbtn' >x</button>", width: 45}
+            {id: "", template: "<span class='delbtn' style='font-size: 20px; cursor: pointer'>X</span>", width: 45}
         ],
         data: window.holidays
     });

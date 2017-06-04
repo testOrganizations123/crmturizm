@@ -2,7 +2,6 @@
     window.offices = {$VACATIONSCHEDULE};
     window.dateStart = '{$MONTHPERIOD}';
     window.writingAccess = {$WRITINGACCESS};
-    console.log(window.writingAccess);
 </script>
 
 <h3>График отпусков</h3>
@@ -47,6 +46,7 @@
         margin-top: -3px;
         line-height: 25px!important;
         height: 28px!important;
+        cursor: pointer;
     }
 
     .webix_input_icon.fa-calendar{
@@ -54,6 +54,7 @@
         height: 24px!important;
         padding-top: 4px!important;
         margin-top: -3px;
+        cursor: pointer;
     }
 </style>
 
