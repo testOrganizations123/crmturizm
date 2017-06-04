@@ -287,7 +287,6 @@ class Accounting_List_View extends Vtiger_Index_View
     public function workingHoursEdit(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
 
-
         $day = $request->get("day");
         $month = $request->get("month");
         $year = $request->get("year");
@@ -591,16 +590,23 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
 
+        $vacationPromoQuery = "
+                   SELECT *
+                   FROM vacation_promotional_tour as wt
+                   WHERE year = 2017";
+
+        $vacationPromoArray = $this->getSQLArrayResult($vacationPromoQuery, []);
+
 
         $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
 
         $users = $this->getSQLArrayResult($usersQuery, []);
 
-        $people = [];
+        $offices = [];
 
         foreach ($users as $user) {
 
-            $person = [
+            $personVacation = [
                 "id" => $user["id"],
                 "worker" => $user["name"],
                 "position" => $user["title"],
@@ -641,8 +647,6 @@ class Accounting_List_View extends Vtiger_Index_View
             foreach ($vacationArray as $vacation) {
 
                 if ($vacation["worker"] == $user["id"]) {
-
-                    $a = 5;
 
                     if ($vacation["start1"]) {
                         $dateStart1Obj = new DateTime($vacation["start1"]);
@@ -696,36 +700,19 @@ class Accounting_List_View extends Vtiger_Index_View
                         $dateFinish4 = '';
                     }
 
-                    $person["start1"] = $dateStart1;
-                    $person["finish1"] = $dateFinish1;
-                    $person["start2"] = $dateStart2;
-                    $person["finish2"] = $dateFinish2;
-                    $person["start3"] = $dateStart3;
-                    $person["finish3"] = $dateFinish3;
-                    $person["start4"] = $dateStart4;
-                    $person["finish4"] = $dateFinish4;
-                    $person["allowed"] = $vacation["allowed"];
+                    $personVacation["start1"] = $dateStart1;
+                    $personVacation["finish1"] = $dateFinish1;
+                    $personVacation["start2"] = $dateStart2;
+                    $personVacation["finish2"] = $dateFinish2;
+                    $personVacation["start3"] = $dateStart3;
+                    $personVacation["finish3"] = $dateFinish3;
+                    $personVacation["start4"] = $dateStart4;
+                    $personVacation["finish4"] = $dateFinish4;
+                    $personVacation["allowed"] = $vacation["allowed"];
                 }
             }
 
-
-            $people[] = $person;
-        }
-
-
-        // То же самое, только для ТУРОВ
-        $vacationQuery = "
-                   SELECT *
-                   FROM vacation_promotional_tour as wt
-                   WHERE year = 2017";
-
-        $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
-
-        $peopleTour = [];
-
-        foreach ($users as $user) {
-
-            $person = [
+            $personPromo = [
                 "id" => $user["id"],
                 "worker" => $user["name"],
                 "position" => $user["title"],
@@ -763,11 +750,9 @@ class Accounting_List_View extends Vtiger_Index_View
 
             ];
 
-            foreach ($vacationArray as $vacation) {
+            foreach ($vacationPromoArray as $vacation) {
 
                 if ($vacation["worker"] == $user["id"]) {
-
-                    $a = 5;
 
                     if ($vacation["start1"]) {
                         $dateStart1Obj = new DateTime($vacation["start1"]);
@@ -821,23 +806,52 @@ class Accounting_List_View extends Vtiger_Index_View
                         $dateFinish4 = '';
                     }
 
-                    $person["start1"] = $dateStart1;
-                    $person["finish1"] = $dateFinish1;
-                    $person["start2"] = $dateStart2;
-                    $person["finish2"] = $dateFinish2;
-                    $person["start3"] = $dateStart3;
-                    $person["finish3"] = $dateFinish3;
-                    $person["start4"] = $dateStart4;
-                    $person["finish4"] = $dateFinish4;
-                    $person["allowed"] = $vacation["allowed"];
+                    $personPromo["start1"] = $dateStart1;
+                    $personPromo["finish1"] = $dateFinish1;
+                    $personPromo["start2"] = $dateStart2;
+                    $personPromo["finish2"] = $dateFinish2;
+                    $personPromo["start3"] = $dateStart3;
+                    $personPromo["finish3"] = $dateFinish3;
+                    $personPromo["start4"] = $dateStart4;
+                    $personPromo["finish4"] = $dateFinish4;
+                    $personPromo["allowed"] = $vacation["allowed"];
                 }
             }
 
+            if ($user['office'] == null) {
+                $user['office'] = 'Без офиса';
+            }
 
-            $peopleTour[] = $person;
+            $flag = 0;
+            foreach ($offices as $key => $off){
+                if ($off["office"] == $user["office"]){
+                    $offices[$key]["vacation"][] = $personVacation;
+                    $offices[$key]["promotionalTour"][] = $personPromo;
+
+                    $flag = 1;
+                    break;
+                }
+            }
+
+            if ($flag == 0) {
+                $office = [
+                    "office" => $user["office"]
+                ];
+
+                $office["vacation"] = [];
+                $office["vacation"][] = $personVacation;
+
+                $office["promotionalTour"] = [];
+                $office["promotionalTour"][] = $personPromo;
+
+                $offices[] = $office;
+            }
+
         }
+
+        $offices[]=array_shift($offices);
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
-        $viewer->assign('VACATIONSCHEDULE', json_encode(["vacation" => $people, "promotionalTour" => $peopleTour]));
+        $viewer->assign('VACATIONSCHEDULE', json_encode(["offices" => $offices]));
     }
 
 
@@ -984,7 +998,6 @@ class Accounting_List_View extends Vtiger_Index_View
     public function editVacation(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
 
-
         $value = $request->get("value");
         $year = $request->get("year");
         $column = $request->get("column");
@@ -1028,7 +1041,6 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function editVacationTour(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
-
 
         $value = $request->get("value");
         $year = $request->get("year");
