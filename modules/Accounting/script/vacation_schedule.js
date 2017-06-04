@@ -111,7 +111,7 @@ webix.ready(function () {
             data: table.vacation,
             on: {
                 onAfterEditStop: function (cell, coordinates) {
-                    loadChart();
+                    updateChart();
                     var record = dtable.getItem(coordinates.row);
 
                     var column = coordinates.column;
@@ -133,7 +133,7 @@ webix.ready(function () {
                                     });
 
                             });
-                            updateChart()
+
                         }
                     },
                     dataType: "json"
@@ -228,6 +228,7 @@ webix.ready(function () {
                         type: "GET",
                         url: "/index.php?module=Accounting&view=List&mode=editVacationTour&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + '2017',
                         success: function (data) {
+                            updateChart();
                             if (data != "success") {
                                 record[coordinates.column] = cell.old;
                                 dtable.refresh();
@@ -239,7 +240,7 @@ webix.ready(function () {
                                     });
 
                             });
-                            updateChart();
+
                         }
 
 
