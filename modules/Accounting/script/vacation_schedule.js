@@ -117,6 +117,7 @@ function dateDiff(date1, date2) {
 function changeCountWithoutHolidays(date1, date2) {
 
     var result = dateDiff(date1, date2) + 1;
+    var holidayCount = 0;
 
     window.holidays.forEach(function (elem) {
         var holidayDay = new Date(elem.date);
@@ -124,42 +125,55 @@ function changeCountWithoutHolidays(date1, date2) {
 
         if (date1 <= holidayDay && holidayDay <= date2) {
             result = result - 1;
+            holidayCount = holidayCount + 1;
         }
 
     });
 
-    return result;
+    return {"day" : result, "holidays": holidayCount};
 }
 
 
 function countDays(line) {
 
-    if (line.start1 && line.finish1) {
-        line.duration1 = this.changeCountWithoutHolidays(new Date(line.start1), new Date(line.finish1));
-    } else {
-        line.duration1 = 0;
-    }
-    if (line.start2 && line.finish2) {
-        line.duration2 = this.changeCountWithoutHolidays(new Date(line.start2), new Date(line.finish2));
-    } else {
-        line.duration2 = 0;
-    }
-    if (line.start3 && line.finish3) {
-        line.duration3 = this.changeCountWithoutHolidays(new Date(line.start3), new Date(line.finish3));
-    } else {
-        line.duration3 = 0;
-    }
-    if (line.start4 && line.finish4) {
-        line.duration4 = this.changeCountWithoutHolidays(new Date(line.start4), new Date(line.finish4));
-    } else {
-        line.duration4 = 0;
-    }
+    var holidays = 0;
+
+        if (line.start1 && line.finish1){
+            var date = this.changeCountWithoutHolidays(new Date(line.start1), new Date(line.finish1));
+            line.duration1 = date.day;
+            holidays = holidays + date.holidays;
+        } else {
+            line.duration1 = 0;
+        }
+        if (line.start2 && line.finish2){
+            date = this.changeCountWithoutHolidays(new Date(line.start2), new Date(line.finish2));
+            line.duration2 = date.day;
+            holidays = holidays + date.holidays;
+        } else {
+            line.duration2 = 0;
+        }
+        if (line.start3 && line.finish3){
+            date = this.changeCountWithoutHolidays(new Date(line.start3), new Date(line.finish3));
+            line.duration3 = date.day;
+            holidays = holidays + date.holidays;
+        } else {
+            line.duration3 = 0;
+        }
+        if (line.start4 && line.finish4){
+            date = this.changeCountWithoutHolidays(new Date(line.start4), new Date(line.finish4));
+            line.duration4 = date.day;
+            holidays = holidays + date.holidays;
+        } else {
+            line.duration4 = 0;
+        }
 
     line.spent = parseInt(line.duration1) + parseInt(line.duration2) + parseInt(line.duration3) + parseInt(line.duration4);
 
     line.left = parseInt(line.allowed) - parseInt(line.spent);
 
-    return line;
+        line.holidays = holidays;
+
+        return line;
 }
 
 function parseDate(input, format) {
@@ -193,12 +207,16 @@ webix.ready(function () {
             offices[i].promotionalTour[j] = self.countDays(vac);
         });
 
+        offices[i].vacationSession.forEach(function (vac, j, arr) {
+            offices[i].vacationSession[j] = self.countDays(vac);
+        });
+
         var dtable = new webix.ui({
             container: "tableVacation_" + i,
             view: "datatable",
             columns: [
-                {id: "worker", header: "Сотрудник", width: 260},
-                {id: "position", header: "Должность", width: 240},
+                {id: "worker", header: "Сотрудник", width: 238},
+                {id: "position", header: "Должность", width: 230},
                 {
                     id: "start1",
                     header: [{
@@ -273,7 +291,8 @@ webix.ready(function () {
                 },
                 {id: "allowed", header: {text: "Положено", rotate: true}, width: 40, editor: "text"},
                 {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
-                {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
+                {id: "left", header: {text: "Осталось", rotate: true}, width: 40},
+                {id: "holidays", header: {text: "Праздники", rotate: true}, width: 40}
             ],
             autoheight: true,
             autowidth: true,
@@ -389,8 +408,8 @@ webix.ready(function () {
             container: "tableVacationPromo_" + i,
             view: "datatable",
             columns: [
-                {id: "worker", header: "Сотрудник", width: 260},
-                {id: "position", header: "Должность", width: 240},
+                {id: "worker", header: "Сотрудник", width: 238},
+                {id: "position", header: "Должность", width: 230},
                 {
                     id: "start1",
                     header: [{text: "Рекламный тур 1", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
@@ -449,7 +468,8 @@ webix.ready(function () {
                 },
                 {id: "allowed", header: {text: "Положено", rotate: true}, editor: "text", width: 40},
                 {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
-                {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
+                {id: "left", header: {text: "Осталось", rotate: true}, width: 40},
+                {id: "holidays", header: {text: "Праздники", rotate: true}, width: 40}
             ],
             autoheight: true,
             autowidth: true,
@@ -544,6 +564,181 @@ webix.ready(function () {
                                 });
 
                                 dtablePromo.refresh();
+                            }
+
+
+                    },
+                    dataType: "json"
+                });
+
+
+                }
+            }
+        });
+
+
+
+
+        var dtableSession = new webix.ui({
+            container: "tableVacationSession_" + i,
+            view: "datatable",
+            columns: [
+                {id: "worker", header: "Сотрудник", width: 238},
+                {id: "position", header: "Должность", width: 230},
+                {
+                    id: "start1",
+                    header: [{text: "Период 1", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration1", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish1", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start2",
+                    header: [{text: "Период 2", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration2", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish2", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start3",
+                    header: [{text: "Период 3", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration3", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish3", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {
+                    id: "start4",
+                    header: [{text: "Период 4", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
+                    width: 90,
+                    editor: "date",
+                    format: show_date,
+                    editFormat: show_editor,
+                    editParse: parse_editor
+                },
+                {id: "duration4", header: ["", {text: "дней", rotate: true, height: 55}], width: 40},
+                {
+                    id: "finish4", header: ["", "Конец"], width: 90, editor: "date",
+                    format: show_date, editFormat: show_editor, editParse: parse_editor
+                },
+                {id: "allowed", header: {text: "Положено", rotate: true}, editor: "text", width: 40},
+                {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
+                {id: "left", header: {text: "Осталось", rotate: true}, width: 40},
+                {id: "holidays", header: {text: "Праздники", rotate: true}, width: 40}
+            ],
+            autoheight: true,
+            autowidth: true,
+            editable: window.writingAccess,
+            rowHeight: 40,
+            data: table.vacationSession,
+            on: {
+                onAfterEditStart: function(){
+                    var elements = $('.webix_cal_footer');
+
+                    var elem2 = elements.find('.webix_cal_icon');
+                    elem2.click(function(){
+                        setTimeout(function () {
+                            $('#tableVacation_0').click();
+                            setTimeout(function () {
+                                $('#listViewContents').click();
+                                setTimeout(function () {
+                                    $('#listViewContents').click();
+                                    setTimeout(function () {
+                                        $('#listViewContents').click();
+                                        setTimeout(function () {
+                                            $('#listViewContents').click();
+                                            setTimeout(function () {
+                                                $('#listViewContents').click();
+                                            }, 100);
+                                        }, 100);
+                                    }, 100);
+                                }, 100);
+                            }, 100);
+                        }, 100);
+                    });
+                },
+                onAfterEditStop: function (cell, coordinates) {
+
+                    updateChart();
+                    var record = dtableSession.getItem(coordinates.row);
+
+                    var column = coordinates.column;
+                    var value = cell.value;
+                    var worker = coordinates.row;
+
+                    if (column === "allowed"){
+                        value = value.trim();
+
+                        if (value === "") {
+                            value = '0';
+                            record[coordinates.column] = '0';
+                        }
+                    }
+
+                    var year = $('#dateFilter').find('.webix_inp_static')[0].innerHTML;
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/index.php?module=Accounting&view=List&mode=editVacationSession&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + year,
+                        success: function (data) {
+                            updateChart();
+                            if (data != "success") {
+                                record[coordinates.column] = cell.old;
+                                dtableSession.refresh();
+                                $(function () {
+                                    new PNotify({
+                                        title: 'Ошибка валидации!',
+                                        text: data,
+                                        delay: 4000
+                                    });
+
+                                });
+
+                            } else {
+                                table.vacationSession.forEach(function (item, i, arr) {
+                                    if (item.id == coordinates.row) {
+
+                                        if (coordinates.column != 'allowed') {
+
+                                            if (cell.value.length == undefined){
+                                                val = $.datepicker.formatDate('yy-mm-dd 00:00:00', cell.value);
+                                            } else if (cell.value.length == 0) {
+                                                val = '';
+                                            } else {
+                                                val = cell.value.replace(/ /g, "");
+                                                val = val.substr(0, val.length - 5) + " 00:00:00";
+                                            }
+                                        } else {
+                                            val = cell.value.replace(/ /g, "");
+                                        }
+
+                                        item[coordinates.column] = val;
+                                        table.vacationSession[i] = self.countDays(item);
+
+                                    }
+                                });
+
+                                dtableSession.refresh();
                             }
 
 
