@@ -1550,7 +1550,8 @@ dateFilter.attachEvent("onChange", function (newv, oldv) {
 loadChart();
 function loadChart() {
 
-    console.log(window.offices);
+    var start = new Date(arrDate[i-1],0,1);
+    var finish = new Date(arrDate[i-1],11,31);
 
             $.each(window.offices,function (i,value) {
                 chart[i] = AmCharts.makeChart(value.officeId, {
@@ -1562,7 +1563,10 @@ function loadChart() {
                     "dataDateFormat": "YYYY-MM-DD",
                     "columnWidth": 0.5,
                     "valueAxis": {
-                        "type": "date"
+                        "type": "date",
+                        "minimumDate":start,
+                        "maximumDate":finish
+
                     },
                     "brightnessStep": 7,
                     "graph": {
@@ -1574,6 +1578,7 @@ function loadChart() {
                     "categoryField": "category",
                     "segmentsField": "segments",
                     "colorField": "color",
+
                     "startDateField": "start",
                     "endDateField": "end",
 
