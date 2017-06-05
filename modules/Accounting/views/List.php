@@ -1053,6 +1053,13 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
+        $holidayQuery = "SELECT * FROM holidays where date BETWEEN '$d-01-01' AND '$d-12-31'  ORDER BY date";
+
+        $holidays = $this->getSQLArrayResult($holidayQuery, "");
+
+        $viewer->assign('HOLIDAYS', json_encode($holidays));
+
+
         $offices[] = array_shift($offices);
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('VACATIONSCHEDULE', json_encode($offices));

@@ -2,6 +2,7 @@
     window.offices = {$VACATIONSCHEDULE};
     window.dateStart = '{$MONTHPERIOD}';
     window.writingAccess = {$WRITINGACCESS};
+    window.holidays = {$HOLIDAYS};
 </script>
 
 <h3>График отпусков</h3>
