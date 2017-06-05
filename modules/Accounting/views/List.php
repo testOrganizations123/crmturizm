@@ -1261,6 +1261,59 @@ class Accounting_List_View extends Vtiger_Index_View
 //        die();
 //    }
 
+    public function validatePeriodLine($column, $value, $line){
+        $arrayValidate = [
+            "start1" => $line["start1"],
+            "finish1" => $line["finish1"],
+            "start2" => $line["start2"],
+            "finish2" => $line["finish2"],
+            "start3" => $line["start3"],
+            "finish3" => $line["finish4"],
+            "start4" => $line["start4"],
+            "finish4" => $line["finish4"],
+        ];
+
+        $flag = 0;
+        foreach ($arrayValidate as $key => $item){
+            if ($key == $column){
+                $flag = 1;
+                continue;
+            }
+
+            if ($column{strlen($column)-1} == $key{strlen($key)-1}){
+                if ($flag == 0 && $item != "" && $item != null ){
+                    if ((new DateTime($value)) < (new DateTime($item))){
+                        return 'Дата окончания должна быть больше или равна дате начала';
+                    }
+                }
+
+                if ($flag == 1 && $item != "" && $item != null ){
+                    if ((new DateTime($value)) > (new DateTime($item))){
+                        return 'Дата начала должна быть меньше или равна дате окончания';
+                    }
+                }
+            } else {
+                if ($flag == 0 && $item != "" && $item != null ){
+                    if ((new DateTime($value)) <= (new DateTime($item))){
+                        return 'Дата должна быть позже дат предыдущих периодов';
+                    }
+                }
+
+                if ($flag == 1 && $item != "" && $item != null ){
+                    if ((new DateTime($value)) >= (new DateTime($item))){
+                        return 'Дата должна быть раньше дат предыдущих периодов';
+                    }
+                }
+            }
+
+
+        }
+
+        return 'success';
+
+
+    }
+
     public function editVacation(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         $value = $request->get("value");
@@ -1288,6 +1341,24 @@ class Accounting_List_View extends Vtiger_Index_View
         $sql = ("SELECT * FROM vacation WHERE year = '$year' AND worker = '$worker'");
 
         $record = $this->getSQLArrayResult($sql, []);
+
+        if ($column != 'allowed' && $value != "") {
+
+            $dateTimeDate = new DateTime($value);
+
+            if ($dateTimeDate->format('Y') != $year){
+                echo json_encode('Год должен совпадать с выбранным в фильтре');
+                die();
+            }
+
+            $validate = $this->validatePeriodLine($column, $value, $record[0]);
+
+            if ($validate!= 'success'){
+                echo json_encode($validate);
+                die();
+            }
+        }
+
 
         if (count($record)) {
             if ($value == ''){
@@ -1461,6 +1532,23 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $record = $this->getSQLArrayResult($sql, []);
 
+        if ($column != 'allowed' && $value != "") {
+
+            $dateTimeDate = new DateTime($value);
+
+            if ($dateTimeDate->format('Y') != $year){
+                echo json_encode('Год должен совпадать с выбранным в фильтре');
+                die();
+            }
+
+            $validate = $this->validatePeriodLine($column, $value, $record[0]);
+
+            if ($validate!= 'success'){
+                echo json_encode($validate);
+                die();
+            }
+        }
+
         if (count($record)) {
             if ($value == ''){
                 $sql = "UPDATE vacation_promotional_tour SET $column = null WHERE  year = '$year' AND worker = '$worker'";
@@ -1533,6 +1621,23 @@ class Accounting_List_View extends Vtiger_Index_View
         $sql = ("SELECT * FROM vacation_session WHERE year = '$year' AND worker = '$worker'");
 
         $record = $this->getSQLArrayResult($sql, []);
+
+        if ($column != 'allowed' && $value != "") {
+
+            $dateTimeDate = new DateTime($value);
+
+            if ($dateTimeDate->format('Y') != $year){
+                echo json_encode('Год должен совпадать с выбранным в фильтре');
+                die();
+            }
+
+            $validate = $this->validatePeriodLine($column, $value, $record[0]);
+
+            if ($validate!= 'success'){
+                echo json_encode($validate);
+                die();
+            }
+        }
 
         if (count($record)) {
             if ($value == ''){
