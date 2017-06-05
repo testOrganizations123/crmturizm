@@ -23,6 +23,7 @@ function dateDiff( date1, date2 ) {
 function changeCountWithoutHolidays(date1, date2){
 
     var result = dateDiff(date1, date2) + 1;
+    var holidayCount = 0;
 
     window.holidays.forEach(function(elem){
         var holidayDay = new Date(elem.date);
@@ -30,33 +31,44 @@ function changeCountWithoutHolidays(date1, date2){
 
         if (date1 <= holidayDay && holidayDay <= date2){
             result = result - 1;
+            holidayCount = holidayCount + 1;
         }
 
     });
 
-    return result;
+    return {"day" : result, "holidays": holidayCount};
 }
 
 
 function countDays(line){
 
+    var holidays = 0;
+
         if (line.start1 && line.finish1){
-            line.duration1 = this.changeCountWithoutHolidays(new Date(line.start1), new Date(line.finish1));
+            var date = this.changeCountWithoutHolidays(new Date(line.start1), new Date(line.finish1));
+            line.duration1 = date.day;
+            holidays = holidays + date.holidays;
         } else {
             line.duration1 = 0;
         }
         if (line.start2 && line.finish2){
-            line.duration2 = this.changeCountWithoutHolidays(new Date(line.start2), new Date(line.finish2));
+            date = this.changeCountWithoutHolidays(new Date(line.start2), new Date(line.finish2));
+            line.duration2 = date.day;
+            holidays = holidays + date.holidays;
         } else {
             line.duration2 = 0;
         }
         if (line.start3 && line.finish3){
-            line.duration3 = this.changeCountWithoutHolidays(new Date(line.start3), new Date(line.finish3));
+            date = this.changeCountWithoutHolidays(new Date(line.start3), new Date(line.finish3));
+            line.duration3 = date.day;
+            holidays = holidays + date.holidays;
         } else {
             line.duration3 = 0;
         }
         if (line.start4 && line.finish4){
-            line.duration4 = this.changeCountWithoutHolidays(new Date(line.start4), new Date(line.finish4));
+            date = this.changeCountWithoutHolidays(new Date(line.start4), new Date(line.finish4));
+            line.duration4 = date.day;
+            holidays = holidays + date.holidays;
         } else {
             line.duration4 = 0;
         }
@@ -64,6 +76,8 @@ function countDays(line){
         line.spent = parseInt(line.duration1) + parseInt(line.duration2) + parseInt(line.duration3) + parseInt(line.duration4);
 
         line.left = parseInt(line.allowed) - parseInt(line.spent);
+
+        line.holidays = holidays;
 
         return line;
 }
@@ -101,8 +115,8 @@ webix.ready(function () {
             container: "tableVacation_" + i,
             view: "datatable",
             columns: [
-                {id: "worker", header: "Сотрудник", width: 260},
-                {id: "position", header: "Должность", width: 240},
+                {id: "worker", header: "Сотрудник", width: 238},
+                {id: "position", header: "Должность", width: 230},
                 {
                     id: "start1",
                     header: [{
@@ -177,7 +191,8 @@ webix.ready(function () {
                 },
                 {id: "allowed", header: {text: "Положено", rotate: true}, width: 40, editor: "text"},
                 {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
-                {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
+                {id: "left", header: {text: "Осталось", rotate: true}, width: 40},
+                {id: "holidays", header: {text: "Праздники", rotate: true}, width: 40}
             ],
             autoheight: true,
             autowidth: true,
@@ -288,8 +303,8 @@ webix.ready(function () {
             container: "tableVacationPromo_" + i,
             view: "datatable",
             columns: [
-                {id: "worker", header: "Сотрудник", width: 260},
-                {id: "position", header: "Должность", width: 240},
+                {id: "worker", header: "Сотрудник", width: 238},
+                {id: "position", header: "Должность", width: 230},
                 {
                     id: "start1",
                     header: [{text: "Рекламный тур 1", colspan: 3, css: {"text-align": "center!important"}}, "Начало"],
@@ -348,7 +363,8 @@ webix.ready(function () {
                 },
                 {id: "allowed", header: {text: "Положено", rotate: true}, editor: "text", width: 40},
                 {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
-                {id: "left", header: {text: "Осталось", rotate: true}, width: 40}
+                {id: "left", header: {text: "Осталось", rotate: true}, width: 40},
+                {id: "holidays", header: {text: "Праздники", rotate: true}, width: 40}
             ],
             autoheight: true,
             autowidth: true,

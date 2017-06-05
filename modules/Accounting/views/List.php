@@ -633,7 +633,8 @@ class Accounting_List_View extends Vtiger_Index_View
                 "allowed" => ["background" => "rgba(255, 0, 0, 0.03)"],
                 "spent" => ["background" => "rgba(255, 0, 0, 0.03)"],
                 "left" => ["background" => "rgba(255, 0, 0, 0.03)"],
-                "worker" => ["background" => "rgba(0, 128, 0, 0.03)"]
+                "worker" => ["background" => "rgba(0, 128, 0, 0.03)"],
+                "holidays" => ["background" => "rgba(0, 128, 0, 0.03)"]
             ];
         } else {
             $viewer->assign('WRITINGACCESS', 'true');
@@ -652,7 +653,8 @@ class Accounting_List_View extends Vtiger_Index_View
                 "allowed" => ["background" => "rgba(255, 0, 0, 0.03)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
                 "spent" => ["background" => "rgba(255, 0, 0, 0.03)"],
                 "left" => ["background" => "rgba(255, 0, 0, 0.03)"],
-                "worker" => ["background" => "rgba(0, 128, 0, 0.03)"]
+                "worker" => ["background" => "rgba(0, 128, 0, 0.03)"],
+                "holidays" => ["background" => "rgba(0, 128, 0, 0.03)"]
             ];
         }
 
@@ -698,6 +700,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "allowed" => 0,
                 "spent" => 0,
                 "left" => 0,
+                "holidays" => 0,
                 "\$cellCss" => $style
 
             ];
@@ -1128,7 +1131,7 @@ class Accounting_List_View extends Vtiger_Index_View
             $value = $d->format("Y-m-d");
         }
 
-        $sql = ("SELECT id FROM vacation WHERE year = '$year' AND worker = '$worker'");
+        $sql = ("SELECT * FROM vacation WHERE year = '$year' AND worker = '$worker'");
 
         $record = $this->getSQLArrayResult($sql, []);
 
@@ -1150,8 +1153,127 @@ class Accounting_List_View extends Vtiger_Index_View
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
 
+        if ($column != 'allowed') {
+
+            if ($value == ''){
+                $mode = 'delete';
+            } else {
+
+                if ($record[0][$column]){
+                    $mode = 'edit';
+                } else {
+                    $mode = 'add';
+                }
+            }
+
+            if ($column == 'start1' || $column == 'finish1') $this->editHours($value, $column, $record[0]["start1"], $record[0]["finish1"], 'от', $worker, $mode);
+            if ($column == 'start2' || $column == 'finish2') $this->editHours($value, $column, $record[0]["start2"], $record[0]["finish2"], 'от', $worker, $mode);
+            if ($column == 'start3' || $column == 'finish3') $this->editHours($value, $column, $record[0]["start3"], $record[0]["finish3"], 'от', $worker, $mode);
+            if ($column == 'start4' || $column == 'finish4') $this->editHours($value, $column, $record[0]["start4"], $record[0]["finish4"], 'от', $worker, $mode);
+        }
+
         echo json_encode('success');
         die();
+    }
+
+    public function editHours($new, $column, $date1, $date2, $value, $worker, $mode){
+        if ($mode == 'add'){
+            if ($column == 'start1' || $column == 'start2' || $column == 'start3' || $column == 'start4'){
+                if ($date2) {
+                    $dates = $this->datePeriod($new, $date2);
+                    foreach ($dates as $date) {
+                        $this->setVacationInWorkHours($date, $worker, $value);
+                    }
+                }
+            } else {
+                if ($date1) {
+                    $dates = $this->datePeriod($date1, $new);
+                    foreach ($dates as $date) {
+                        $this->setVacationInWorkHours($date, $worker, $value);
+                    }
+                }
+            }
+        }
+
+        if ($mode == 'edit'){
+
+            if ($date1 && $date2) {
+                $dates = $this->datePeriod($date1, $date2);
+                foreach ($dates as $date) {
+                    $this->deleteVacationInWorkHours($date, $worker, $value);
+                }
+            }
+
+            if ($column == 'start1' || $column == 'start2' || $column == 'start3' || $column == 'start4') {
+                if ($date2) {
+                    $dates = $this->datePeriod($new, $date2);
+                    foreach ($dates as $date) {
+                        $this->setVacationInWorkHours($date, $worker, $value);
+                    }
+                }
+            } else {
+                if ($date1) {
+                    $dates = $this->datePeriod($date1, $new);
+                    foreach ($dates as $date) {
+                        $this->setVacationInWorkHours($date, $worker, $value);
+                    }
+                }
+            }
+
+        }
+
+        if ($mode == 'delete'){
+            if ($date1 && $date2) {
+                $dates = $this->datePeriod($date1, $date2);
+                foreach ($dates as $date) {
+                    $this->deleteVacationInWorkHours($date, $worker, $value);
+                }
+            }
+        }
+    }
+
+    public function datePeriod($fromD, $toD) {
+        $from = new DateTime($fromD);
+        $to   = new DateTime($toD);
+
+        $interval = new DateInterval('P1D');
+
+        $to->add($interval);
+
+        $period = new DatePeriod($from, new DateInterval('P1D'), $to);
+
+        return array_map(
+            function($item){return $item->format('Y-m-d');},
+            iterator_to_array($period)
+        );
+    }
+
+    public function deleteVacationInWorkHours($date, $worker, $value){
+
+        $sql = ("SELECT id FROM working_time WHERE user = '$worker' AND date = '$date'");
+        $record = $this->getSQLArrayResult($sql, []);
+        $id = $record[0]["id"];
+
+        $sql = "DELETE FROM working_time WHERE id = '$id' and time = '$value'";
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+    }
+
+    public function setVacationInWorkHours($date, $worker, $value){
+
+        $sql = ("SELECT id FROM working_time WHERE user = '$worker' AND date = '$date'");
+
+        $record = $this->getSQLArrayResult($sql, []);
+
+        if (count($record)) {
+            $id = $record[0]["id"];
+            $sql = "UPDATE working_time SET date = '$date', user = '$worker', time = '$value'  WHERE id = '$id' and time = ''";
+        } else {
+            $sql = "INSERT INTO working_time (user, date, time) VALUES('$worker', '$date', '$value')";
+        }
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
     }
 
     public function editVacationTour(Vtiger_Request $request, Vtiger_Viewer $viewer)
@@ -1181,7 +1303,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-        $sql = ("SELECT id FROM vacation_promotional_tour WHERE year = '$year' AND worker = '$worker'");
+        $sql = ("SELECT * FROM vacation_promotional_tour WHERE year = '$year' AND worker = '$worker'");
 
         $record = $this->getSQLArrayResult($sql, []);
 
@@ -1202,6 +1324,26 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
+
+        if ($column != 'allowed') {
+
+            if ($value == ''){
+                $mode = 'delete';
+            } else {
+
+                if ($record[0][$column]){
+                    $mode = 'edit';
+                } else {
+                    $mode = 'add';
+                }
+            }
+
+            if ($column == 'start1' || $column == 'finish1') $this->editHours($value, $column, $record[0]["start1"], $record[0]["finish1"], 'РТ', $worker, $mode);
+            if ($column == 'start2' || $column == 'finish2') $this->editHours($value, $column, $record[0]["start2"], $record[0]["finish2"], 'РТ', $worker, $mode);
+            if ($column == 'start3' || $column == 'finish3') $this->editHours($value, $column, $record[0]["start3"], $record[0]["finish3"], 'РТ', $worker, $mode);
+            if ($column == 'start4' || $column == 'finish4') $this->editHours($value, $column, $record[0]["start4"], $record[0]["finish4"], 'РТ', $worker, $mode);
+        }
+
 
         echo json_encode('success');
         die();
