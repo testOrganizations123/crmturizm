@@ -1,85 +1,442 @@
-var chart=[];
+var chart = [];
 
 
-function updateChart() {
-    $.ajax({
-        url: "/index.php?module=Accounting&view=List&mode=loadChart",
-        success: function (responce) {
-            var dataProvider = $.parseJSON(responce);
-            $.each(dataProvider,function (i,value) {
-                chart[i].dataProvider = value;
+function updateChartVacation(value, column, worker, year) {
+
+    var dateObj = new Date(value);
+    var month;
+    if ((dateObj.getMonth() + 1) < 10) {
+        month = "0" + (dateObj.getMonth() + 1);
+    } else {
+        month = dateObj.getMonth() + 1
+    }
+    var day;
+    if (dateObj.getDate() < 10) {
+        day = "0" + dateObj.getDate();
+    } else {
+        day = dateObj.getDate();
+    }
+
+    var date = dateObj.getFullYear() + '-' + month + '-' + day;
+    console.log(date);
+    $.each(chart, function (i, value) {
+        console.log(value);
+        $.each(value.dataProvider, function (key, item) {
+            if (!chart[i].dataProvider[key].segments) {
+                chart[i].dataProvider[key].segments = []
+
+            }
+            if (!chart[i].dataProvider[key].segments[0]) {
+                chart[i].dataProvider[key].segments[0] = {
+
+                    color: '#FF0000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[1]) {
+                chart[i].dataProvider[key].segments[1] = {
+
+                    color: '#FF0000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[2]) {
+                chart[i].dataProvider[key].segments[2] = {
+
+                    color: '#FF0000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[3]) {
+                chart[i].dataProvider[key].segments[3] = {
+
+                    color: '#FF0000'
+                }
+            }
+            if (item.id == worker) {
+                if (column == 'start1') {
+                    chart[i].dataProvider[key].segments[0].start = date;
+                    if (!chart[i].dataProvider[key].segments[0].end) {
+
+                        chart[i].dataProvider[key].segments[0].end = date;
+                    }
+                } else if (column == 'finish1') {
+                    chart[i].dataProvider[key].segments[0].end = date;
+                    if (!chart[i].dataProvider[key].segments[0].start) {
+                        chart[i].dataProvider[key].segments[0].start = date;
+                    }
+                } else if (column == 'start2') {
+                    chart[i].dataProvider[key].segments[1].start = date;
+                    if (!chart[i].dataProvider[key].segments[1].end) {
+                        chart[i].dataProvider[key].segments[1].end = date;
+                    }
+                } else if (column == 'finish2') {
+                    chart[i].dataProvider[key].segments[1].end = date;
+                    if (!chart[i].dataProvider[key].segments[1].start) {
+                        chart[i].dataProvider[key].segments[1].start = date;
+                    }
+                } else if (column == 'start3') {
+                    chart[i].dataProvider[key].segments[2].start = date;
+                    if (!chart[i].dataProvider[key].segments[2].end) {
+                        chart[i].dataProvider[key].segments[2].end = date;
+                    }
+                } else if (column == 'finish3') {
+                    chart[i].dataProvider[key].segments[2].end = date;
+                    if (!chart[i].dataProvider[key].segments[2].start) {
+                        chart[i].dataProvider[key].segments[2].start = date;
+                    }
+                } else if (column == 'start4') {
+                    chart[i].dataProvider[key].segments[3].start = date;
+                    if (!chart[i].dataProvider[key].segments[3].end) {
+                        chart[i].dataProvider[key].segments[3].end = date;
+                    }
+                } else if (column == 'finish4') {
+                    chart[i].dataProvider[key].segments[3].end = date;
+                    if (!chart[i].dataProvider[key].segments[3].start) {
+                        chart[i].dataProvider[key].segments[3].start = date;
+                    }
+                }
                 chart[i].validateData();
-            });
+            }
+        })
+
+    });
 
 
-        }
-    })
 }
 
-function dateDiff( date1, date2 ) {
-    return ((date2-date1)/86400000);
+function updateChartVacationPromo(value, column, worker, year) {
+
+    var dateObj = new Date(value);
+    var month;
+    if ((dateObj.getMonth() + 1) < 10) {
+        month = "0" + (dateObj.getMonth() + 1);
+    } else {
+        month = dateObj.getMonth() + 1
+    }
+    var day;
+    if (dateObj.getDate() < 10) {
+        day = "0" + dateObj.getDate();
+    } else {
+        day = dateObj.getDate();
+    }
+
+    var date = dateObj.getFullYear() + '-' + month + '-' + day;
+    console.log(date);
+    $.each(chart, function (i, value) {
+        console.log(value);
+        $.each(value.dataProvider, function (key, item) {
+            if (!chart[i].dataProvider[key].segments) {
+                chart[i].dataProvider[key].segments = []
+
+            }
+            if (!chart[i].dataProvider[key].segments[4]) {
+                chart[i].dataProvider[key].segments[4] = {
+
+                    color: '#FFF000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[5]) {
+                chart[i].dataProvider[key].segments[5] = {
+
+                    color: '#FFF000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[6]) {
+                chart[i].dataProvider[key].segments[6] = {
+
+                    color: '#FFF000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[7]) {
+                chart[i].dataProvider[key].segments[7] = {
+
+                    color: '#FFF000'
+                }
+            }
+
+
+            if (item.id == worker) {
+                if (column == 'start1') {
+                    chart[i].dataProvider[key].segments[4].start = date;
+                    if (!chart[i].dataProvider[key].segments[4].end) {
+
+                        chart[i].dataProvider[key].segments[4].end = date;
+                    }
+                } else if (column == 'finish1') {
+                    chart[i].dataProvider[key].segments[4].end = date;
+                    if (!chart[i].dataProvider[key].segments[4].start) {
+                        chart[i].dataProvider[key].segments[4].start = date;
+                    }
+                } else if (column == 'start2') {
+                    chart[i].dataProvider[key].segments[5].start = date;
+                    if (!chart[i].dataProvider[key].segments[5].end) {
+                        chart[i].dataProvider[key].segments[5].end = date;
+                    }
+                } else if (column == 'finish2') {
+                    chart[i].dataProvider[key].segments[5].end = date;
+                    if (!chart[i].dataProvider[key].segments[5].start) {
+                        chart[i].dataProvider[key].segments[5].start = date;
+                    }
+                } else if (column == 'start3') {
+                    chart[i].dataProvider[key].segments[6].start = date;
+                    if (!chart[i].dataProvider[key].segments[6].end) {
+                        chart[i].dataProvider[key].segments[6].end = date;
+                    }
+                } else if (column == 'finish3') {
+                    chart[i].dataProvider[key].segments[6].end = date;
+                    if (!chart[i].dataProvider[key].segments[6].start) {
+                        chart[i].dataProvider[key].segments[6].start = date;
+                    }
+                } else if (column == 'start4') {
+                    chart[i].dataProvider[key].segments[7].start = date;
+                    if (!chart[i].dataProvider[key].segments[7].end) {
+                        chart[i].dataProvider[key].segments[7].end = date;
+                    }
+                } else if (column == 'finish4') {
+                    chart[i].dataProvider[key].segments[7].end = date;
+                    if (!chart[i].dataProvider[key].segments[7].start) {
+                        chart[i].dataProvider[key].segments[7].start = date;
+                    }
+                }
+                chart[i].validateData();
+            }
+        })
+
+    });
+
+
 }
 
-function changeCountWithoutHolidays(date1, date2){
+function updateChartVacationSession(value, column, worker, year) {
+
+    var dateObj = new Date(value);
+    var month;
+    if ((dateObj.getMonth() + 1) < 10) {
+        month = "0" + (dateObj.getMonth() + 1);
+    } else {
+        month = dateObj.getMonth() + 1
+    }
+    var day;
+    if (dateObj.getDate() < 10) {
+        day = "0" + dateObj.getDate();
+    } else {
+        day = dateObj.getDate();
+    }
+
+    var date = dateObj.getFullYear() + '-' + month + '-' + day;
+    console.log(date);
+    $.each(chart, function (i, value) {
+        console.log(value);
+        $.each(value.dataProvider, function (key, item) {
+            if (!chart[i].dataProvider[key].segments) {
+                chart[i].dataProvider[key].segments = []
+
+            }
+            if (!chart[i].dataProvider[key].segments[0]) {
+                chart[i].dataProvider[key].segments[0] = {
+
+                    color: '#FF0000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[1]) {
+                chart[i].dataProvider[key].segments[1] = {
+
+                    color: '#FF0000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[2]) {
+                chart[i].dataProvider[key].segments[2] = {
+
+                    color: '#FF0000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[3]) {
+                chart[i].dataProvider[key].segments[3] = {
+
+                    color: '#FF0000'
+                }
+            }
+
+
+            if (!chart[i].dataProvider[key].segments[4]) {
+                chart[i].dataProvider[key].segments[4] = {
+
+                    color: '#FFF000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[5]) {
+                chart[i].dataProvider[key].segments[5] = {
+
+                    color: '#FFF000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[6]) {
+                chart[i].dataProvider[key].segments[6] = {
+
+                    color: '#FFF000'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[7]) {
+                chart[i].dataProvider[key].segments[7] = {
+
+                    color: '#FFF000'
+                }
+            }
+
+
+            if (!chart[i].dataProvider[key].segments[8]) {
+                chart[i].dataProvider[key].segments[8] = {
+
+                    color: '#4744f6'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[9]) {
+                chart[i].dataProvider[key].segments[9] = {
+
+                    color: '#4744f6'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[10]) {
+                chart[i].dataProvider[key].segments[10] = {
+
+                    color: '#4744f6'
+                }
+            }
+
+            if (!chart[i].dataProvider[key].segments[11]) {
+                chart[i].dataProvider[key].segments[11] = {
+
+                    color: '#4744f6'
+                }
+            }
+            if (item.id == worker) {
+                if (column == 'start1') {
+                    chart[i].dataProvider[key].segments[8].start = date;
+                    if (!chart[i].dataProvider[key].segments[8].end) {
+
+                        chart[i].dataProvider[key].segments[8].end = date;
+                    }
+                } else if (column == 'finish1') {
+                    chart[i].dataProvider[key].segments[8].end = date;
+                    if (!chart[i].dataProvider[key].segments[8].start) {
+                        chart[i].dataProvider[key].segments[8].start = date;
+                    }
+                } else if (column == 'start2') {
+                    chart[i].dataProvider[key].segments[9].start = date;
+                    if (!chart[i].dataProvider[key].segments[9].end) {
+                        chart[i].dataProvider[key].segments[9].end = date;
+                    }
+                } else if (column == 'finish2') {
+                    chart[i].dataProvider[key].segments[9].end = date;
+                    if (!chart[i].dataProvider[key].segments[9].start) {
+                        chart[i].dataProvider[key].segments[9].start = date;
+                    }
+                } else if (column == 'start3') {
+                    chart[i].dataProvider[key].segments[10].start = date;
+                    if (!chart[i].dataProvider[key].segments[10].end) {
+                        chart[i].dataProvider[key].segments[10].end = date;
+                    }
+                } else if (column == 'finish3') {
+                    chart[i].dataProvider[key].segments[10].end = date;
+                    if (!chart[i].dataProvider[key].segments[10].start) {
+                        chart[i].dataProvider[key].segments[10].start = date;
+                    }
+                } else if (column == 'start4') {
+                    chart[i].dataProvider[key].segments[11].start = date;
+                    if (!chart[i].dataProvider[key].segments[11].end) {
+                        chart[i].dataProvider[key].segments[11].end = date;
+                    }
+                } else if (column == 'finish4') {
+                    chart[i].dataProvider[key].segments[11].end = date;
+                    if (!chart[i].dataProvider[key].segments[11].start) {
+                        chart[i].dataProvider[key].segments[11].start = date;
+                    }
+                }
+                chart[i].validateData();
+            }
+        })
+
+    });
+
+
+}
+
+function dateDiff(date1, date2) {
+    return ((date2 - date1) / 86400000);
+}
+
+function changeCountWithoutHolidays(date1, date2) {
 
     var result = dateDiff(date1, date2) + 1;
     var holidayCount = 0;
 
-    window.holidays.forEach(function(elem){
+    window.holidays.forEach(function (elem) {
         var holidayDay = new Date(elem.date);
         holidayDay.setHours(0);
 
-        if (date1 <= holidayDay && holidayDay <= date2){
+        if (date1 <= holidayDay && holidayDay <= date2) {
             result = result - 1;
             holidayCount = holidayCount + 1;
         }
 
     });
 
-    return {"day" : result, "holidays": holidayCount};
+    return {"day": result, "holidays": holidayCount};
 }
 
 
-function countDays(line){
+function countDays(line) {
 
     var holidays = 0;
 
-        if (line.start1 && line.finish1){
-            var date = this.changeCountWithoutHolidays(new Date(line.start1), new Date(line.finish1));
-            line.duration1 = date.day;
-            holidays = holidays + date.holidays;
-        } else {
-            line.duration1 = 0;
-        }
-        if (line.start2 && line.finish2){
-            date = this.changeCountWithoutHolidays(new Date(line.start2), new Date(line.finish2));
-            line.duration2 = date.day;
-            holidays = holidays + date.holidays;
-        } else {
-            line.duration2 = 0;
-        }
-        if (line.start3 && line.finish3){
-            date = this.changeCountWithoutHolidays(new Date(line.start3), new Date(line.finish3));
-            line.duration3 = date.day;
-            holidays = holidays + date.holidays;
-        } else {
-            line.duration3 = 0;
-        }
-        if (line.start4 && line.finish4){
-            date = this.changeCountWithoutHolidays(new Date(line.start4), new Date(line.finish4));
-            line.duration4 = date.day;
-            holidays = holidays + date.holidays;
-        } else {
-            line.duration4 = 0;
-        }
+    if (line.start1 && line.finish1) {
+        var date = this.changeCountWithoutHolidays(new Date(line.start1), new Date(line.finish1));
+        line.duration1 = date.day;
+        holidays = holidays + date.holidays;
+    } else {
+        line.duration1 = 0;
+    }
+    if (line.start2 && line.finish2) {
+        date = this.changeCountWithoutHolidays(new Date(line.start2), new Date(line.finish2));
+        line.duration2 = date.day;
+        holidays = holidays + date.holidays;
+    } else {
+        line.duration2 = 0;
+    }
+    if (line.start3 && line.finish3) {
+        date = this.changeCountWithoutHolidays(new Date(line.start3), new Date(line.finish3));
+        line.duration3 = date.day;
+        holidays = holidays + date.holidays;
+    } else {
+        line.duration3 = 0;
+    }
+    if (line.start4 && line.finish4) {
+        date = this.changeCountWithoutHolidays(new Date(line.start4), new Date(line.finish4));
+        line.duration4 = date.day;
+        holidays = holidays + date.holidays;
+    } else {
+        line.duration4 = 0;
+    }
 
-        line.spent = parseInt(line.duration1) + parseInt(line.duration2) + parseInt(line.duration3) + parseInt(line.duration4);
+    line.spent = parseInt(line.duration1) + parseInt(line.duration2) + parseInt(line.duration3) + parseInt(line.duration4);
 
-        line.left = parseInt(line.allowed) - parseInt(line.spent);
+    line.left = parseInt(line.allowed) - parseInt(line.spent);
 
-        line.holidays = holidays;
+    line.holidays = holidays;
 
-        return line;
+    return line;
 }
 
 function parseDate(input, format) {
@@ -87,9 +444,11 @@ function parseDate(input, format) {
     var parts = input.match(/(\d+)/g),
         i = 0, fmt = {};
     // extract date-part indexes from the format
-    format.replace(/(yyyy|dd|mm)/g, function(part) { fmt[part] = i++; });
+    format.replace(/(yyyy|dd|mm)/g, function (part) {
+        fmt[part] = i++;
+    });
 
-    return new Date(parts[fmt['yyyy']], parts[fmt['mm']]-1, parts[fmt['dd']]);
+    return new Date(parts[fmt['yyyy']], parts[fmt['mm']] - 1, parts[fmt['dd']]);
 }
 
 webix.ready(function () {
@@ -204,11 +563,11 @@ webix.ready(function () {
             rowHeight: 40,
             data: table.vacation,
             on: {
-                onAfterEditStart: function(){
+                onAfterEditStart: function () {
                     var elements = $('.webix_cal_footer');
 
                     var elem2 = elements.find('.webix_cal_icon');
-                    elem2.click(function(){
+                    elem2.click(function () {
 
                         setTimeout(function () {
                             $('#tableVacation_0').click();
@@ -232,14 +591,15 @@ webix.ready(function () {
                     });
                 },
                 onAfterEditStop: function (cell, coordinates) {
-                    updateChart();
+
+
                     var record = dtable.getItem(coordinates.row);
 
                     var column = coordinates.column;
                     var value = cell.value;
                     var worker = coordinates.row;
 
-                    if (column === "allowed"){
+                    if (column === "allowed") {
                         value = value.trim();
 
                         if (value === "") {
@@ -264,39 +624,43 @@ webix.ready(function () {
                                         delay: 4000
                                     });
 
-                            });
+                                });
 
-                        } else {
+                            } else {
                                 table.vacation.forEach(function (item, i, arr) {
                                     if (item.id == coordinates.row) {
 
-                                            if (coordinates.column != 'allowed') {
+                                        if (coordinates.column != 'allowed') {
 
-                                                console.log(cell.value);
-                                                if (cell.value.length == undefined){
-                                                    val = $.datepicker.formatDate('yy-mm-dd 00:00:00', cell.value);
-                                                    console.log(val);
-                                                } else if (cell.value.length == 0) {
-                                                    val = '';
-                                                } else {
-                                                    val = cell.value.replace(/ /g, "");
-                                                    val = val.substr(0, val.length - 5) + " 00:00:00";
-                                                }
+
+                                            if (cell.value.length == undefined) {
+                                                val = $.datepicker.formatDate('yy-mm-dd 00:00:00', cell.value);
+
+                                            } else if (cell.value.length == 0) {
+                                                val = '';
                                             } else {
                                                 val = cell.value.replace(/ /g, "");
+                                                val = val.substr(0, val.length - 5) + " 00:00:00";
                                             }
+                                        } else {
+                                            val = cell.value.replace(/ /g, "");
+                                        }
 
-                                            item[coordinates.column] = val;
-                                            table.vacation[i] = self.countDays(item);
+                                        item[coordinates.column] = val;
+                                        table.vacation[i] = self.countDays(item);
 
                                     }
                                 });
 
                                 dtable.refresh();
+
+
+                                updateChartVacation(value, column, worker, year);
+
                             }
-                    },
-                    dataType: "json"
-                });
+                        },
+                        dataType: "json"
+                    });
 
 
                 }
@@ -376,11 +740,11 @@ webix.ready(function () {
             rowHeight: 40,
             data: table.promotionalTour,
             on: {
-                onAfterEditStart: function(){
+                onAfterEditStart: function () {
                     var elements = $('.webix_cal_footer');
 
                     var elem2 = elements.find('.webix_cal_icon');
-                    elem2.click(function(){
+                    elem2.click(function () {
                         setTimeout(function () {
                             $('#tableVacation_0').click();
                             setTimeout(function () {
@@ -403,14 +767,14 @@ webix.ready(function () {
                 },
                 onAfterEditStop: function (cell, coordinates) {
 
-                    updateChart();
+
                     var record = dtablePromo.getItem(coordinates.row);
 
                     var column = coordinates.column;
                     var value = cell.value;
                     var worker = coordinates.row;
 
-                    if (column === "allowed"){
+                    if (column === "allowed") {
                         value = value.trim();
 
                         if (value === "") {
@@ -425,7 +789,7 @@ webix.ready(function () {
                         type: "GET",
                         url: "/index.php?module=Accounting&view=List&mode=editVacationTour&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + year,
                         success: function (data) {
-                            updateChart();
+
                             if (data != "success") {
                                 record[coordinates.column] = cell.old;
                                 dtablePromo.refresh();
@@ -436,15 +800,15 @@ webix.ready(function () {
                                         delay: 4000
                                     });
 
-                            });
+                                });
 
-                        } else {
+                            } else {
                                 table.promotionalTour.forEach(function (item, i, arr) {
                                     if (item.id == coordinates.row) {
 
                                         if (coordinates.column != 'allowed') {
 
-                                            if (cell.value.length == undefined){
+                                            if (cell.value.length == undefined) {
                                                 val = $.datepicker.formatDate('yy-mm-dd 00:00:00', cell.value);
                                             } else if (cell.value.length == 0) {
                                                 val = '';
@@ -463,19 +827,18 @@ webix.ready(function () {
                                 });
 
                                 dtablePromo.refresh();
+                                updateChartVacationPromo(value, column, worker, year)
                             }
 
 
-                    },
-                    dataType: "json"
-                });
+                        },
+                        dataType: "json"
+                    });
 
 
                 }
             }
         });
-
-
 
 
         var dtableSession = new webix.ui({
@@ -551,11 +914,11 @@ webix.ready(function () {
             rowHeight: 40,
             data: table.vacationSession,
             on: {
-                onAfterEditStart: function(){
+                onAfterEditStart: function () {
                     var elements = $('.webix_cal_footer');
 
                     var elem2 = elements.find('.webix_cal_icon');
-                    elem2.click(function(){
+                    elem2.click(function () {
                         setTimeout(function () {
                             $('#tableVacation_0').click();
                             setTimeout(function () {
@@ -578,14 +941,14 @@ webix.ready(function () {
                 },
                 onAfterEditStop: function (cell, coordinates) {
 
-                    updateChart();
+
                     var record = dtableSession.getItem(coordinates.row);
 
                     var column = coordinates.column;
                     var value = cell.value;
                     var worker = coordinates.row;
 
-                    if (column === "allowed"){
+                    if (column === "allowed") {
                         value = value.trim();
 
                         if (value === "") {
@@ -600,7 +963,7 @@ webix.ready(function () {
                         type: "GET",
                         url: "/index.php?module=Accounting&view=List&mode=editVacationSession&value=" + value + "&column=" + column + "&worker=" + worker + "&year=" + year,
                         success: function (data) {
-                            updateChart();
+
                             if (data != "success") {
                                 record[coordinates.column] = cell.old;
                                 dtableSession.refresh();
@@ -619,7 +982,7 @@ webix.ready(function () {
 
                                         if (coordinates.column != 'allowed') {
 
-                                            if (cell.value.length == undefined){
+                                            if (cell.value.length == undefined) {
                                                 val = $.datepicker.formatDate('yy-mm-dd 00:00:00', cell.value);
                                             } else if (cell.value.length == 0) {
                                                 val = '';
@@ -638,6 +1001,7 @@ webix.ready(function () {
                                 });
 
                                 dtableSession.refresh();
+                                updateChartVacationSession(value, column, worker, year)
                             }
 
 
@@ -1721,7 +2085,7 @@ var dateFilter = webix.ui({
     view: "datepicker", align: "right", value: arrDate[i - 1], type: "year", format: "%Y"
 
 });
-
+$('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
 dateFilter.attachEvent("onChange", function (newv, oldv) {
 
     $('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
@@ -1729,65 +2093,60 @@ dateFilter.attachEvent("onChange", function (newv, oldv) {
 loadChart();
 function loadChart() {
 
-    var start = new Date(arrDate[i-1],0,1);
-    var finish = new Date(arrDate[i-1],11,31);
+    var start = new Date(arrDate[i - 1], 0, 1);
+    var finish = new Date(arrDate[i - 1], 11, 31);
 
-            $.each(window.offices,function (i,value) {
-                chart[i] = AmCharts.makeChart(value.officeId, {
-                    "type": "gantt",
-                    "theme": "light",
-                    "language":'ru',
-                    "marginRight": 70,
-                    "period": "DD",
-                    "dataDateFormat": "YYYY-MM-DD",
-                    "columnWidth": 0.5,
-                    "valueAxis": {
-                        "type": "date",
-                        "minimumDate":start,
-                        "maximumDate":finish
+    $.each(window.offices, function (i, value) {
+        chart[i] = AmCharts.makeChart(value.officeId, {
+            "type": "gantt",
+            "theme": "light",
+            "language": 'ru',
+            "marginRight": 70,
+            "period": "DD",
+            "dataDateFormat": "YYYY-MM-DD",
+            "columnWidth": 0.5,
+            "valueAxis": {
+                "type": "date",
+                "minimumDate": start,
+                "maximumDate": finish
 
-                    },
-                    "brightnessStep": 7,
-                    "graph": {
-                        "lineAlpha": 1,
-                        "lineColor": "#fff",
-                        "fillAlphas": 0.85
-                    },
-                    "rotate": true,
-                    "categoryField": "category",
-                    "segmentsField": "segments",
-                    "colorField": "color",
+            },
+            "brightnessStep": 7,
+            "graph": {
+                "lineAlpha": 1,
+                "lineColor": "#fff",
+                "fillAlphas": 0.85
+            },
+            "rotate": true,
+            "categoryField": "category",
+            "segmentsField": "segments",
+            "colorField": "color",
 
-                    "startDateField": "start",
-                    "endDateField": "end",
+            "startDateField": "start",
+            "endDateField": "end",
 
-                    "dataProvider": value.dataProvider,
+            "dataProvider": value.dataProvider,
 
-                    "chartCursor": {
-                        "cursorColor": "#55bb76",
-                        "valueBalloonsEnabled": false,
-                        "cursorAlpha": 0,
-                        "valueLineAlpha": 0.5,
-                        "valueLineBalloonEnabled": true,
-                        "valueLineEnabled": true,
-                        "zoomable": false,
-                        "valueZoomable": true
-                    },
-                    "legend": {
-                        "data": [{
-                            "title": "Очередной отпуск",
-                            "color": "#FF0000"
-                        }, {
-                            "title": "Рекламные туры",
-                            "color": "#FFFF00"
-                        }]
-                    }
-                });
-
-
-
-
-
+            "chartCursor": {
+                "cursorColor": "#55bb76",
+                "valueBalloonsEnabled": false,
+                "cursorAlpha": 0,
+                "valueLineAlpha": 0.5,
+                "valueLineBalloonEnabled": true,
+                "valueLineEnabled": true,
+                "zoomable": false,
+                "valueZoomable": false
+            },
+            "legend": {
+                "data": [{
+                    "title": "Очередной отпуск",
+                    "color": "#FF0000"
+                }, {
+                    "title": "Рекламные туры",
+                    "color": "#FFFF00"
+                }]
+            }
+        });
 
 
     });

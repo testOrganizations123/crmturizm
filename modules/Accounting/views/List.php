@@ -1009,6 +1009,7 @@ class Accounting_List_View extends Vtiger_Index_View
         foreach ($users as $key => $user) {
 
             $dataProvider[$key]["category"] = $user['name'];
+            $dataProvider[$key]["id"] = $user['id'];
             $segments = [];
             foreach ($vacationArray as $vacation) {
                 if ($vacation["worker"] == $user["id"]) {
