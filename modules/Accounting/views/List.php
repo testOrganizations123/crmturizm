@@ -672,6 +672,12 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $vacationPromoArray = $this->getSQLArrayResult($vacationPromoQuery, []);
 
+        $vacationSessionQuery = "
+                   SELECT *
+                   FROM vacation_session as wt
+                   WHERE year = $d";
+
+        $vacationSessionArray = $this->getSQLArrayResult($vacationSessionQuery, []);
 
         $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
 
@@ -864,6 +870,100 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
             }
 
+
+            $personVacationSession = [
+                "id" => $user["id"],
+                "worker" => $user["name"],
+                "position" => $user["title"],
+                "start1" => '',
+                "duration1" => 0,
+                "finish1" => '',
+                "start2" => '',
+                "duration2" => 0,
+                "finish2" => '',
+                "start3" => '',
+                "duration3" => 0,
+                "finish3" => '',
+                "start4" => '',
+                "duration4" => 0,
+                "finish4" => '',
+                "allowed" => 0,
+                "spent" => 0,
+                "left" => 0,
+                "holidays" => 0,
+                "\$cellCss" => $style
+
+            ];
+
+            foreach ($vacationSessionArray as $vacation) {
+
+                if ($vacation["worker"] == $user["id"]) {
+
+                    if ($vacation["start1"]) {
+                        $dateStart1Obj = new DateTime($vacation["start1"]);
+                        $dateStart1 = $dateStart1Obj->format("Y / m / d");
+                    } else {
+                        $dateStart1 = '';
+                    }
+                    if ($vacation["finish1"]) {
+                        $dateFinish1Obj = new DateTime($vacation["finish1"]);
+                        $dateFinish1 = $dateFinish1Obj->format("Y / m / d");
+                    } else {
+                        $dateFinish1 = '';
+                    }
+
+                    if ($vacation["start2"]) {
+                        $dateStart2Obj = new DateTime($vacation["start2"]);
+                        $dateStart2 = $dateStart2Obj->format("Y / m / d");
+                    } else {
+                        $dateStart2 = '';
+                    }
+                    if ($vacation["finish2"]) {
+                        $dateFinish2Obj = new DateTime($vacation["finish2"]);
+                        $dateFinish2 = $dateFinish2Obj->format("Y / m / d");
+                    } else {
+                        $dateFinish2 = '';
+                    }
+
+                    if ($vacation["start3"]) {
+                        $dateStart3Obj = new DateTime($vacation["start3"]);
+                        $dateStart3 = $dateStart3Obj->format("Y / m / d");
+                    } else {
+                        $dateStart3 = '';
+                    }
+                    if ($vacation["finish3"]) {
+                        $dateFinish3Obj = new DateTime($vacation["finish3"]);
+                        $dateFinish3 = $dateFinish3Obj->format("Y / m / d");
+                    } else {
+                        $dateFinish3 = '';
+                    }
+
+                    if ($vacation["start4"]) {
+                        $dateStart4Obj = new DateTime($vacation["start4"]);
+                        $dateStart4 = $dateStart4Obj->format("Y / m / d");
+                    } else {
+                        $dateStart4 = '';
+                    }
+                    if ($vacation["finish4"]) {
+                        $dateFinish4Obj = new DateTime($vacation["finish4"]);
+                        $dateFinish4 = $dateFinish4Obj->format("Y / m / d");
+                    } else {
+                        $dateFinish4 = '';
+                    }
+
+                    $personVacationSession["start1"] = $dateStart1;
+                    $personVacationSession["finish1"] = $dateFinish1;
+                    $personVacationSession["start2"] = $dateStart2;
+                    $personVacationSession["finish2"] = $dateFinish2;
+                    $personVacationSession["start3"] = $dateStart3;
+                    $personVacationSession["finish3"] = $dateFinish3;
+                    $personVacationSession["start4"] = $dateStart4;
+                    $personVacationSession["finish4"] = $dateFinish4;
+                    $personVacationSession["allowed"] = $vacation["allowed"];
+                }
+            }
+
+
             if ($user['office'] == null) {
                 $user['office'] = 'Без офиса';
             }
@@ -877,6 +977,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 if ($off["office"] == $user["office"]) {
                     $offices[$key]["vacation"][] = $personVacation;
                     $offices[$key]["promotionalTour"][] = $personPromo;
+                    $offices[$key]["vacationSession"][] = $personVacationSession;
 
                     $flag = 1;
                     break;
@@ -895,12 +996,13 @@ class Accounting_List_View extends Vtiger_Index_View
                 $office["promotionalTour"] = [];
                 $office["promotionalTour"][] = $personPromo;
 
+               $office["vacationSession"] = [];
+                $office["vacationSession"][] = $personVacationSession;
+
                 $offices[] = $office;
             }
 
         }
-
-
 
         $dataProvider = [];
         $officesChart = [];
@@ -1005,6 +1107,58 @@ class Accounting_List_View extends Vtiger_Index_View
                         $segments['end'] = $dateFinish4Obj->format("Y-m-d");
                     }
                     $segments['color'] = '#FFFF00';
+
+                    $dataProvider[$key]["segments"][] = $segments;
+
+                }
+
+            }
+
+            foreach ($vacationSessionArray as $vacation) {
+                if ($vacation["worker"] == $user["id"]) {
+
+                    if ($vacation["start1"]) {
+                        $dateStart1Obj = new DateTime($vacation["start1"]);
+                        $segments['start'] = $dateStart1Obj->format("Y-m-d");
+                    }
+                    if ($vacation["finish1"]) {
+                        $dateFinish1Obj = new DateTime($vacation["finish1"]);
+                        $segments['end'] = $dateFinish1Obj->format("Y-m-d");
+                    }
+                    $segments['color'] = '#4744f6';
+
+                    $dataProvider[$key]["segments"][] = $segments;
+                    if ($vacation["start2"]) {
+                        $dateStart2Obj = new DateTime($vacation["start2"]);
+                        $segments['start'] = $dateStart2Obj->format("Y-m-d");
+                    }
+                    if ($vacation["finish2"]) {
+                        $dateFinish2Obj = new DateTime($vacation["finish2"]);
+                        $segments['end'] = $dateFinish2Obj->format("Y-m-d");
+                    }
+                    $segments['color'] = '#4744f6';
+
+                    $dataProvider[$key]["segments"][] = $segments;
+                    if ($vacation["start3"]) {
+                        $dateStart3Obj = new DateTime($vacation["start3"]);
+                        $segments['start'] = $dateStart3Obj->format("Y-m-d");
+                    }
+                    if ($vacation["finish3"]) {
+                        $dateFinish3Obj = new DateTime($vacation["finish3"]);
+                        $segments['end'] = $dateFinish3Obj->format("Y-m-d");
+                    }
+                    $segments['color'] = '#4744f6';
+
+                    $dataProvider[$key]["segments"][] = $segments;
+                    if ($vacation["start4"]) {
+                        $dateStart4Obj = new DateTime($vacation["start4"]);
+                        $segments['start'] = $dateStart4Obj->format("Y-m-d");
+                    }
+                    if ($vacation["finish4"]) {
+                        $dateFinish4Obj = new DateTime($vacation["finish4"]);
+                        $segments['end'] = $dateFinish4Obj->format("Y-m-d");
+                    }
+                    $segments['color'] = '#4744f6';
 
                     $dataProvider[$key]["segments"][] = $segments;
 
@@ -1342,6 +1496,79 @@ class Accounting_List_View extends Vtiger_Index_View
             if ($column == 'start2' || $column == 'finish2') $this->editHours($value, $column, $record[0]["start2"], $record[0]["finish2"], 'РТ', $worker, $mode);
             if ($column == 'start3' || $column == 'finish3') $this->editHours($value, $column, $record[0]["start3"], $record[0]["finish3"], 'РТ', $worker, $mode);
             if ($column == 'start4' || $column == 'finish4') $this->editHours($value, $column, $record[0]["start4"], $record[0]["finish4"], 'РТ', $worker, $mode);
+        }
+
+
+        echo json_encode('success');
+        die();
+    }
+
+
+    public function editVacationSession(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+        $value = $request->get("value");
+        $year = $request->get("year");
+        $column = $request->get("column");
+        $worker = $request->get("worker");
+
+
+        if (strlen($value) > 20) {
+
+            $date = substr($value, 0, strpos($value, '('));
+            $new_string = "";
+            $string = $date;
+            $words = "4";
+            $array = explode(" ", $string);
+            for ($i = 0; $i < $words; $i++) {
+                $new_string .= $array[$i] . " ";
+            }
+            $need = trim($new_string);
+
+            $d = DateTime::createFromFormat('D M d Y', $need);
+            $value = $d->format("Y-m-d");
+
+
+        }
+
+        $sql = ("SELECT * FROM vacation_session WHERE year = '$year' AND worker = '$worker'");
+
+        $record = $this->getSQLArrayResult($sql, []);
+
+        if (count($record)) {
+            if ($value == ''){
+                $sql = "UPDATE vacation_session SET $column = null WHERE  year = '$year' AND worker = '$worker'";
+            } else {
+                $sql = "UPDATE vacation_session SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
+            }
+
+        } else {
+            if ($value == ''){
+                $sql = "INSERT INTO vacation_session (worker, year) VALUES('$worker', '$year')";
+            } else {
+                $sql = "INSERT INTO vacation_session (worker, year, $column) VALUES('$worker', '$year', '$value')";
+            }
+        }
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+        if ($column != 'allowed') {
+
+            if ($value == ''){
+                $mode = 'delete';
+            } else {
+
+                if ($record[0][$column]){
+                    $mode = 'edit';
+                } else {
+                    $mode = 'add';
+                }
+            }
+
+            if ($column == 'start1' || $column == 'finish1') $this->editHours($value, $column, $record[0]["start1"], $record[0]["finish1"], 'ДУ', $worker, $mode);
+            if ($column == 'start2' || $column == 'finish2') $this->editHours($value, $column, $record[0]["start2"], $record[0]["finish2"], 'ДУ', $worker, $mode);
+            if ($column == 'start3' || $column == 'finish3') $this->editHours($value, $column, $record[0]["start3"], $record[0]["finish3"], 'ДУ', $worker, $mode);
+            if ($column == 'start4' || $column == 'finish4') $this->editHours($value, $column, $record[0]["start4"], $record[0]["finish4"], 'ДУ', $worker, $mode);
         }
 
 
