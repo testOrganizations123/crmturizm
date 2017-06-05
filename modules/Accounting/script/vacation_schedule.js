@@ -20,30 +20,49 @@ function dateDiff( date1, date2 ) {
     return ((date2-date1)/86400000);
 }
 
+function changeCountWithoutHolidays(date1, date2){
+
+    var result = dateDiff(date1, date2) + 1;
+
+    window.holidays.forEach(function(elem){
+        var holidayDay = new Date(elem.date);
+        holidayDay.setHours(0);
+
+        if (date1 <= holidayDay && holidayDay <= date2){
+            result = result - 1;
+        }
+
+    });
+
+    return result;
+}
+
 
 function countDays(line){
+
         if (line.start1 && line.finish1){
-            line.duration1 = dateDiff(new Date(line.start1), new Date(line.finish1)) + 1;
+            line.duration1 = this.changeCountWithoutHolidays(new Date(line.start1), new Date(line.finish1));
         } else {
             line.duration1 = 0;
         }
         if (line.start2 && line.finish2){
-            line.duration2 = dateDiff(new Date(line.start2), new Date(line.finish2)) + 1;
+            line.duration2 = this.changeCountWithoutHolidays(new Date(line.start2), new Date(line.finish2));
         } else {
             line.duration2 = 0;
         }
         if (line.start3 && line.finish3){
-            line.duration3 = dateDiff(new Date(line.start3), new Date(line.finish3)) + 1;
+            line.duration3 = this.changeCountWithoutHolidays(new Date(line.start3), new Date(line.finish3));
         } else {
             line.duration3 = 0;
         }
         if (line.start4 && line.finish4){
-            line.duration4 = dateDiff(new Date(line.start4), new Date(line.finish4)) + 1;
+            line.duration4 = this.changeCountWithoutHolidays(new Date(line.start4), new Date(line.finish4));
         } else {
             line.duration4 = 0;
         }
 
         line.spent = parseInt(line.duration1) + parseInt(line.duration2) + parseInt(line.duration3) + parseInt(line.duration4);
+
         line.left = parseInt(line.allowed) - parseInt(line.spent);
 
         return line;
