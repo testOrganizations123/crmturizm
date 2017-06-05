@@ -897,66 +897,10 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-        foreach ($offices as $key=> $item){
-            $i = count($item['vacation']);
-            switch ($i){
-                case 1: $offices[$key]['height'] = 90;break;
-                case 2:$offices[$key]['height'] = 65 * $i;break;
-                case 3:$offices[$key]['height'] = 55 * $i;break;
-                case $i>8:$offices[$key]['height'] = 40 * $i;break;
-                case $i>3:$offices[$key]['height'] = 50 * $i;
 
-            }
-
-
-
-        }
-
-        $holidayQuery = "SELECT * FROM holidays where date BETWEEN '$d-01-01' AND '$d-12-31'  ORDER BY date";
-
-        $holidays = $this->getSQLArrayResult($holidayQuery, "");
-
-
-        $offices[] = array_shift($offices);
-        $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
-        $viewer->assign('VACATIONSCHEDULE', json_encode($offices));
-        $viewer->assign('HOLIDAYS', json_encode($holidays));
-
-    }
-
-
-    public function loadChart(Vtiger_Request $request, Vtiger_Viewer $viewer)
-    {
-        //TODO: костылек изза костыльного отображения даты в фильтре
-        if(mb_strlen($this->filter_data['period']) == 7) {
-            $date = explode(".", $this->filter_data['period']);
-            $d = $date[1];
-        } else {
-            $d = $this->filter_data['period'];
-        }
-
-        $addQuery = $this->addQueryFilter();
-
-        $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
-
-        $users = $this->getSQLArrayResult($usersQuery, []);
-
-        $vacationPromotionalQuery = "
-                   SELECT *
-                   FROM vacation_promotional_tour as wt 
-                   WHERE year = $d";
-
-        $vacationPromotionalArray = $this->getSQLArrayResult($vacationPromotionalQuery, []);
-
-        $vacationQuery = "
-                   SELECT *
-                   FROM vacation as wt
-                   WHERE year = $d";
-
-        $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
 
         $dataProvider = [];
-        $offices = [];
+        $officesChart = [];
         foreach ($users as $key => $user) {
 
             $dataProvider[$key]["category"] = $user['name'];
@@ -1013,7 +957,7 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
 
-            foreach ($vacationPromotionalArray as $vacation) {
+            foreach ($vacationPromoArray as $vacation) {
                 if ($vacation["worker"] == $user["id"]) {
 
                     if ($vacation["start1"]) {
@@ -1073,15 +1017,92 @@ class Accounting_List_View extends Vtiger_Index_View
             if($user['officeid']==null){
                 $user['officeid']=0;
             }
-            $offices[$user["officeid"]][] = $dataProvider[$key];
+            $officesChart[$user["officeid"]][] = $dataProvider[$key];
 
 
         }
 
 
-        echo json_encode($offices);
-        die();
+
+
+
+
+        foreach ($offices as $key=> $item){
+            $i = count($item['vacation']);
+            switch ($i){
+                case 1: $offices[$key]['height'] = 90;break;
+                case 2:$offices[$key]['height'] = 65 * $i;break;
+                case 3:$offices[$key]['height'] = 55 * $i;break;
+                case $i>8:$offices[$key]['height'] = 40 * $i;break;
+                case $i>3:$offices[$key]['height'] = 50 * $i;
+
+            }
+
+
+
+        }
+
+
+        foreach ($offices as $key=> $item){
+            foreach ($officesChart as $keyO => $value){
+                if ($item['officeId'] == $keyO){
+                    $offices[$key]['dataProvider']=$value;
+                }
+            }
+
+
+        }
+
+        $holidayQuery = "SELECT * FROM holidays where date BETWEEN '$d-01-01' AND '$d-12-31'  ORDER BY date";
+
+        $holidays = $this->getSQLArrayResult($holidayQuery, "");
+
+        $viewer->assign('HOLIDAYS', json_encode($holidays));
+
+
+        $offices[] = array_shift($offices);
+        $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
+        $viewer->assign('VACATIONSCHEDULE', json_encode($offices));
+
     }
+
+
+//    public function loadChart(Vtiger_Request $request, Vtiger_Viewer $viewer)
+//    {
+//        //TODO: костылек изза костыльного отображения даты в фильтре
+//        if(mb_strlen($this->filter_data['period']) == 7) {
+//            $date = explode(".", $this->filter_data['period']);
+//            $d = $date[1];
+//        } else {
+//            $d = $this->filter_data['period'];
+//        }
+//
+//        $addQuery = $this->addQueryFilter();
+//
+//        $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
+//
+//        $users = $this->getSQLArrayResult($usersQuery, []);
+//
+//        $vacationPromotionalQuery = "
+//                   SELECT *
+//                   FROM vacation_promotional_tour as wt
+//                   WHERE year = $d";
+//
+//        $vacationPromotionalArray = $this->getSQLArrayResult($vacationPromotionalQuery, []);
+//
+//        $vacationQuery = "
+//                   SELECT *
+//                   FROM vacation as wt
+//                   WHERE year = $d";
+//
+//        $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
+//
+//
+//
+//
+//        echo json_encode($offices);
+//        die();
+//    }
 
     public function editVacation(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {

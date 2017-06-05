@@ -1533,17 +1533,14 @@ dateFilter.attachEvent("onChange", function (newv, oldv) {
 });
 loadChart();
 function loadChart() {
-    $.ajax({
-        url: "/index.php?module=Accounting&view=List&mode=loadChart",
-        success: function (responce) {
-            var dataProvider = $.parseJSON(responce);
-            $.each(dataProvider,function (i,value) {
-                chart[i] = AmCharts.makeChart(i, {
+
+    console.log(window.offices);
+
+            $.each(window.offices,function (i,value) {
+                chart[i] = AmCharts.makeChart(value.officeId, {
                     "type": "gantt",
                     "theme": "light",
                     "language":'ru',
-                    "autoResize":false,
-                    " autoDisplay":true,
                     "marginRight": 70,
                     "period": "DD",
                     "dataDateFormat": "YYYY-MM-DD",
@@ -1564,7 +1561,7 @@ function loadChart() {
                     "startDateField": "start",
                     "endDateField": "end",
 
-                    "dataProvider": value,
+                    "dataProvider": value.dataProvider,
 
                     "chartCursor": {
                         "cursorColor": "#55bb76",
@@ -1588,10 +1585,10 @@ function loadChart() {
                 });
 
 
-            });
 
 
-        }
+
+
 
     });
 }
