@@ -1,9 +1,9 @@
 var chart = [];
 
 
-function updateChartVacation(value, column, worker, year) {
+function updateChartVacation(valueDate, column, worker, year) {
 
-    var dateObj = new Date(value);
+    var dateObj = new Date(valueDate);
     var month;
     if ((dateObj.getMonth() + 1) < 10) {
         month = "0" + (dateObj.getMonth() + 1);
@@ -18,9 +18,9 @@ function updateChartVacation(value, column, worker, year) {
     }
 
     var date = dateObj.getFullYear() + '-' + month + '-' + day;
-    console.log(date);
+
     $.each(chart, function (i, value) {
-        console.log(value);
+
         $.each(value.dataProvider, function (key, item) {
             if (!chart[i].dataProvider[key].segments) {
                 chart[i].dataProvider[key].segments = []
@@ -54,49 +54,115 @@ function updateChartVacation(value, column, worker, year) {
                 }
             }
             if (item.id == worker) {
-                if (column == 'start1') {
-                    chart[i].dataProvider[key].segments[0].start = date;
-                    if (!chart[i].dataProvider[key].segments[0].end) {
 
-                        chart[i].dataProvider[key].segments[0].end = date;
-                    }
-                } else if (column == 'finish1') {
-                    chart[i].dataProvider[key].segments[0].end = date;
-                    if (!chart[i].dataProvider[key].segments[0].start) {
+                if (valueDate) {
+                    if (column == 'start1') {
                         chart[i].dataProvider[key].segments[0].start = date;
-                    }
-                } else if (column == 'start2') {
-                    chart[i].dataProvider[key].segments[1].start = date;
-                    if (!chart[i].dataProvider[key].segments[1].end) {
-                        chart[i].dataProvider[key].segments[1].end = date;
-                    }
-                } else if (column == 'finish2') {
-                    chart[i].dataProvider[key].segments[1].end = date;
-                    if (!chart[i].dataProvider[key].segments[1].start) {
+                        if (!chart[i].dataProvider[key].segments[0].end) {
+
+                            chart[i].dataProvider[key].segments[0].end = date;
+                        }
+                    } else if (column == 'finish1') {
+                        chart[i].dataProvider[key].segments[0].end = date;
+                        if (!chart[i].dataProvider[key].segments[0].start) {
+                            chart[i].dataProvider[key].segments[0].start = date;
+                        }
+                    } else if (column == 'start2') {
                         chart[i].dataProvider[key].segments[1].start = date;
-                    }
-                } else if (column == 'start3') {
-                    chart[i].dataProvider[key].segments[2].start = date;
-                    if (!chart[i].dataProvider[key].segments[2].end) {
-                        chart[i].dataProvider[key].segments[2].end = date;
-                    }
-                } else if (column == 'finish3') {
-                    chart[i].dataProvider[key].segments[2].end = date;
-                    if (!chart[i].dataProvider[key].segments[2].start) {
+                        if (!chart[i].dataProvider[key].segments[1].end) {
+                            chart[i].dataProvider[key].segments[1].end = date;
+                        }
+                    } else if (column == 'finish2') {
+                        chart[i].dataProvider[key].segments[1].end = date;
+                        if (!chart[i].dataProvider[key].segments[1].start) {
+                            chart[i].dataProvider[key].segments[1].start = date;
+                        }
+                    } else if (column == 'start3') {
                         chart[i].dataProvider[key].segments[2].start = date;
-                    }
-                } else if (column == 'start4') {
-                    chart[i].dataProvider[key].segments[3].start = date;
-                    if (!chart[i].dataProvider[key].segments[3].end) {
-                        chart[i].dataProvider[key].segments[3].end = date;
-                    }
-                } else if (column == 'finish4') {
-                    chart[i].dataProvider[key].segments[3].end = date;
-                    if (!chart[i].dataProvider[key].segments[3].start) {
+                        if (!chart[i].dataProvider[key].segments[2].end) {
+                            chart[i].dataProvider[key].segments[2].end = date;
+                        }
+                    } else if (column == 'finish3') {
+                        chart[i].dataProvider[key].segments[2].end = date;
+                        if (!chart[i].dataProvider[key].segments[2].start) {
+                            chart[i].dataProvider[key].segments[2].start = date;
+                        }
+                    } else if (column == 'start4') {
                         chart[i].dataProvider[key].segments[3].start = date;
+                        if (!chart[i].dataProvider[key].segments[3].end) {
+                            chart[i].dataProvider[key].segments[3].end = date;
+                        }
+                    } else if (column == 'finish4') {
+                        chart[i].dataProvider[key].segments[3].end = date;
+                        if (!chart[i].dataProvider[key].segments[3].start) {
+                            chart[i].dataProvider[key].segments[3].start = date;
+                        }
                     }
+                    chart[i].validateData();
+                } else {
+
+                    if (column == 'start1') {
+
+                        if (chart[i].dataProvider[key].segments[0].end) {
+
+                            chart[i].dataProvider[key].segments[0].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[0] = {};
+                        }
+                    } else if (column == 'finish1') {
+
+                        if (chart[i].dataProvider[key].segments[0].start) {
+                            chart[i].dataProvider[key].segments[0].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[0] = {};
+                        }
+                    } else if (column == 'start2') {
+                        if (chart[i].dataProvider[key].segments[1].end) {
+
+                            chart[i].dataProvider[key].segments[1].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[1] = {};
+                        }
+                    } else if (column == 'finish2') {
+
+                        if (chart[i].dataProvider[key].segments[1].start) {
+                            chart[i].dataProvider[key].segments[1].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[1] = {};
+                        }
+                    } else if (column == 'start3') {
+                        if (chart[i].dataProvider[key].segments[2].end) {
+
+                            chart[i].dataProvider[key].segments[2].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[2] = {};
+                        }
+                    } else if (column == 'finish3') {
+
+                        if (chart[i].dataProvider[key].segments[2].start) {
+                            chart[i].dataProvider[key].segments[2].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[2] = {};
+                        }
+                    } else if (column == 'start4') {
+                        if (chart[i].dataProvider[key].segments[3].end) {
+
+                            chart[i].dataProvider[key].segments[3].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[3] = {};
+                        }
+                    } else if (column == 'finish4') {
+
+                        if (chart[i].dataProvider[key].segments[3].start) {
+                            chart[i].dataProvider[key].segments[3].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[3] = {};
+                        }
+                    }
+                    chart[i].validateData();
+
+
                 }
-                chart[i].validateData();
             }
         })
 
@@ -105,9 +171,9 @@ function updateChartVacation(value, column, worker, year) {
 
 }
 
-function updateChartVacationPromo(value, column, worker, year) {
+function updateChartVacationPromo(valueDate, column, worker, year) {
 
-    var dateObj = new Date(value);
+    var dateObj = new Date(valueDate);
     var month;
     if ((dateObj.getMonth() + 1) < 10) {
         month = "0" + (dateObj.getMonth() + 1);
@@ -122,9 +188,9 @@ function updateChartVacationPromo(value, column, worker, year) {
     }
 
     var date = dateObj.getFullYear() + '-' + month + '-' + day;
-    console.log(date);
+
     $.each(chart, function (i, value) {
-        console.log(value);
+
         $.each(value.dataProvider, function (key, item) {
             if (!chart[i].dataProvider[key].segments) {
                 chart[i].dataProvider[key].segments = []
@@ -160,49 +226,114 @@ function updateChartVacationPromo(value, column, worker, year) {
 
 
             if (item.id == worker) {
-                if (column == 'start1') {
-                    chart[i].dataProvider[key].segments[4].start = date;
-                    if (!chart[i].dataProvider[key].segments[4].end) {
-
-                        chart[i].dataProvider[key].segments[4].end = date;
-                    }
-                } else if (column == 'finish1') {
-                    chart[i].dataProvider[key].segments[4].end = date;
-                    if (!chart[i].dataProvider[key].segments[4].start) {
+                if (valueDate) {
+                    if (column == 'start1') {
                         chart[i].dataProvider[key].segments[4].start = date;
-                    }
-                } else if (column == 'start2') {
-                    chart[i].dataProvider[key].segments[5].start = date;
-                    if (!chart[i].dataProvider[key].segments[5].end) {
-                        chart[i].dataProvider[key].segments[5].end = date;
-                    }
-                } else if (column == 'finish2') {
-                    chart[i].dataProvider[key].segments[5].end = date;
-                    if (!chart[i].dataProvider[key].segments[5].start) {
+                        if (!chart[i].dataProvider[key].segments[4].end) {
+
+                            chart[i].dataProvider[key].segments[4].end = date;
+                        }
+                    } else if (column == 'finish1') {
+                        chart[i].dataProvider[key].segments[4].end = date;
+                        if (!chart[i].dataProvider[key].segments[4].start) {
+                            chart[i].dataProvider[key].segments[4].start = date;
+                        }
+                    } else if (column == 'start2') {
                         chart[i].dataProvider[key].segments[5].start = date;
-                    }
-                } else if (column == 'start3') {
-                    chart[i].dataProvider[key].segments[6].start = date;
-                    if (!chart[i].dataProvider[key].segments[6].end) {
-                        chart[i].dataProvider[key].segments[6].end = date;
-                    }
-                } else if (column == 'finish3') {
-                    chart[i].dataProvider[key].segments[6].end = date;
-                    if (!chart[i].dataProvider[key].segments[6].start) {
+                        if (!chart[i].dataProvider[key].segments[5].end) {
+                            chart[i].dataProvider[key].segments[5].end = date;
+                        }
+                    } else if (column == 'finish2') {
+                        chart[i].dataProvider[key].segments[5].end = date;
+                        if (!chart[i].dataProvider[key].segments[5].start) {
+                            chart[i].dataProvider[key].segments[5].start = date;
+                        }
+                    } else if (column == 'start3') {
                         chart[i].dataProvider[key].segments[6].start = date;
-                    }
-                } else if (column == 'start4') {
-                    chart[i].dataProvider[key].segments[7].start = date;
-                    if (!chart[i].dataProvider[key].segments[7].end) {
-                        chart[i].dataProvider[key].segments[7].end = date;
-                    }
-                } else if (column == 'finish4') {
-                    chart[i].dataProvider[key].segments[7].end = date;
-                    if (!chart[i].dataProvider[key].segments[7].start) {
+                        if (!chart[i].dataProvider[key].segments[6].end) {
+                            chart[i].dataProvider[key].segments[6].end = date;
+                        }
+                    } else if (column == 'finish3') {
+                        chart[i].dataProvider[key].segments[6].end = date;
+                        if (!chart[i].dataProvider[key].segments[6].start) {
+                            chart[i].dataProvider[key].segments[6].start = date;
+                        }
+                    } else if (column == 'start4') {
                         chart[i].dataProvider[key].segments[7].start = date;
+                        if (!chart[i].dataProvider[key].segments[7].end) {
+                            chart[i].dataProvider[key].segments[7].end = date;
+                        }
+                    } else if (column == 'finish4') {
+                        chart[i].dataProvider[key].segments[7].end = date;
+                        if (!chart[i].dataProvider[key].segments[7].start) {
+                            chart[i].dataProvider[key].segments[7].start = date;
+                        }
                     }
+                    chart[i].validateData();
+                } else {
+
+                    if (column == 'start1') {
+
+                        if (chart[i].dataProvider[key].segments[4].end) {
+
+                            chart[i].dataProvider[key].segments[4].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[4] = {};
+                        }
+                    } else if (column == 'finish1') {
+
+                        if (chart[i].dataProvider[key].segments[4].start) {
+                            chart[i].dataProvider[key].segments[4].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[4] = {};
+                        }
+                    } else if (column == 'start2') {
+                        if (chart[i].dataProvider[key].segments[5].end) {
+
+                            chart[i].dataProvider[key].segments[5].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[5] = {};
+                        }
+                    } else if (column == 'finish2') {
+
+                        if (chart[i].dataProvider[key].segments[5].start) {
+                            chart[i].dataProvider[key].segments[5].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[5] = {};
+                        }
+                    } else if (column == 'start3') {
+                        if (chart[i].dataProvider[key].segments[6].end) {
+
+                            chart[i].dataProvider[key].segments[6].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[6] = {};
+                        }
+                    } else if (column == 'finish3') {
+
+                        if (chart[i].dataProvider[key].segments[6].start) {
+                            chart[i].dataProvider[key].segments[6].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[6] = {};
+                        }
+                    } else if (column == 'start4') {
+                        if (chart[i].dataProvider[key].segments[7].end) {
+
+                            chart[i].dataProvider[key].segments[7].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[7] = {};
+                        }
+                    } else if (column == 'finish4') {
+
+                        if (chart[i].dataProvider[key].segments[7].start) {
+                            chart[i].dataProvider[key].segments[7].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[7] = {};
+                        }
+                    }
+                    chart[i].validateData();
+
+
                 }
-                chart[i].validateData();
             }
         })
 
@@ -228,9 +359,9 @@ function updateChartVacationSession(value, column, worker, year) {
     }
 
     var date = dateObj.getFullYear() + '-' + month + '-' + day;
-    console.log(date);
+
     $.each(chart, function (i, value) {
-        console.log(value);
+
         $.each(value.dataProvider, function (key, item) {
             if (!chart[i].dataProvider[key].segments) {
                 chart[i].dataProvider[key].segments = []
@@ -322,49 +453,116 @@ function updateChartVacationSession(value, column, worker, year) {
                 }
             }
             if (item.id == worker) {
-                if (column == 'start1') {
-                    chart[i].dataProvider[key].segments[8].start = date;
-                    if (!chart[i].dataProvider[key].segments[8].end) {
-
-                        chart[i].dataProvider[key].segments[8].end = date;
-                    }
-                } else if (column == 'finish1') {
-                    chart[i].dataProvider[key].segments[8].end = date;
-                    if (!chart[i].dataProvider[key].segments[8].start) {
+                if (valueDate) {
+                    if (column == 'start1') {
                         chart[i].dataProvider[key].segments[8].start = date;
-                    }
-                } else if (column == 'start2') {
-                    chart[i].dataProvider[key].segments[9].start = date;
-                    if (!chart[i].dataProvider[key].segments[9].end) {
-                        chart[i].dataProvider[key].segments[9].end = date;
-                    }
-                } else if (column == 'finish2') {
-                    chart[i].dataProvider[key].segments[9].end = date;
-                    if (!chart[i].dataProvider[key].segments[9].start) {
+                        if (!chart[i].dataProvider[key].segments[8].end) {
+
+                            chart[i].dataProvider[key].segments[8].end = date;
+                        }
+                    } else if (column == 'finish1') {
+                        chart[i].dataProvider[key].segments[8].end = date;
+                        if (!chart[i].dataProvider[key].segments[8].start) {
+                            chart[i].dataProvider[key].segments[8].start = date;
+                        }
+                    } else if (column == 'start2') {
                         chart[i].dataProvider[key].segments[9].start = date;
-                    }
-                } else if (column == 'start3') {
-                    chart[i].dataProvider[key].segments[10].start = date;
-                    if (!chart[i].dataProvider[key].segments[10].end) {
-                        chart[i].dataProvider[key].segments[10].end = date;
-                    }
-                } else if (column == 'finish3') {
-                    chart[i].dataProvider[key].segments[10].end = date;
-                    if (!chart[i].dataProvider[key].segments[10].start) {
+                        if (!chart[i].dataProvider[key].segments[9].end) {
+                            chart[i].dataProvider[key].segments[9].end = date;
+                        }
+                    } else if (column == 'finish2') {
+                        chart[i].dataProvider[key].segments[9].end = date;
+                        if (!chart[i].dataProvider[key].segments[9].start) {
+                            chart[i].dataProvider[key].segments[9].start = date;
+                        }
+                    } else if (column == 'start3') {
                         chart[i].dataProvider[key].segments[10].start = date;
-                    }
-                } else if (column == 'start4') {
-                    chart[i].dataProvider[key].segments[11].start = date;
-                    if (!chart[i].dataProvider[key].segments[11].end) {
-                        chart[i].dataProvider[key].segments[11].end = date;
-                    }
-                } else if (column == 'finish4') {
-                    chart[i].dataProvider[key].segments[11].end = date;
-                    if (!chart[i].dataProvider[key].segments[11].start) {
+                        if (!chart[i].dataProvider[key].segments[10].end) {
+                            chart[i].dataProvider[key].segments[10].end = date;
+                        }
+                    } else if (column == 'finish3') {
+                        chart[i].dataProvider[key].segments[10].end = date;
+                        if (!chart[i].dataProvider[key].segments[10].start) {
+                            chart[i].dataProvider[key].segments[10].start = date;
+                        }
+                    } else if (column == 'start4') {
                         chart[i].dataProvider[key].segments[11].start = date;
+                        if (!chart[i].dataProvider[key].segments[11].end) {
+                            chart[i].dataProvider[key].segments[11].end = date;
+                        }
+                    } else if (column == 'finish4') {
+                        chart[i].dataProvider[key].segments[11].end = date;
+                        if (!chart[i].dataProvider[key].segments[11].start) {
+                            chart[i].dataProvider[key].segments[11].start = date;
+                        }
                     }
+                    chart[i].validateData();
+                }else {
+
+                    if (column == 'start1') {
+
+                        if (chart[i].dataProvider[key].segments[8].end) {
+
+                            chart[i].dataProvider[key].segments[8].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[8] = {};
+                        }
+                    } else if (column == 'finish1') {
+
+                        if (chart[i].dataProvider[key].segments[8].start) {
+                            chart[i].dataProvider[key].segments[8].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[8] = {};
+                        }
+                    } else if (column == 'start2') {
+                        if (chart[i].dataProvider[key].segments[9].end) {
+
+                            chart[i].dataProvider[key].segments[9].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[9] = {};
+                        }
+                    } else if (column == 'finish2') {
+
+                        if (chart[i].dataProvider[key].segments[9].start) {
+                            chart[i].dataProvider[key].segments[9].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[9] = {};
+                        }
+                    } else if (column == 'start3') {
+                        if (chart[i].dataProvider[key].segments[10].end) {
+
+                            chart[i].dataProvider[key].segments[10].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[10] = {};
+                        }
+                    } else if (column == 'finish3') {
+
+                        if (chart[i].dataProvider[key].segments[10].start) {
+                            chart[i].dataProvider[key].segments[10].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[10] = {};
+                        }
+                    } else if (column == 'start4') {
+                        if (chart[i].dataProvider[key].segments[11].end) {
+
+                            chart[i].dataProvider[key].segments[11].start = chart[i].dataProvider[key].segments[0].end;
+                        } else {
+                            chart[i].dataProvider[key].segments[11] = {};
+                        }
+                    } else if (column == 'finish4') {
+
+                        if (chart[i].dataProvider[key].segments[11].start) {
+                            chart[i].dataProvider[key].segments[11].end = chart[i].dataProvider[key].segments[0].start;
+                        } else {
+                            chart[i].dataProvider[key].segments[11] = {};
+                        }
+                    }
+                    chart[i].validateData();
+
+
+
+
                 }
-                chart[i].validateData();
             }
         })
 
@@ -2095,6 +2293,23 @@ function loadChart() {
 
     var start = new Date(arrDate[i - 1], 0, 1);
     var finish = new Date(arrDate[i - 1], 11, 31);
+
+    $.each(window.offices, function (i, value) {
+        $.each(value.dataProvider, function (key, item) {
+            if (item.segments) {
+                $.each(item.segments, function (key1, item1) {
+                    if ((item1.start && !item1.end)) {
+                        window.offices[i].dataProvider[key].segments[key1].end = item1.start
+                    }
+                    if ((!item1.start && item1.end)) {
+                        window.offices[i].dataProvider[key].segments[key1].start = item1.end
+                    }
+                })
+            }
+        })
+    });
+
+    console.log(window.offices);
 
     $.each(window.offices, function (i, value) {
         chart[i] = AmCharts.makeChart(value.officeId, {

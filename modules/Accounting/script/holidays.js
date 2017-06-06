@@ -85,7 +85,7 @@ var dateFilter = webix.ui({
     view:"datepicker",align:"right",value : arrDate[i-1],type:"year", format:"%Y"
 
 });
-
+$('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
 dateFilter.attachEvent("onChange", function(newv, oldv){
    $('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
 });
