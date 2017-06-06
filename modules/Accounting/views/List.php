@@ -1265,6 +1265,144 @@ class Accounting_List_View extends Vtiger_Index_View
 //        die();
 //    }
 
+   public function validateIntersection($column, $value, $line1, $line2){
+
+        $date = new DateTime($value);
+       
+        
+       if ($line1["start1"] != "" && $line1["start1"] != null){
+           if ((new DateTime($line1["start1"])) == $date){
+               return false;
+           }
+       }
+       if ($line1["start2"] != "" && $line1["start2"] != null){
+           if ((new DateTime($line1["start2"])) == $date){
+               return false;
+           }
+       }
+       if ($line1["start3"] != "" && $line1["start3"] != null){
+           if ((new DateTime($line1["start3"])) == $date){
+               return false;
+           }
+       }
+       if ($line1["start4"] != "" && $line1["start4"] != null){
+           if ((new DateTime($line1["start4"])) == $date){
+               return false;
+           }
+       }
+       
+       if ($line1["finish1"] != "" && $line1["finish1"] != null){
+           if ((new DateTime($line1["finish1"])) == $date){
+               return false;
+           }
+       }
+       if ($line1["finish2"] != "" && $line1["finish2"] != null){
+           if ((new DateTime($line1["finish2"])) == $date){
+               return false;
+           }
+       }
+       if ($line1["finish3"] != "" && $line1["finish3"] != null){
+           if ((new DateTime($line1["finish3"])) == $date){
+               return false;
+           }
+       }
+       if ($line1["finish4"] != "" && $line1["finish4"] != null){
+           if ((new DateTime($line1["finish4"])) == $date){
+               return false;
+           }
+       }
+
+       if ($line1["start1"] != "" && $line1["start1"] != null && $line1["finish1"] != "" && $line1["finish1"] != null){
+           if ((new DateTime($line1["start1"])) < $date && (new DateTime($line1["finish1"])) > $date){
+               return false;
+           }
+       }
+       if ($line1["start2"] != "" && $line1["start2"] != null && $line1["finish2"] != "" && $line1["finish2"] != null){
+           if ((new DateTime($line1["start2"])) < $date && (new DateTime($line1["finish2"])) > $date){
+               return false;
+           }
+       }
+       if ($line1["start3"] != "" && $line1["start3"] != null && $line1["finish3"] != "" && $line1["finish3"] != null){
+           if ((new DateTime($line1["start3"])) < $date && (new DateTime($line1["finish3"])) > $date){
+               return false;
+           }
+       }
+       if ($line1["start4"] != "" && $line1["start4"] != null && $line1["finish4"] != "" && $line1["finish4"] != null){
+           if ((new DateTime($line1["start4"])) < $date && (new DateTime($line1["finish4"])) > $date){
+               return false;
+           }
+       }
+
+
+       if ($line2["start1"] != "" && $line2["start1"] != null){
+           if ((new DateTime($line2["start1"])) == $date){
+               return false;
+           }
+       }
+       if ($line2["start2"] != "" && $line2["start2"] != null){
+           if ((new DateTime($line2["start2"])) == $date){
+               return false;
+           }
+       }
+       if ($line2["start3"] != "" && $line2["start3"] != null){
+           if ((new DateTime($line2["start3"])) == $date){
+               return false;
+           }
+       }
+       if ($line2["start4"] != "" && $line2["start4"] != null){
+           if ((new DateTime($line2["start4"])) == $date){
+               return false;
+           }
+       }
+
+       if ($line2["finish1"] != "" && $line2["finish1"] != null){
+           if ((new DateTime($line2["finish1"])) == $date){
+               return false;
+           }
+       }
+       if ($line2["finish2"] != "" && $line2["finish2"] != null){
+           if ((new DateTime($line2["finish2"])) == $date){
+               return false;
+           }
+       }
+       if ($line2["finish3"] != "" && $line2["finish3"] != null){
+           if ((new DateTime($line2["finish3"])) == $date){
+               return false;
+           }
+       }
+       if ($line2["finish4"] != "" && $line2["finish4"] != null){
+           if ((new DateTime($line2["finish4"])) == $date){
+               return false;
+           }
+       }
+
+       if ($line2["start1"] != "" && $line2["start1"] != null && $line2["finish1"] != "" && $line2["finish1"] != null){
+           if ((new DateTime($line2["start1"])) < $date && (new DateTime($line2["finish1"])) > $date){
+               return false;
+           }
+       }
+       if ($line2["start2"] != "" && $line2["start2"] != null && $line2["finish2"] != "" && $line2["finish2"] != null){
+           if ((new DateTime($line2["start2"])) < $date && (new DateTime($line2["finish2"])) > $date){
+               return false;
+           }
+       }
+       if ($line2["start3"] != "" && $line2["start3"] != null && $line2["finish3"] != "" && $line2["finish3"] != null){
+           if ((new DateTime($line2["start3"])) < $date && (new DateTime($line2["finish3"])) > $date){
+               return false;
+           }
+       }
+       if ($line2["start4"] != "" && $line2["start4"] != null && $line2["finish4"] != "" && $line2["finish4"] != null){
+           if ((new DateTime($line2["start4"])) < $date && (new DateTime($line2["finish4"])) > $date){
+               return false;
+           }
+       }
+       
+       
+
+       return 'success';
+        
+   }
+
     public function validatePeriodLine($column, $value, $line){
         $arrayValidate = [
             "start1" => $line["start1"],
@@ -1361,6 +1499,27 @@ class Accounting_List_View extends Vtiger_Index_View
                 echo json_encode($validate);
                 die();
             }
+
+
+            $sql = ("SELECT * FROM vacation_session WHERE year = '$year' AND worker = '$worker'");
+
+            $recordSession = $this->getSQLArrayResult($sql, []);
+
+            $sql = ("SELECT * FROM vacation_promotional_tour WHERE year = '$year' AND worker = '$worker'");
+
+            $recordPromotional = $this->getSQLArrayResult($sql, []);
+
+            $validate = $this->validateIntersection($column, $value, $recordSession[0], $recordPromotional[0]);
+
+            if ($validate!= 'success'){
+                echo json_encode('Дата не должна пересекаться с датами из других таблиц');
+                die();
+            }
+        }
+
+        if ($column == 'allowed' && $value != "" && !is_numeric($value)) {
+            echo json_encode('Должно быть числовое значение');
+            die();
         }
 
 
@@ -1551,7 +1710,28 @@ class Accounting_List_View extends Vtiger_Index_View
                 echo json_encode($validate);
                 die();
             }
+
+            $sql = ("SELECT * FROM vacation_session WHERE year = '$year' AND worker = '$worker'");
+
+            $recordSession = $this->getSQLArrayResult($sql, []);
+
+            $sql = ("SELECT * FROM vacation WHERE year = '$year' AND worker = '$worker'");
+
+            $recordVacation = $this->getSQLArrayResult($sql, []);
+
+            $validate = $this->validateIntersection($column, $value, $recordSession[0], $recordVacation[0]);
+
+            if ($validate!= 'success'){
+                echo json_encode('Дата не должна пересекаться с датами из других таблиц');
+                die();
+            }
         }
+
+        if ($column == 'allowed' && $value != "" && !is_numeric($value)) {
+            echo json_encode('Должно быть числовое значение');
+            die();
+        }
+
 
         if (count($record)) {
             if ($value == ''){
@@ -1641,6 +1821,21 @@ class Accounting_List_View extends Vtiger_Index_View
                 echo json_encode($validate);
                 die();
             }
+
+            $sql = ("SELECT * FROM vacation_promotional_tour WHERE year = '$year' AND worker = '$worker'");
+
+            $recordPromotion = $this->getSQLArrayResult($sql, []);
+
+            $sql = ("SELECT * FROM vacation WHERE year = '$year' AND worker = '$worker'");
+
+            $recordVacation = $this->getSQLArrayResult($sql, []);
+
+            $validate = $this->validateIntersection($column, $value, $recordPromotion[0], $recordVacation[0]);
+
+            if ($validate!= 'success'){
+                echo json_encode('Дата не должна пересекаться с датами из других таблиц');
+                die();
+            }
         }
 
         if (count($record)) {
@@ -1657,6 +1852,12 @@ class Accounting_List_View extends Vtiger_Index_View
                 $sql = "INSERT INTO vacation_session (worker, year, $column) VALUES('$worker', '$year', '$value')";
             }
         }
+
+        if ($column == 'allowed' && $value != "" && !is_numeric($value)) {
+            echo json_encode('Должно быть числовое значение');
+            die();
+        }
+
 
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
