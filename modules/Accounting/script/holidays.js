@@ -1,18 +1,17 @@
-
 webix.ready(function () {
 
-if (window.writingAccess){
-    var column = [
-        {id: "date", header: "Дата", width: 120},
-        {id: "holiday", header: "Праздник", width: 400},
-        {id: "", template: "<span class='delbtn' style='font-size: 20px; cursor: pointer'>X</span>", width: 45}
-    ]
-} else {
-    column = [
-        {id: "date", header: "Дата", width: 120},
-        {id: "holiday", header: "Праздник", width: 400}
-    ]
-}
+    if (window.writingAccess) {
+        var column = [
+            {id: "date", header: "Дата", width: 120},
+            {id: "holiday", header: "Праздник", width: 400},
+            {id: "", template: "<span class='delbtn' style='font-size: 20px; cursor: pointer'>X</span>", width: 45}
+        ]
+    } else {
+        column = [
+            {id: "date", header: "Дата", width: 120},
+            {id: "holiday", header: "Праздник", width: 400}
+        ]
+    }
 
     dtable = webix.ui({
         id: "data",
@@ -28,8 +27,8 @@ if (window.writingAccess){
             type: 'get',
             url: '/index.php?module=Accounting&view=List&mode=deleteHoliday&id=' + id,
             success: function (dataJSON) {
-           var data = $.parseJSON(dataJSON);
-                if (data.status == 'success'){
+                var data = $.parseJSON(dataJSON);
+                if (data.status == 'success') {
 
                     $$("data").remove(id);
 
@@ -52,36 +51,74 @@ function addData() {
     var date = $("#date").find('.webix_inp_static').html();
     var holiday = $("#holiday").val();
 
-    if (!date){
+    if (!date) {
+        $(function () {
+            new PNotify({
+                title: 'Поле "Дата" не должно быть пустым!',
+                text: "",
+                delay: 4000
+            });
+
+        });
+        return false
+    }
+
+    if (!holiday) {
+        $(function () {
+            new PNotify({
+                title: 'Поле "Праздник" не должно быть пустым!',
+                text: "",
+                delay: 4000
+            });
+
+        });
+        return false
+
+
+    }
+    var arrDate = window.dateStart.split('.');
+    var i = arrDate.length;
+    var yearFilter = arrDate[i - 1];
+
+    arrDate = date.split('.');
+    i = arrDate.length;
+    var year = arrDate[i - 1];
+
+    if (yearFilter != year){
+        $(function () {
+            new PNotify({
+                title: 'Год должен совпадать с выбранным в фильтре!',
+                text: "",
+                delay: 4000
+            });
+
+        });
+        return false
 
     }
 
-    if (!holiday){
 
+        $.ajax({
+            type: 'get',
+            url: '/index.php?module=Accounting&view=List&mode=addHoliday&date=' + date + '&holiday=' + holiday,
+            success: function (dataJson) {
+                var data = $.parseJSON(dataJson);
+                if (data.status == 'success') {
 
-        
-    }
-    $.ajax({
-        type: 'get',
-        url: '/index.php?module=Accounting&view=List&mode=addHoliday&date=' + date + '&holiday=' + holiday,
-        success: function (dataJson) {
-            var data = $.parseJSON(dataJson);
-            if (data.status == 'success') {
+                    $$("data").add({
+                        date: date,
+                        holiday: holiday
 
-                $$("data").add({
-                    date: date,
-                    holiday: holiday
+                    }, 0);
+                    dtable.sort("date", "asc");
+                    $("#date").find('.webix_inp_static').html("");
+                    $("#holiday").val("");
 
-                }, 0);
-                dtable.sort("date", "asc");
-                $("#date").find('.webix_inp_static').html("");
-                 $("#holiday").val("");
+                }
 
             }
 
-        }
-
-    });
+        });
 
 
 }
@@ -93,19 +130,19 @@ var dateFilter = webix.ui({
     container: "dateFilter",
 
 
-    view:"datepicker",align:"right",value : arrDate[i-1],type:"year", format:"%Y"
+    view: "datepicker", align: "right", value: arrDate[i - 1], type: "year", format: "%Y"
 
 });
 $('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
-dateFilter.attachEvent("onChange", function(newv, oldv){
-   $('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
+dateFilter.attachEvent("onChange", function (newv, oldv) {
+    $('#dateHidden').val($("#dateFilter").find('.webix_inp_static').html());
 });
 
 var dateWebix = webix.ui({
     container: "date",
 
 
-    view:"datepicker",align:"right", format:"%d.%m.%Y"
+    view: "datepicker", align: "right", format: "%d.%m.%Y"
 
 });
 
