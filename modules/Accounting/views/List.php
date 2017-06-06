@@ -1012,6 +1012,7 @@ class Accounting_List_View extends Vtiger_Index_View
             $dataProvider[$key]["id"] = $user['id'];
             $segments = [];
             foreach ($vacationArray as $vacation) {
+                $segments = [];
                 if ($vacation["worker"] == $user["id"]) {
 
                     if ($vacation["start1"]) {
@@ -1064,6 +1065,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
             foreach ($vacationPromoArray as $vacation) {
+                $segments = [];
                 if ($vacation["worker"] == $user["id"]) {
 
                     if ($vacation["start1"]) {
@@ -1116,6 +1118,7 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
             foreach ($vacationSessionArray as $vacation) {
+                $segments = [];
                 if ($vacation["worker"] == $user["id"]) {
 
                     if ($vacation["start1"]) {
@@ -1188,7 +1191,7 @@ class Accounting_List_View extends Vtiger_Index_View
         foreach ($offices as $key=> $item){
             $i = count($item['vacation']);
             switch ($i){
-                case 1: $offices[$key]['height'] = 90;break;
+                case 1: $offices[$key]['height'] = 110;break;
                 case 2:$offices[$key]['height'] = 65 * $i;break;
                 case 3:$offices[$key]['height'] = 55 * $i;break;
                 case $i>8:$offices[$key]['height'] = 40 * $i;break;
