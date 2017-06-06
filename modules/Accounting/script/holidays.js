@@ -48,8 +48,19 @@ if (window.writingAccess){
 
 function addData() {
 
+
     var date = $("#date").find('.webix_inp_static').html();
     var holiday = $("#holiday").val();
+
+    if (!date){
+
+    }
+
+    if (!holiday){
+
+
+        
+    }
     $.ajax({
         type: 'get',
         url: '/index.php?module=Accounting&view=List&mode=addHoliday&date=' + date + '&holiday=' + holiday,
