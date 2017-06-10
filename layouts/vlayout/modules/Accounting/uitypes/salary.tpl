@@ -14,8 +14,8 @@
     {*<div style="font-size: medium">{$VALUE->office}</div>*}
     {*<br>*}
     {*<h4>Основной отпуск</h4>*}
-    {*<br>*}
-    {*<div id="tableVacation_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>*}
+    <br>
+    <div id="tableSalary" style="overflow-x: auto; padding-bottom: 20px"></div>
     {*<br>*}
     {*<h4>Рекламный тур</h4>*}
     {*<br>*}
