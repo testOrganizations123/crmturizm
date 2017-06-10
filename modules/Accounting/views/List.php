@@ -1886,4 +1886,17 @@ class Accounting_List_View extends Vtiger_Index_View
         die();
     }
 
+    function addScript_salary($jsFileNames)
+    {
+        array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
+        array_push($jsFileNames, "modules.Accounting.script.salary");
+
+        return $jsFileNames;
+    }
+
+    public function salary(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+        $viewer->assign('SALARY', json_encode([true]));
+    }
+
 }
