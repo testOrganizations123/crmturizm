@@ -119,42 +119,42 @@ function updateChartVacation(valueDate, column, worker, year) {
                     } else if (column == 'start2') {
                         if (chart[i].dataProvider[key].segments[1].end) {
 
-                            chart[i].dataProvider[key].segments[1].start = chart[i].dataProvider[key].segments[0].end;
+                            chart[i].dataProvider[key].segments[1].start = chart[i].dataProvider[key].segments[1].end;
                         } else {
                             chart[i].dataProvider[key].segments[1] = {};
                         }
                     } else if (column == 'finish2') {
 
                         if (chart[i].dataProvider[key].segments[1].start) {
-                            chart[i].dataProvider[key].segments[1].end = chart[i].dataProvider[key].segments[0].start;
+                            chart[i].dataProvider[key].segments[1].end = chart[i].dataProvider[key].segments[1].start;
                         } else {
                             chart[i].dataProvider[key].segments[1] = {};
                         }
                     } else if (column == 'start3') {
                         if (chart[i].dataProvider[key].segments[2].end) {
 
-                            chart[i].dataProvider[key].segments[2].start = chart[i].dataProvider[key].segments[0].end;
+                            chart[i].dataProvider[key].segments[2].start = chart[i].dataProvider[key].segments[2].end;
                         } else {
                             chart[i].dataProvider[key].segments[2] = {};
                         }
                     } else if (column == 'finish3') {
 
                         if (chart[i].dataProvider[key].segments[2].start) {
-                            chart[i].dataProvider[key].segments[2].end = chart[i].dataProvider[key].segments[0].start;
+                            chart[i].dataProvider[key].segments[2].end = chart[i].dataProvider[key].segments[2].start;
                         } else {
                             chart[i].dataProvider[key].segments[2] = {};
                         }
                     } else if (column == 'start4') {
                         if (chart[i].dataProvider[key].segments[3].end) {
 
-                            chart[i].dataProvider[key].segments[3].start = chart[i].dataProvider[key].segments[0].end;
+                            chart[i].dataProvider[key].segments[3].start = chart[i].dataProvider[key].segments[3].end;
                         } else {
                             chart[i].dataProvider[key].segments[3] = {};
                         }
                     } else if (column == 'finish4') {
 
                         if (chart[i].dataProvider[key].segments[3].start) {
-                            chart[i].dataProvider[key].segments[3].end = chart[i].dataProvider[key].segments[0].start;
+                            chart[i].dataProvider[key].segments[3].end = chart[i].dataProvider[key].segments[3].start;
                         } else {
                             chart[i].dataProvider[key].segments[3] = {};
                         }
