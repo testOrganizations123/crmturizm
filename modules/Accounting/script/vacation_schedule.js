@@ -2309,7 +2309,6 @@ function loadChart() {
         })
     });
 
-    console.log(window.offices);
 
     $.each(window.offices, function (i, value) {
         chart[i] = AmCharts.makeChart(value.officeId, {
@@ -2350,7 +2349,7 @@ function loadChart() {
                 "valueLineBalloonEnabled": true,
                 "valueLineEnabled": true,
                 "zoomable": false,
-                "valueZoomable": false
+                "valueZoomable": true
             },
             "legend": {
                 "data": [{
