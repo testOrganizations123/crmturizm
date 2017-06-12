@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-27 00:27:40
+<?php /* Smarty version Smarty-3.1.7, created on 2017-06-13 00:11:54
          compiled from "C:\os\OpenServer\domains\crmturizm\includes\runtime/../../layouts/vlayout\modules\Vtiger\Footer.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:629590110cc7fdd64-85621954%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '7e4e24ec149e3814050a7fca96dd65ca225e1bdf' => 
     array (
       0 => 'C:\\os\\OpenServer\\domains\\crmturizm\\includes\\runtime/../../layouts/vlayout\\modules\\Vtiger\\Footer.tpl',
-      1 => 1493241762,
+      1 => 1497301713,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_590110cc8137b',
   'variables' => 
   array (
     'ACTIVITY_REMINDER' => 0,
@@ -27,8 +29,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'VTIGER_VERSION' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_590110cc8137b',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_590110cc8137b')) {function content_590110cc8137b($_smarty_tpl) {?>
 <input id='activityReminder' class='hide noprint' type="hidden" value="<?php echo $_smarty_tpl->tpl_vars['ACTIVITY_REMINDER']->value;?>

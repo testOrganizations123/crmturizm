@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-27 00:27:40
+<?php /* Smarty version Smarty-3.1.7, created on 2017-06-13 00:11:54
          compiled from "C:\os\OpenServer\domains\crmturizm\includes\runtime/../../layouts/vlayout\modules\Vtiger\JSResources.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:25098590110cc823ad0-44710798%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'cf5f25391a9314bc6468de7614db0f1efdcaa2c3' => 
     array (
       0 => 'C:\\os\\OpenServer\\domains\\crmturizm\\includes\\runtime/../../layouts/vlayout\\modules\\Vtiger\\JSResources.tpl',
-      1 => 1493241762,
+      1 => 1497301713,
       2 => 'file',
     ),
   ),
@@ -15,14 +15,14 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_590110cc829d4',
   'variables' => 
   array (
     'SCRIPTS' => 0,
     'jsModel' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_590110cc829d4',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_590110cc829d4')) {function content_590110cc829d4($_smarty_tpl) {?>
 

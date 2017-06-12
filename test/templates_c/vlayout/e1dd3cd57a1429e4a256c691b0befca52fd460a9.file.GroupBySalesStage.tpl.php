@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-27 00:29:02
+<?php /* Smarty version Smarty-3.1.7, created on 2017-06-13 00:11:57
          compiled from "C:\os\OpenServer\domains\crmturizm\includes\runtime/../../layouts/vlayout\modules\Potentials\dashboards\GroupBySalesStage.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:54315901111e0d8701-18593549%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'e1dd3cd57a1429e4a256c691b0befca52fd460a9' => 
     array (
       0 => 'C:\\os\\OpenServer\\domains\\crmturizm\\includes\\runtime/../../layouts/vlayout\\modules\\Potentials\\dashboards\\GroupBySalesStage.tpl',
-      1 => 1493241761,
+      1 => 1497301712,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_5901111e13129',
   'variables' => 
   array (
     'STYLES' => 0,
@@ -30,8 +32,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'ALL_ACTIVEGROUP_LIST' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_5901111e13129',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_5901111e13129')) {function content_5901111e13129($_smarty_tpl) {?>
 <script type="text/javascript">

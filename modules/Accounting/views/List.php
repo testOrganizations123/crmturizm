@@ -1905,7 +1905,7 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
         $offices[] = array_shift($offices);
-
+        $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('SALARY', json_encode($offices));
     }
 

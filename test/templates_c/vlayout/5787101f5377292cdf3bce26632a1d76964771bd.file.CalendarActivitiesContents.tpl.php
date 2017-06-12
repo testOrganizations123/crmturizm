@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2017-04-27 00:28:58
+<?php /* Smarty version Smarty-3.1.7, created on 2017-06-13 00:11:56
          compiled from "C:\os\OpenServer\domains\crmturizm\includes\runtime/../../layouts/vlayout\modules\Vtiger\dashboards\CalendarActivitiesContents.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:261705901111a5bf541-61485877%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '5787101f5377292cdf3bce26632a1d76964771bd' => 
     array (
       0 => 'C:\\os\\OpenServer\\domains\\crmturizm\\includes\\runtime/../../layouts/vlayout\\modules\\Vtiger\\dashboards\\CalendarActivitiesContents.tpl',
-      1 => 1493241762,
+      1 => 1497301713,
       2 => 'file',
     ),
   ),
@@ -15,6 +15,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
+  'version' => 'Smarty-3.1.7',
+  'unifunc' => 'content_5901111a5e61c',
   'variables' => 
   array (
     'ACTIVITIES' => 0,
@@ -27,8 +29,6 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'WIDGET' => 0,
   ),
   'has_nocache_code' => false,
-  'version' => 'Smarty-3.1.7',
-  'unifunc' => 'content_5901111a5e61c',
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_5901111a5e61c')) {function content_5901111a5e61c($_smarty_tpl) {?>
 
