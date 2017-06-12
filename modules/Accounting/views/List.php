@@ -1227,44 +1227,6 @@ class Accounting_List_View extends Vtiger_Index_View
 
     }
 
-
-//    public function loadChart(Vtiger_Request $request, Vtiger_Viewer $viewer)
-//    {
-//        //TODO: костылек изза костыльного отображения даты в фильтре
-//        if(mb_strlen($this->filter_data['period']) == 7) {
-//            $date = explode(".", $this->filter_data['period']);
-//            $d = $date[1];
-//        } else {
-//            $d = $this->filter_data['period'];
-//        }
-//
-//        $addQuery = $this->addQueryFilter();
-//
-//        $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
-//
-//        $users = $this->getSQLArrayResult($usersQuery, []);
-//
-//        $vacationPromotionalQuery = "
-//                   SELECT *
-//                   FROM vacation_promotional_tour as wt
-//                   WHERE year = $d";
-//
-//        $vacationPromotionalArray = $this->getSQLArrayResult($vacationPromotionalQuery, []);
-//
-//        $vacationQuery = "
-//                   SELECT *
-//                   FROM vacation as wt
-//                   WHERE year = $d";
-//
-//        $vacationArray = $this->getSQLArrayResult($vacationQuery, []);
-//
-//
-//
-//
-//        echo json_encode($offices);
-//        die();
-//    }
-
    public function validateIntersection($column, $value, $line1, $line2){
 
         $date = new DateTime($value);
@@ -1896,7 +1858,55 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function salary(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
-        $viewer->assign('SALARY', json_encode([true]));
+        $addQuery = $this->addQueryFilter();
+
+        $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
+
+        $users = $this->getSQLArrayResult($usersQuery, []);
+
+        $offices = [];
+
+        foreach ($users as $user) {
+
+            $personSalary = [
+                "id" => $user["id"],
+                "worker" => $user["name"],
+            ];
+
+            if ($user['office'] == null) {
+                $user['office'] = 'Без офиса';
+            }
+
+            if($user['officeid']==null){
+                $user['officeid']=0;
+            }
+
+            $flag = 0;
+            foreach ($offices as $key => $off) {
+                if ($off["office"] == $user["office"]) {
+                    $offices[$key]["salary"][] = $personSalary;
+                    $flag = 1;
+                    break;
+                }
+            }
+
+            if ($flag == 0) {
+                $office = [
+                    "office" => $user["office"],
+                    "officeId"=>$user["officeid"]
+                ];
+
+                $office["salary"] = [];
+                $office["salary"][] = $personSalary;
+
+                $offices[] = $office;
+            }
+
+        }
+
+        $offices[] = array_shift($offices);
+
+        $viewer->assign('SALARY', json_encode($offices));
     }
 
 }
