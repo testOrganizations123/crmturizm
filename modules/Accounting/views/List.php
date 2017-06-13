@@ -1908,13 +1908,48 @@ class Accounting_List_View extends Vtiger_Index_View
         foreach ($users as $user) {
             $level = "";
             $sum = 0;
+            foreach ($sales as $item) {
+                if ($item['smownerid'] == $user['id']) {
+                    $sum += $item['amount'];
+                }
+            }
 
+            foreach ($salesPlan as $item) {
+                if ($user['id'] == $item['worker']) {
+                    $floor1 = $item['floor1'];
+                    $floor2 = $item['floor2'];
+                    $floor3 = $item['floor3'];
+                    $floor4 = $item['floor4'];
+                }
+            }
+            if (isset($floor1)) {
+                if ($sum >= $floor1) {
+                    $level = 1;
+                }
+            }
 
+            if (isset($floor2)) {
+                if ($sum >= $floor2) {
+                    $level = 2;
+                }
+            }
+
+            if (isset($floor3)) {
+                if ($sum >= $floor3) {
+                    $level = 3;
+                }
+            }
+
+            if (isset($floor4)) {
+                if ($sum >= $floor4) {
+                    $level = 4;
+                }
+            }
 
             $personSalary = [
                 "id" => $user["id"],
                 "worker" => $user["name"],
-                "level"=>$level
+                "stage" => $level
             ];
 
             if ($user['office'] == null) {
