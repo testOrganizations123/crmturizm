@@ -1864,6 +1864,24 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $users = $this->getSQLArrayResult($usersQuery, []);
 
+        $salesPlanQuery = "SELECT * FROM worker_sales_plan WHERE date=" . $this->filter_data['period'];
+
+        $salesPlan = $this->getSQLArrayResult($salesPlanQuery, []);
+
+
+
+            $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, u.first_name, u.last_name, o.officeid , o.office, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+            left join vtiger_office as o ON o.officeid = pcf.cf_1215
+            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+            where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery;
+
+
+       
+
+
+
+
         $offices = [];
 
         foreach ($users as $user) {
