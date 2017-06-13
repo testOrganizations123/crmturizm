@@ -502,7 +502,7 @@ class Accounting_List_View extends Vtiger_Index_View
     public function holidays(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         //TODO: костылек изза костыльного отображения даты в фильтре
-        if(mb_strlen($this->filter_data['period']) == 7) {
+        if (mb_strlen($this->filter_data['period']) == 7) {
             $date = explode(".", $this->filter_data['period']);
             $d = $date[1];
         } else {
@@ -604,7 +604,7 @@ class Accounting_List_View extends Vtiger_Index_View
     public function vacationSchedule(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         //TODO: костылек изза костыльного отображения даты в фильтре
-        if(mb_strlen($this->filter_data['period']) == 7) {
+        if (mb_strlen($this->filter_data['period']) == 7) {
             $date = explode(".", $this->filter_data['period']);
             $d = $date[1];
         } else {
@@ -968,8 +968,8 @@ class Accounting_List_View extends Vtiger_Index_View
                 $user['office'] = 'Без офиса';
             }
 
-            if($user['officeid']==null){
-                $user['officeid']=0;
+            if ($user['officeid'] == null) {
+                $user['officeid'] = 0;
             }
 
             $flag = 0;
@@ -987,7 +987,7 @@ class Accounting_List_View extends Vtiger_Index_View
             if ($flag == 0) {
                 $office = [
                     "office" => $user["office"],
-                    "officeId"=>$user["officeid"]
+                    "officeId" => $user["officeid"]
                 ];
 
                 $office["vacation"] = [];
@@ -996,7 +996,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 $office["promotionalTour"] = [];
                 $office["promotionalTour"][] = $personPromo;
 
-               $office["vacationSession"] = [];
+                $office["vacationSession"] = [];
                 $office["vacationSession"][] = $personVacationSession;
 
                 $offices[] = $office;
@@ -1175,8 +1175,8 @@ class Accounting_List_View extends Vtiger_Index_View
                 $user['office'] = 'Без офиса';
             }
 
-            if($user['officeid']==null){
-                $user['officeid']=0;
+            if ($user['officeid'] == null) {
+                $user['officeid'] = 0;
             }
             $officesChart[$user["officeid"]][] = $dataProvider[$key];
 
@@ -1184,30 +1184,34 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
 
-
-
-
-
-        foreach ($offices as $key=> $item){
+        foreach ($offices as $key => $item) {
             $i = count($item['vacation']);
-            switch ($i){
-                case 1: $offices[$key]['height'] = 110;break;
-                case 2:$offices[$key]['height'] = 65 * $i;break;
-                case 3:$offices[$key]['height'] = 55 * $i;break;
-                case $i>8:$offices[$key]['height'] = 40 * $i;break;
-                case $i>3:$offices[$key]['height'] = 50 * $i;
+            switch ($i) {
+                case 1:
+                    $offices[$key]['height'] = 110;
+                    break;
+                case 2:
+                    $offices[$key]['height'] = 65 * $i;
+                    break;
+                case 3:
+                    $offices[$key]['height'] = 55 * $i;
+                    break;
+                case $i > 8:
+                    $offices[$key]['height'] = 40 * $i;
+                    break;
+                case $i > 3:
+                    $offices[$key]['height'] = 50 * $i;
 
             }
-
 
 
         }
 
 
-        foreach ($offices as $key=> $item){
-            foreach ($officesChart as $keyO => $value){
-                if ($item['officeId'] == $keyO){
-                    $offices[$key]['dataProvider']=$value;
+        foreach ($offices as $key => $item) {
+            foreach ($officesChart as $keyO => $value) {
+                if ($item['officeId'] == $keyO) {
+                    $offices[$key]['dataProvider'] = $value;
                 }
             }
 
@@ -1227,145 +1231,146 @@ class Accounting_List_View extends Vtiger_Index_View
 
     }
 
-   public function validateIntersection($column, $value, $line1, $line2){
+    public function validateIntersection($column, $value, $line1, $line2)
+    {
 
         $date = new DateTime($value);
-       
-        
-       if ($line1["start1"] != "" && $line1["start1"] != null){
-           if ((new DateTime($line1["start1"])) == $date){
-               return false;
-           }
-       }
-       if ($line1["start2"] != "" && $line1["start2"] != null){
-           if ((new DateTime($line1["start2"])) == $date){
-               return false;
-           }
-       }
-       if ($line1["start3"] != "" && $line1["start3"] != null){
-           if ((new DateTime($line1["start3"])) == $date){
-               return false;
-           }
-       }
-       if ($line1["start4"] != "" && $line1["start4"] != null){
-           if ((new DateTime($line1["start4"])) == $date){
-               return false;
-           }
-       }
-       
-       if ($line1["finish1"] != "" && $line1["finish1"] != null){
-           if ((new DateTime($line1["finish1"])) == $date){
-               return false;
-           }
-       }
-       if ($line1["finish2"] != "" && $line1["finish2"] != null){
-           if ((new DateTime($line1["finish2"])) == $date){
-               return false;
-           }
-       }
-       if ($line1["finish3"] != "" && $line1["finish3"] != null){
-           if ((new DateTime($line1["finish3"])) == $date){
-               return false;
-           }
-       }
-       if ($line1["finish4"] != "" && $line1["finish4"] != null){
-           if ((new DateTime($line1["finish4"])) == $date){
-               return false;
-           }
-       }
-
-       if ($line1["start1"] != "" && $line1["start1"] != null && $line1["finish1"] != "" && $line1["finish1"] != null){
-           if ((new DateTime($line1["start1"])) < $date && (new DateTime($line1["finish1"])) > $date){
-               return false;
-           }
-       }
-       if ($line1["start2"] != "" && $line1["start2"] != null && $line1["finish2"] != "" && $line1["finish2"] != null){
-           if ((new DateTime($line1["start2"])) < $date && (new DateTime($line1["finish2"])) > $date){
-               return false;
-           }
-       }
-       if ($line1["start3"] != "" && $line1["start3"] != null && $line1["finish3"] != "" && $line1["finish3"] != null){
-           if ((new DateTime($line1["start3"])) < $date && (new DateTime($line1["finish3"])) > $date){
-               return false;
-           }
-       }
-       if ($line1["start4"] != "" && $line1["start4"] != null && $line1["finish4"] != "" && $line1["finish4"] != null){
-           if ((new DateTime($line1["start4"])) < $date && (new DateTime($line1["finish4"])) > $date){
-               return false;
-           }
-       }
 
 
-       if ($line2["start1"] != "" && $line2["start1"] != null){
-           if ((new DateTime($line2["start1"])) == $date){
-               return false;
-           }
-       }
-       if ($line2["start2"] != "" && $line2["start2"] != null){
-           if ((new DateTime($line2["start2"])) == $date){
-               return false;
-           }
-       }
-       if ($line2["start3"] != "" && $line2["start3"] != null){
-           if ((new DateTime($line2["start3"])) == $date){
-               return false;
-           }
-       }
-       if ($line2["start4"] != "" && $line2["start4"] != null){
-           if ((new DateTime($line2["start4"])) == $date){
-               return false;
-           }
-       }
+        if ($line1["start1"] != "" && $line1["start1"] != null) {
+            if ((new DateTime($line1["start1"])) == $date) {
+                return false;
+            }
+        }
+        if ($line1["start2"] != "" && $line1["start2"] != null) {
+            if ((new DateTime($line1["start2"])) == $date) {
+                return false;
+            }
+        }
+        if ($line1["start3"] != "" && $line1["start3"] != null) {
+            if ((new DateTime($line1["start3"])) == $date) {
+                return false;
+            }
+        }
+        if ($line1["start4"] != "" && $line1["start4"] != null) {
+            if ((new DateTime($line1["start4"])) == $date) {
+                return false;
+            }
+        }
 
-       if ($line2["finish1"] != "" && $line2["finish1"] != null){
-           if ((new DateTime($line2["finish1"])) == $date){
-               return false;
-           }
-       }
-       if ($line2["finish2"] != "" && $line2["finish2"] != null){
-           if ((new DateTime($line2["finish2"])) == $date){
-               return false;
-           }
-       }
-       if ($line2["finish3"] != "" && $line2["finish3"] != null){
-           if ((new DateTime($line2["finish3"])) == $date){
-               return false;
-           }
-       }
-       if ($line2["finish4"] != "" && $line2["finish4"] != null){
-           if ((new DateTime($line2["finish4"])) == $date){
-               return false;
-           }
-       }
+        if ($line1["finish1"] != "" && $line1["finish1"] != null) {
+            if ((new DateTime($line1["finish1"])) == $date) {
+                return false;
+            }
+        }
+        if ($line1["finish2"] != "" && $line1["finish2"] != null) {
+            if ((new DateTime($line1["finish2"])) == $date) {
+                return false;
+            }
+        }
+        if ($line1["finish3"] != "" && $line1["finish3"] != null) {
+            if ((new DateTime($line1["finish3"])) == $date) {
+                return false;
+            }
+        }
+        if ($line1["finish4"] != "" && $line1["finish4"] != null) {
+            if ((new DateTime($line1["finish4"])) == $date) {
+                return false;
+            }
+        }
 
-       if ($line2["start1"] != "" && $line2["start1"] != null && $line2["finish1"] != "" && $line2["finish1"] != null){
-           if ((new DateTime($line2["start1"])) < $date && (new DateTime($line2["finish1"])) > $date){
-               return false;
-           }
-       }
-       if ($line2["start2"] != "" && $line2["start2"] != null && $line2["finish2"] != "" && $line2["finish2"] != null){
-           if ((new DateTime($line2["start2"])) < $date && (new DateTime($line2["finish2"])) > $date){
-               return false;
-           }
-       }
-       if ($line2["start3"] != "" && $line2["start3"] != null && $line2["finish3"] != "" && $line2["finish3"] != null){
-           if ((new DateTime($line2["start3"])) < $date && (new DateTime($line2["finish3"])) > $date){
-               return false;
-           }
-       }
-       if ($line2["start4"] != "" && $line2["start4"] != null && $line2["finish4"] != "" && $line2["finish4"] != null){
-           if ((new DateTime($line2["start4"])) < $date && (new DateTime($line2["finish4"])) > $date){
-               return false;
-           }
-       }
-       
-       
+        if ($line1["start1"] != "" && $line1["start1"] != null && $line1["finish1"] != "" && $line1["finish1"] != null) {
+            if ((new DateTime($line1["start1"])) < $date && (new DateTime($line1["finish1"])) > $date) {
+                return false;
+            }
+        }
+        if ($line1["start2"] != "" && $line1["start2"] != null && $line1["finish2"] != "" && $line1["finish2"] != null) {
+            if ((new DateTime($line1["start2"])) < $date && (new DateTime($line1["finish2"])) > $date) {
+                return false;
+            }
+        }
+        if ($line1["start3"] != "" && $line1["start3"] != null && $line1["finish3"] != "" && $line1["finish3"] != null) {
+            if ((new DateTime($line1["start3"])) < $date && (new DateTime($line1["finish3"])) > $date) {
+                return false;
+            }
+        }
+        if ($line1["start4"] != "" && $line1["start4"] != null && $line1["finish4"] != "" && $line1["finish4"] != null) {
+            if ((new DateTime($line1["start4"])) < $date && (new DateTime($line1["finish4"])) > $date) {
+                return false;
+            }
+        }
 
-       return 'success';
-        
-   }
 
-    public function validatePeriodLine($column, $value, $line){
+        if ($line2["start1"] != "" && $line2["start1"] != null) {
+            if ((new DateTime($line2["start1"])) == $date) {
+                return false;
+            }
+        }
+        if ($line2["start2"] != "" && $line2["start2"] != null) {
+            if ((new DateTime($line2["start2"])) == $date) {
+                return false;
+            }
+        }
+        if ($line2["start3"] != "" && $line2["start3"] != null) {
+            if ((new DateTime($line2["start3"])) == $date) {
+                return false;
+            }
+        }
+        if ($line2["start4"] != "" && $line2["start4"] != null) {
+            if ((new DateTime($line2["start4"])) == $date) {
+                return false;
+            }
+        }
+
+        if ($line2["finish1"] != "" && $line2["finish1"] != null) {
+            if ((new DateTime($line2["finish1"])) == $date) {
+                return false;
+            }
+        }
+        if ($line2["finish2"] != "" && $line2["finish2"] != null) {
+            if ((new DateTime($line2["finish2"])) == $date) {
+                return false;
+            }
+        }
+        if ($line2["finish3"] != "" && $line2["finish3"] != null) {
+            if ((new DateTime($line2["finish3"])) == $date) {
+                return false;
+            }
+        }
+        if ($line2["finish4"] != "" && $line2["finish4"] != null) {
+            if ((new DateTime($line2["finish4"])) == $date) {
+                return false;
+            }
+        }
+
+        if ($line2["start1"] != "" && $line2["start1"] != null && $line2["finish1"] != "" && $line2["finish1"] != null) {
+            if ((new DateTime($line2["start1"])) < $date && (new DateTime($line2["finish1"])) > $date) {
+                return false;
+            }
+        }
+        if ($line2["start2"] != "" && $line2["start2"] != null && $line2["finish2"] != "" && $line2["finish2"] != null) {
+            if ((new DateTime($line2["start2"])) < $date && (new DateTime($line2["finish2"])) > $date) {
+                return false;
+            }
+        }
+        if ($line2["start3"] != "" && $line2["start3"] != null && $line2["finish3"] != "" && $line2["finish3"] != null) {
+            if ((new DateTime($line2["start3"])) < $date && (new DateTime($line2["finish3"])) > $date) {
+                return false;
+            }
+        }
+        if ($line2["start4"] != "" && $line2["start4"] != null && $line2["finish4"] != "" && $line2["finish4"] != null) {
+            if ((new DateTime($line2["start4"])) < $date && (new DateTime($line2["finish4"])) > $date) {
+                return false;
+            }
+        }
+
+
+        return 'success';
+
+    }
+
+    public function validatePeriodLine($column, $value, $line)
+    {
         $arrayValidate = [
             "start1" => $line["start1"],
             "finish1" => $line["finish1"],
@@ -1378,33 +1383,33 @@ class Accounting_List_View extends Vtiger_Index_View
         ];
 
         $flag = 0;
-        foreach ($arrayValidate as $key => $item){
-            if ($key == $column){
+        foreach ($arrayValidate as $key => $item) {
+            if ($key == $column) {
                 $flag = 1;
                 continue;
             }
 
-            if ($column{strlen($column)-1} == $key{strlen($key)-1}){
-                if ($flag == 0 && $item != "" && $item != null ){
-                    if ((new DateTime($value)) < (new DateTime($item))){
+            if ($column{strlen($column) - 1} == $key{strlen($key) - 1}) {
+                if ($flag == 0 && $item != "" && $item != null) {
+                    if ((new DateTime($value)) < (new DateTime($item))) {
                         return 'Дата окончания должна быть больше или равна дате начала';
                     }
                 }
 
-                if ($flag == 1 && $item != "" && $item != null ){
-                    if ((new DateTime($value)) > (new DateTime($item))){
+                if ($flag == 1 && $item != "" && $item != null) {
+                    if ((new DateTime($value)) > (new DateTime($item))) {
                         return 'Дата начала должна быть меньше или равна дате окончания';
                     }
                 }
             } else {
-                if ($flag == 0 && $item != "" && $item != null ){
-                    if ((new DateTime($value)) <= (new DateTime($item))){
+                if ($flag == 0 && $item != "" && $item != null) {
+                    if ((new DateTime($value)) <= (new DateTime($item))) {
                         return 'Дата должна быть позже дат предыдущих периодов';
                     }
                 }
 
-                if ($flag == 1 && $item != "" && $item != null ){
-                    if ((new DateTime($value)) >= (new DateTime($item))){
+                if ($flag == 1 && $item != "" && $item != null) {
+                    if ((new DateTime($value)) >= (new DateTime($item))) {
                         return 'Дата должна быть раньше дат предыдущих периодов';
                     }
                 }
@@ -1450,14 +1455,14 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $dateTimeDate = new DateTime($value);
 
-            if ($dateTimeDate->format('Y') != $year){
+            if ($dateTimeDate->format('Y') != $year) {
                 echo json_encode('Год должен совпадать с выбранным в фильтре');
                 die();
             }
 
             $validate = $this->validatePeriodLine($column, $value, $record[0]);
 
-            if ($validate!= 'success'){
+            if ($validate != 'success') {
                 echo json_encode($validate);
                 die();
             }
@@ -1473,7 +1478,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $validate = $this->validateIntersection($column, $value, $recordSession[0], $recordPromotional[0]);
 
-            if ($validate!= 'success'){
+            if ($validate != 'success') {
                 echo json_encode('Дата не должна пересекаться с датами из других таблиц');
                 die();
             }
@@ -1486,14 +1491,14 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         if (count($record)) {
-            if ($value == ''){
+            if ($value == '') {
                 $sql = "UPDATE vacation SET $column = null WHERE  year = '$year' AND worker = '$worker'";
             } else {
                 $sql = "UPDATE vacation SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
             }
 
         } else {
-            if ($value == ''){
+            if ($value == '') {
                 $sql = "INSERT INTO vacation (worker, year) VALUES('$worker', '$year')";
             } else {
                 $sql = "INSERT INTO vacation (worker, year, $column) VALUES('$worker', '$year', '$value')";
@@ -1505,11 +1510,11 @@ class Accounting_List_View extends Vtiger_Index_View
 
         if ($column != 'allowed') {
 
-            if ($value == ''){
+            if ($value == '') {
                 $mode = 'delete';
             } else {
 
-                if ($record[0][$column]){
+                if ($record[0][$column]) {
                     $mode = 'edit';
                 } else {
                     $mode = 'add';
@@ -1526,9 +1531,10 @@ class Accounting_List_View extends Vtiger_Index_View
         die();
     }
 
-    public function editHours($new, $column, $date1, $date2, $value, $worker, $mode){
-        if ($mode == 'add'){
-            if ($column == 'start1' || $column == 'start2' || $column == 'start3' || $column == 'start4'){
+    public function editHours($new, $column, $date1, $date2, $value, $worker, $mode)
+    {
+        if ($mode == 'add') {
+            if ($column == 'start1' || $column == 'start2' || $column == 'start3' || $column == 'start4') {
                 if ($date2) {
                     $dates = $this->datePeriod($new, $date2);
                     foreach ($dates as $date) {
@@ -1545,7 +1551,7 @@ class Accounting_List_View extends Vtiger_Index_View
             }
         }
 
-        if ($mode == 'edit'){
+        if ($mode == 'edit') {
 
             if ($date1 && $date2) {
                 $dates = $this->datePeriod($date1, $date2);
@@ -1572,7 +1578,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-        if ($mode == 'delete'){
+        if ($mode == 'delete') {
             if ($date1 && $date2) {
                 $dates = $this->datePeriod($date1, $date2);
                 foreach ($dates as $date) {
@@ -1582,9 +1588,10 @@ class Accounting_List_View extends Vtiger_Index_View
         }
     }
 
-    public function datePeriod($fromD, $toD) {
+    public function datePeriod($fromD, $toD)
+    {
         $from = new DateTime($fromD);
-        $to   = new DateTime($toD);
+        $to = new DateTime($toD);
 
         $interval = new DateInterval('P1D');
 
@@ -1593,12 +1600,15 @@ class Accounting_List_View extends Vtiger_Index_View
         $period = new DatePeriod($from, new DateInterval('P1D'), $to);
 
         return array_map(
-            function($item){return $item->format('Y-m-d');},
+            function ($item) {
+                return $item->format('Y-m-d');
+            },
             iterator_to_array($period)
         );
     }
 
-    public function deleteVacationInWorkHours($date, $worker, $value){
+    public function deleteVacationInWorkHours($date, $worker, $value)
+    {
 
         $sql = ("SELECT id FROM working_time WHERE user = '$worker' AND date = '$date'");
         $record = $this->getSQLArrayResult($sql, []);
@@ -1609,7 +1619,8 @@ class Accounting_List_View extends Vtiger_Index_View
         $db->pquery($sql, array());
     }
 
-    public function setVacationInWorkHours($date, $worker, $value){
+    public function setVacationInWorkHours($date, $worker, $value)
+    {
 
         $sql = ("SELECT id FROM working_time WHERE user = '$worker' AND date = '$date'");
 
@@ -1661,14 +1672,14 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $dateTimeDate = new DateTime($value);
 
-            if ($dateTimeDate->format('Y') != $year){
+            if ($dateTimeDate->format('Y') != $year) {
                 echo json_encode('Год должен совпадать с выбранным в фильтре');
                 die();
             }
 
             $validate = $this->validatePeriodLine($column, $value, $record[0]);
 
-            if ($validate!= 'success'){
+            if ($validate != 'success') {
                 echo json_encode($validate);
                 die();
             }
@@ -1683,7 +1694,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $validate = $this->validateIntersection($column, $value, $recordSession[0], $recordVacation[0]);
 
-            if ($validate!= 'success'){
+            if ($validate != 'success') {
                 echo json_encode('Дата не должна пересекаться с датами из других таблиц');
                 die();
             }
@@ -1696,14 +1707,14 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         if (count($record)) {
-            if ($value == ''){
+            if ($value == '') {
                 $sql = "UPDATE vacation_promotional_tour SET $column = null WHERE  year = '$year' AND worker = '$worker'";
             } else {
                 $sql = "UPDATE vacation_promotional_tour SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
             }
 
         } else {
-            if ($value == ''){
+            if ($value == '') {
                 $sql = "INSERT INTO vacation_promotional_tour (worker, year) VALUES('$worker', '$year')";
             } else {
                 $sql = "INSERT INTO vacation_promotional_tour (worker, year, $column) VALUES('$worker', '$year', '$value')";
@@ -1715,11 +1726,11 @@ class Accounting_List_View extends Vtiger_Index_View
 
         if ($column != 'allowed') {
 
-            if ($value == ''){
+            if ($value == '') {
                 $mode = 'delete';
             } else {
 
-                if ($record[0][$column]){
+                if ($record[0][$column]) {
                     $mode = 'edit';
                 } else {
                     $mode = 'add';
@@ -1772,14 +1783,14 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $dateTimeDate = new DateTime($value);
 
-            if ($dateTimeDate->format('Y') != $year){
+            if ($dateTimeDate->format('Y') != $year) {
                 echo json_encode('Год должен совпадать с выбранным в фильтре');
                 die();
             }
 
             $validate = $this->validatePeriodLine($column, $value, $record[0]);
 
-            if ($validate!= 'success'){
+            if ($validate != 'success') {
                 echo json_encode($validate);
                 die();
             }
@@ -1794,21 +1805,21 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $validate = $this->validateIntersection($column, $value, $recordPromotion[0], $recordVacation[0]);
 
-            if ($validate!= 'success'){
+            if ($validate != 'success') {
                 echo json_encode('Дата не должна пересекаться с датами из других таблиц');
                 die();
             }
         }
 
         if (count($record)) {
-            if ($value == ''){
+            if ($value == '') {
                 $sql = "UPDATE vacation_session SET $column = null WHERE  year = '$year' AND worker = '$worker'";
             } else {
                 $sql = "UPDATE vacation_session SET $column = '$value' WHERE  year = '$year' AND worker = '$worker'";
             }
 
         } else {
-            if ($value == ''){
+            if ($value == '') {
                 $sql = "INSERT INTO vacation_session (worker, year) VALUES('$worker', '$year')";
             } else {
                 $sql = "INSERT INTO vacation_session (worker, year, $column) VALUES('$worker', '$year', '$value')";
@@ -1826,11 +1837,11 @@ class Accounting_List_View extends Vtiger_Index_View
 
         if ($column != 'allowed') {
 
-            if ($value == ''){
+            if ($value == '') {
                 $mode = 'delete';
             } else {
 
-                if ($record[0][$column]){
+                if ($record[0][$column]) {
                     $mode = 'edit';
                 } else {
                     $mode = 'add';
@@ -1869,34 +1880,49 @@ class Accounting_List_View extends Vtiger_Index_View
         $salesPlan = $this->getSQLArrayResult($salesPlanQuery, []);
 
 
-
-            $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, u.first_name, u.last_name, o.officeid , o.office, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
             where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery;
 
 
-       
+        if (strlen($this->filter_data['period']) < 8) {
+            $strArr = explode(".", $this->filter_data['period']);
+            $strPeriod = $strArr[1] . "-" . $strArr[0];
+            $dateObj = new DateTime($strPeriod);
+            $start = $strPeriod . "-01";
+            $finish = $strPeriod . "-" . $dateObj->format('t');
+        } else {
+            $dateObj = new DateTime();
+            $strPeriod = $dateObj->format('Y-m');
+            $start = $strPeriod . "-01";
+            $finish = $strPeriod . "-" . $dateObj->format('t');
+        }
 
-
+        $sales = $this->getSQLArrayResult($sql, array($start, $finish));
 
 
         $offices = [];
 
         foreach ($users as $user) {
+            $level = "";
+            $sum = 0;
+
+
 
             $personSalary = [
                 "id" => $user["id"],
                 "worker" => $user["name"],
+                "level"=>$level
             ];
 
             if ($user['office'] == null) {
                 $user['office'] = 'Без офиса';
             }
 
-            if($user['officeid']==null){
-                $user['officeid']=0;
+            if ($user['officeid'] == null) {
+                $user['officeid'] = 0;
             }
 
             $flag = 0;
@@ -1911,7 +1937,7 @@ class Accounting_List_View extends Vtiger_Index_View
             if ($flag == 0) {
                 $office = [
                     "office" => $user["office"],
-                    "officeId"=>$user["officeid"]
+                    "officeId" => $user["officeid"]
                 ];
 
                 $office["salary"] = [];
