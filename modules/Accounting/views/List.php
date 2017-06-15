@@ -1988,4 +1988,64 @@ class Accounting_List_View extends Vtiger_Index_View
         $viewer->assign('SALARY', json_encode($offices));
     }
 
+
+    public function optionSalary(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+        $query = "SELECT * FROM percent_level";
+        $percentLevel = $this->getSQLArrayResult($query, []);
+
+        $data = [['id' => 1, 'level' => '1 этап', 'percent' => $percentLevel[0]['level1']], ['id' => 2, 'level' => '2 этап', 'percent' => $percentLevel[0]['level2']], ['id' => 3, 'level' => '3 этап', 'percent' => $percentLevel[0]['level3']], ['id' => 4, 'level' => '4 этап', 'percent' => $percentLevel[0]['level4']]];
+        $viewer->assign('DATA', json_encode($data));
+        $viewer->assign('OPTIONSALARY', true);
+    }
+
+    function addScript_optionSalary($jsFileNames)
+    {
+        array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
+        array_push($jsFileNames, "modules.Accounting.script.optionSalary");
+
+        return $jsFileNames;
+    }
+
+    public function editLevelPercent(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+        $id = $request->get('id');
+        $percent = $request->get('percent');
+
+        $query = "SELECT * FROM percent_level";
+        $percentLevel = $this->getSQLArrayResult($query, []);
+
+        switch ($id) {
+            case 1:
+                $column = 'level1';
+                break;
+            case 2:
+                $column = 'level2';
+                break;
+            case 3:
+                $column = 'level3';
+                break;
+            case 4:
+                $column = 'level4';
+                break;
+        }
+
+        if (count($percentLevel)) {
+
+            $sql = "UPDATE percent_level SET $column = '$percent' WHERE  id=1";
+
+        } else {
+
+            $sql = "INSERT INTO percent_level ($column) VALUES('$percent')";
+
+        }
+
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+        echo "success";
+        die();
+    }
+
 }

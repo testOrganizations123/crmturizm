@@ -225,6 +225,7 @@
 									<label class="moduleNames"><a href="/index.php?module=Accounting&view=List&mode=vacationSchedule">График отпусков</a></label>
 									<label class="moduleNames"><a href="/index.php?module=Accounting&view=List&mode=salary">Учет заработной платы</a></label>
 									<label class="moduleNames"><a href="/index.php?module=Accounting&view=List&mode=holidays">Праздничные дни</a></label>
+									<label class="moduleNames"><a href="/index.php?module=Accounting&view=List&mode=optionSalary">Параметры начисления заработной платы</a></label>
 
 								</div>
                             </div>
