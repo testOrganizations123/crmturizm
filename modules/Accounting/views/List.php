@@ -1886,6 +1886,9 @@ class Accounting_List_View extends Vtiger_Index_View
             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
             where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' " . $addQuery;
 
+        $queryP = "SELECT * FROM percent_level";
+        $percentLevel = $this->getSQLArrayResult($queryP, []);
+
 
         if (strlen($this->filter_data['period']) < 8) {
             $strArr = explode(".", $this->filter_data['period']);
@@ -1907,6 +1910,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         foreach ($users as $user) {
             $level = "";
+            $percent = "";
             $sum = 0;
             foreach ($sales as $item) {
                 if ($item['smownerid'] == $user['id']) {
@@ -1922,34 +1926,41 @@ class Accounting_List_View extends Vtiger_Index_View
                     $floor4 = $item['floor4'];
                 }
             }
+
+
             if (isset($floor1)) {
                 if ($sum >= $floor1) {
                     $level = 1;
+                    $percent = $percentLevel[0]['level1'];
                 }
             }
 
             if (isset($floor2)) {
                 if ($sum >= $floor2) {
                     $level = 2;
+                    $percent = $percentLevel[0]['level2'];
                 }
             }
 
             if (isset($floor3)) {
                 if ($sum >= $floor3) {
                     $level = 3;
+                    $percent = $percentLevel[0]['level3'];
                 }
             }
 
             if (isset($floor4)) {
                 if ($sum >= $floor4) {
                     $level = 4;
+                    $percent = $percentLevel[0]['level4'];
                 }
             }
 
             $personSalary = [
                 "id" => $user["id"],
                 "worker" => $user["name"],
-                "stage" => $level
+                "stage" => $level,
+                "stagePercent"=>$percent
             ];
 
             if ($user['office'] == null) {
