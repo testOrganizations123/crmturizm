@@ -1905,6 +1905,26 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $sales = $this->getSQLArrayResult($sql, array($start, $finish));
 
+        $style = [
+            "base_salary" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "vacation" => ["background" => "rgba(242, 222, 255, 0.20)"],
+            "allowedSalary" => ["background" => "rgba(242, 222, 255, 0.20)"],
+            "salesRevenue" => ["background" => "rgba(250, 250, 251, 0.5)"],
+            "stage" => ["background" => "rgba(250, 250, 251, 0.5)"],
+            "stagePercent" => ["background" => "rgba(250, 250, 251, 0.5)"],
+            "salesPremiums" => ["background" => "rgba(250, 250, 251, 0.5)"],
+            "possiblePremiums" => ["background" => "rgba(250, 250, 251, 0.5)"],
+            "site_notification" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "update_site" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "transfer" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "ticket_insurance" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "coaching" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "birthday" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "allowedShares" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "worker" => ["background" => "rgba(0, 128, 0, 0.03)"],
+            "totalWages" => ["background" => "rgba(255, 0, 0, 0.03)"],
+            "possibleSalary" => ["background" => "rgba(255, 0, 0, 0.03)"],
+        ];
 
         $offices = [];
 
@@ -1960,7 +1980,8 @@ class Accounting_List_View extends Vtiger_Index_View
                 "id" => $user["id"],
                 "worker" => $user["name"],
                 "stage" => $level,
-                "stagePercent"=>$percent
+                "stagePercent"=>$percent,
+                "\$cellCss" => $style
             ];
 
             if ($user['office'] == null) {
@@ -1993,6 +2014,8 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
         }
+
+
 
         $offices[] = array_shift($offices);
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);

@@ -8,7 +8,7 @@ webix.ready(function () {
             view: "datatable",
             columns: [
                 {id: "worker", header: "Сотрудник", width: 238},
-                {id: "base_salary", header:{text:"<div class='salary-cell'>Базовый оклад", rotate: true, height: 185}, width: 74},
+                {id: "base_salary", header:{text:"<div class='salary-cell'>Базовый оклад", rotate: true, height: 185}, width: 74,  editor: 'text'},
                 {id: "vacation", header: {text:"<div class='salary-cell'>Отпуск / больничный</div>", rotate: true, height: 185}, width: 74},
                 {id: "allowedSalary", header: {text:"<div class='salary-cell'>Итого фактический оклад</div>", rotate: true, height: 185}, width: 74},
                 {id: "salesRevenue", header: {text:"<div class='salary-cell'>Доход от продаж</div>", rotate: true, height: 185}, width: 74},
@@ -16,12 +16,12 @@ webix.ready(function () {
                 {id: "stagePercent", header: {text:"<div class='salary-cell'>% за достигнутый этап</div>", rotate: true, height: 185}, width: 74},
                 {id: "salesPremiums", header: {text:"<div class='salary-cell'>Премии за продажи<br>(в рублях) факт</div>", rotate: true, height: 185}, width: 74},
                 {id: "possiblePremiums", header: {text:"<div class='salary-cell'>Возможная премии за продажи (в рублях)</div>", rotate: true, height: 185}, width: 74},
-                {id: "site_notification", header: {text:"<div class='salary-cell'>Уведомления по сайту (в рублях)</div>", rotate: true, height: 185}, width: 74},
-                {id: "update_site", header: {text:"<div class='salary-cell'>Обновление сайта</div>", rotate: true, height: 185}, width: 74},
-                {id: "transfer", header: {text:"<div class='salary-cell'>Трансфер</div>", rotate: true, height: 185}, width: 74},
-                {id: "ticket_insurance", header:{text:"<div class='salary-cell'>Акции: авиа-жд билеты + страховки</div>", rotate: true, height: 185}, width: 74},
-                {id: "coaching", header: {text:"<div class='salary-cell'>Акция наставничество</div>", rotate: true, height: 185}, width: 74},
-                {id: "birthday", header:{text:"<div class='salary-cell'>День рождения</div>", rotate: true, height: 185}, width: 74},
+                {id: "site_notification", header: {text:"<div class='salary-cell'>Уведомления по сайту (в рублях)</div>", rotate: true, height: 185}, width: 74,  editor: 'text'},
+                {id: "update_site", header: {text:"<div class='salary-cell'>Обновление сайта</div>", rotate: true, height: 185}, width: 74,  editor: 'text'},
+                {id: "transfer", header: {text:"<div class='salary-cell'>Трансфер</div>", rotate: true, height: 185}, width: 74,  editor: 'text'},
+                {id: "ticket_insurance", header:{text:"<div class='salary-cell'>Акции: авиа-жд билеты + страховки</div>", rotate: true, height: 185}, width: 74,  editor: 'text'},
+                {id: "coaching", header: {text:"<div class='salary-cell'>Акция наставничество</div>", rotate: true, height: 185}, width: 74,  editor: 'text'},
+                {id: "birthday", header:{text:"<div class='salary-cell'>День рождения</div>", rotate: true, height: 185}, width: 74,  editor: 'text'},
                 {id: "allowedShares", header:{text:"<div class='salary-cell'>Итого по акциям<br>(в рублях)</div>", rotate: true, height: 185}, width: 74},
                 {id: "totalWages", header: {text:"<div class='salary-cell'><b>ВСЕГО</b> ЗП к выдаче сотруднику за месяц</div>", rotate: true, height: 185}, width: 74},
                 {id: "possibleSalary", header: {text:"<div class='salary-cell'>ВСЕГО возможная ЗП оклад + премии<br>(без акций)</div>", rotate: true, height: 185}, width: 74}
@@ -36,28 +36,42 @@ webix.ready(function () {
 
                     var record = dtable.getItem(coordinates.row);
 
-                    $.ajax({
-                        type: "GET",
-                        url: "/index.php?module=Accounting&view=List&mode=editSalary&value=",
-                        success: function (data) {
-                            if (data != "success") {
-                                record[coordinates.column] = cell.old;
-                                dtable.refresh();
-                                $(function () {
-                                    new PNotify({
-                                        title: 'Ошибка валидации!',
-                                        text: data,
-                                        delay: 4000
-                                    });
+                    var column = coordinates.column;
+                    var value = cell.value;
+                    var worker = coordinates.row;
 
-                                });
+                    value = value.trim();
+                    if (value === "") {
+                        value = '0';
+                        record[coordinates.column] = '0';
+                    }
 
-                            } else {
+                    console.log(column);
+                    console.log(value);
+                    console.log(worker);
 
-                            }
-                        },
-                        dataType: "json"
-                    });
+                    // $.ajax({
+                    //     type: "GET",
+                    //     url: "/index.php?module=Accounting&view=List&mode=editSalary&value=",
+                    //     success: function (data) {
+                    //         if (data != "success") {
+                    //             record[coordinates.column] = cell.old;
+                    //             dtable.refresh();
+                    //             $(function () {
+                    //                 new PNotify({
+                    //                     title: 'Ошибка валидации!',
+                    //                     text: data,
+                    //                     delay: 4000
+                    //                 });
+                    //
+                    //             });
+                    //
+                    //         } else {
+                    //
+                    //         }
+                    //     },
+                    //     dataType: "json"
+                    // });
 
 
                 }
