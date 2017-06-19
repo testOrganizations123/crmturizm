@@ -31,6 +31,12 @@ webix.ready(function () {
             }
 
 
+
+            if (item['base_salary'] && item['stagePercent']) {
+                item['salesPremiums'] = parseInt(item['base_salary']) * parseInt(item['stagePercent']) / 100;
+            }
+
+
         });
 
 
@@ -239,6 +245,10 @@ webix.ready(function () {
 
                                 if (record['birthday']){
                                     record['allowedShares'] = record['allowedShares'] + parseInt( record['birthday']);
+                                }
+
+                                if (record['base_salary'] && record['stagePercent']) {
+                                    record['salesPremiums'] = parseInt(record['base_salary']) * parseInt(record['stagePercent']) / 100;
                                 }
 
                                 dtable.refresh();
