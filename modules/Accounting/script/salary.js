@@ -284,12 +284,15 @@ webix.ready(function () {
                                 id: 'win3',
                                 width: 600, height: 500,
                                 top: 200, left: 300,
-                                position: 'absolute',
+
+                                position: function (state) {
+                                    state.top = 200;
+                                },
                                 zIndex: 99999,
                                 modal: true,
                                 head: {
                                     view: "toolbar", margin: -4, cols: [
-                                        {view: "label", label: "Продажи. Иванов И.И."},
+                                        {view: "label", label: "Продажи. "+dataProvider.name },
 
                                         {
                                             view: "icon", icon: "times-circle",
@@ -298,16 +301,18 @@ webix.ready(function () {
                                     ]
                                 },
                                 body: {
-                                    view: "datatable",
-                                    columns: [
-                                        {id: "id", header: "", css: "rank", width: 50, sort: "int"},
-                                        {id: "date", header: "Дата", css: "rank", width: 50, sort: "int"},
-                                        {id: "amount", header: "Доход", width: 200, sort: "string"}
-                                    ],
-                                    select: "row",
-                                    autoheight: true,
-                                    autowidth: true,
-                                    data: dataProvider.table
+                                    view: "scrollview", body: {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "", css: "rank", width: 50, sort: "int"},
+                                            {id: "date", header: "Дата", css: "rank", width: 150, sort: "int"},
+                                            {id: "amount", header: "Доход", width: 150, sort: "string"}
+                                        ],
+                                        select: "row",
+                                        autoheight: true,
+                                        autowidth: true,
+                                        data: dataProvider.table
+                                    }
                                 }
                             }).show();
 
