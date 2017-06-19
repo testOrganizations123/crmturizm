@@ -258,7 +258,7 @@ webix.ready(function () {
                         view:"window",
                         id:'win3',
                         width: 600, height:500,
-                        top:200, left: 300,
+                        top:150, left: 300,
                         position: 'absolute',
                         zIndex: 99999,
                         modal:true,
