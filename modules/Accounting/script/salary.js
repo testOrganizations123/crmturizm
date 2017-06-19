@@ -2,6 +2,37 @@ webix.ready(function () {
 
     window.offices.forEach(function (table, i, arr) {
 
+        table.salary.forEach(function (item, i, arr) {
+
+            item['allowedShares'] = 0;
+
+            if (item['update_site']){
+                item['allowedShares'] = item['allowedShares'] + parseInt(item['update_site']);
+            }
+
+            if (item['transfer']) {
+                item['allowedShares'] = item['allowedShares'] + parseInt(item['transfer']);
+            }
+
+            if (item['site_notification']){
+                item['allowedShares'] = item['allowedShares'] + parseInt( item['site_notification']);
+            }
+
+            if (item['ticket_insurance']){
+                item['allowedShares'] = item['allowedShares'] + parseInt( item['ticket_insurance']);
+            }
+
+            if (item['coaching']){
+                item['allowedShares'] = item['allowedShares'] + parseInt( item['coaching']);
+            }
+
+            if (item['birthday']){
+                item['allowedShares'] = item['allowedShares'] + parseInt( item['birthday']);
+            }
+
+
+        });
+
 
         var dtable = new webix.ui({
             container: "tableSalary_" + i,
@@ -155,6 +186,9 @@ webix.ready(function () {
                         type: "GET",
                         url: "/index.php?module=Accounting&view=List&mode=editSalary&value=" + value + "&column=" + column + "&worker=" + worker + "&date=" + monthPeriod,
                         success: function (data) {
+
+                            var d = 6;
+
                             if (data != "success") {
                                 record[coordinates.column] = cell.old;
                                 dtable.refresh();
@@ -167,6 +201,47 @@ webix.ready(function () {
 
                                 });
 
+                            } else {
+
+                                table.salary.forEach(function (item, i, arr) {
+                                    if (item.id == coordinates.row) {
+                                        item[coordinates.column] = cell.value.replace(/ /g, "");
+                                        console.log(coordinates.column);
+                                        console.log(item[coordinates.column]);
+                                    }
+
+                                });
+
+
+                                var record = dtable.getItem(coordinates.row);
+
+                                record['allowedShares'] = 0;
+
+                                if (record['update_site']){
+                                    record['allowedShares'] = record['allowedShares'] + parseInt(record['update_site']);
+                                }
+
+                                if (record['transfer']) {
+                                    record['allowedShares'] = record['allowedShares'] + parseInt(record['transfer']);
+                                }
+
+                                if (record['site_notification']){
+                                    record['allowedShares'] = record['allowedShares'] + parseInt( record['site_notification']);
+                                }
+
+                                if (record['ticket_insurance']){
+                                    record['allowedShares'] = record['allowedShares'] + parseInt( record['ticket_insurance']);
+                                }
+
+                                if (record['coaching']){
+                                    record['allowedShares'] = record['allowedShares'] + parseInt( record['coaching']);
+                                }
+
+                                if (record['birthday']){
+                                    record['allowedShares'] = record['allowedShares'] + parseInt( record['birthday']);
+                                }
+
+                                dtable.refresh();
                             }
                         },
                         dataType: "json"

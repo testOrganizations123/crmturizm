@@ -2140,7 +2140,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
-        echo "success";
+        echo json_encode('success');
         die();
     }
 
