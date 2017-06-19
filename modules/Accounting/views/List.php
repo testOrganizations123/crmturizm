@@ -1920,7 +1920,7 @@ class Accounting_List_View extends Vtiger_Index_View
             "ticket_insurance" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
             "coaching" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
             "birthday" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-            "allowedShares" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+            "allowedShares" => ["background" => "rgba(236, 255, 222, 0.2)"],
             "worker" => ["background" => "rgba(0, 128, 0, 0.03)"],
             "totalWages" => ["background" => "rgba(255, 0, 0, 0.03)"],
             "possibleSalary" => ["background" => "rgba(255, 0, 0, 0.03)"],
@@ -2073,6 +2073,35 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $sql = "INSERT INTO percent_level ($column) VALUES('$percent')";
 
+        }
+
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+        echo "success";
+        die();
+    }
+
+    public function editSalary(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+        $worker = $request->get('worker');
+        $column = $request->get('column');
+        $date = $request->get('date');
+        $value = $request->get('value');
+
+        $query = "SELECT * FROM salary where worker = $worker and period = $date";
+        $salary = $this->getSQLArrayResult($query, []);
+
+
+        if (count($salary)) {
+            if ($value=''){
+                $sql = "UPDATE salary SET $column = '' WHERE  worker = '$worker' and period = '$date'";
+            } else {
+                $sql = "UPDATE salary SET $column = '$value' WHERE  worker = '$worker' and period = '$date'";
+            }
+        } else {
+            $sql = "INSERT INTO salary ($column, period, worker) VALUES('$value', '$date', '$worker')";
         }
 
 

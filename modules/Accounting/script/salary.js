@@ -40,38 +40,30 @@ webix.ready(function () {
                     var value = cell.value;
                     var worker = coordinates.row;
 
+                    var monthPeriod = $('#monthPeriod').val();
+
                     value = value.trim();
-                    if (value === "") {
-                        value = '0';
-                        record[coordinates.column] = '0';
-                    }
 
-                    console.log(column);
-                    console.log(value);
-                    console.log(worker);
+                    $.ajax({
+                        type: "GET",
+                        url: "/index.php?module=Accounting&view=List&mode=editSalary&value=" + value + "&column=" + column + "&worker=" + worker + "&date=" + monthPeriod,
+                        success: function (data) {
+                            if (data != "success") {
+                                record[coordinates.column] = cell.old;
+                                dtable.refresh();
+                                $(function () {
+                                    new PNotify({
+                                        title: 'Ошибка валидации!',
+                                        text: data,
+                                        delay: 4000
+                                    });
 
-                    // $.ajax({
-                    //     type: "GET",
-                    //     url: "/index.php?module=Accounting&view=List&mode=editSalary&value=",
-                    //     success: function (data) {
-                    //         if (data != "success") {
-                    //             record[coordinates.column] = cell.old;
-                    //             dtable.refresh();
-                    //             $(function () {
-                    //                 new PNotify({
-                    //                     title: 'Ошибка валидации!',
-                    //                     text: data,
-                    //                     delay: 4000
-                    //                 });
-                    //
-                    //             });
-                    //
-                    //         } else {
-                    //
-                    //         }
-                    //     },
-                    //     dataType: "json"
-                    // });
+                                });
+
+                            }
+                        },
+                        dataType: "json"
+                    });
 
 
                 }
