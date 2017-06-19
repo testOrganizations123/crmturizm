@@ -2006,7 +2006,7 @@ class Accounting_List_View extends Vtiger_Index_View
             $personSalary = [
                 "id" => $user["id"],
                 "worker" => "<div style='cursor: pointer' class='user'>" . $user["name"] . "</div>",
-                "salesRevenue"=>$sum,
+                "salesRevenue" => $sum,
                 "stage" => $level,
                 "stagePercent" => $percent,
 
@@ -2157,7 +2157,7 @@ class Accounting_List_View extends Vtiger_Index_View
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
-            where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =".$worker;
+            where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =" . $worker;
 
         $strArr = explode(".", $period);
         $strPeriod = $strArr[1] . "-" . $strArr[0];
@@ -2165,20 +2165,21 @@ class Accounting_List_View extends Vtiger_Index_View
         $start = $strPeriod . "-01";
         $finish = $strPeriod . "-" . $dateObj->format('t');
         $salary = $this->getSQLArrayResult($sql, array($start, $finish));
-$salaryTable = [];
-foreach ($salary as $item){
-    $salaryTable[] = [
-        "id" => $item["id"],
+        $salaryTable = [];
+        foreach ($salary as $item) {
+            $salaryTable[] = [
+                "id" => $item["id"],
+                "date" => $item["date"],
+                "amount" => $item['amount']
 
-    ];
+            ];
 
-}
-
+        }
 
 
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
-        echo "success";
+        echo json_encode(['table'=>$salaryTable]);
         die();
     }
 

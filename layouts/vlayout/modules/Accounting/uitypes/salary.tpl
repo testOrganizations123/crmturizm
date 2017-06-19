@@ -18,7 +18,7 @@
     .salary-cell{
         line-height: 17px;
         padding-right: 15px;
-    }
+
 
 </style>
 
