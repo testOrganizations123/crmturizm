@@ -35,6 +35,10 @@ webix.ready(function () {
                 item['salesPremiums'] = parseInt(item['base_salary']) * parseInt(item['stagePercent']) / 100;
             }
 
+            if (item['base_salary'] && item['maxPercent']) {
+                item['possiblePremiums'] = parseInt(item['base_salary']) * parseInt(item['maxPercent']) / 100;
+            }
+
 
         });
 
@@ -63,7 +67,7 @@ webix.ready(function () {
                 {
                     id: "salesRevenue",
                     header: {text: "<div class='salary-cell'>Доход от продаж</div>", rotate: true, height: 185},
-                    width: 74
+                    width: 94
                 },
                 {
                     id: "stage",
@@ -72,12 +76,12 @@ webix.ready(function () {
                         rotate: true,
                         height: 185
                     },
-                    width: 74
+                    width: 57
                 },
                 {
                     id: "stagePercent",
                     header: {text: "<div class='salary-cell'>% за достигнутый этап</div>", rotate: true, height: 185},
-                    width: 74
+                    width: 57
                 },
                 {
                     id: "salesPremiums",
@@ -248,6 +252,14 @@ webix.ready(function () {
 
                                 if (record['base_salary'] && record['stagePercent']) {
                                     record['salesPremiums'] = parseInt(record['base_salary']) * parseInt(record['stagePercent']) / 100;
+                                } else {
+                                    record['salesPremiums'] = '';
+                                }
+
+                                if (record['base_salary'] && record['maxPercent']) {
+                                    record['possiblePremiums'] = parseInt(record['base_salary']) * parseInt(record['maxPercent']) / 100;
+                                } else {
+                                    record['possiblePremiums'] = '';
                                 }
 
                                 dtable.refresh();

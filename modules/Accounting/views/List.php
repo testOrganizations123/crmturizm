@@ -1943,6 +1943,8 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
             }
 
+            $maxPercent = null;
+
             foreach ($salesPlan as $item) {
                 if ($user['id'] == $item['worker']) {
                     $level = 0;
@@ -1951,7 +1953,25 @@ class Accounting_List_View extends Vtiger_Index_View
                     $floor2 = $item['floor2'];
                     $floor3 = $item['floor3'];
                     $floor4 = $item['floor4'];
-                }
+
+                        if ($floor4) {
+                            $maxPercent = $percentLevel[0]['level4'];
+                        } else {
+                                if ($floor3) {
+                                    $maxPercent = $percentLevel[0]['level3'];
+                                } else {
+                                    if ($floor2) {
+                                        $maxPercent = $percentLevel[0]['level2'];
+                                    } else {
+                                        if ($floor1) {
+                                            $maxPercent = $percentLevel[0]['level1'];
+                                        }
+                                    }
+                                }
+                            }
+                    var_dump('ooooo');
+                       var_dump($maxPercent);
+                    }
             }
 
             $baseSalary = null;
@@ -2017,6 +2037,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "ticket_insurance" => $ticketInsurance,
                 "coaching" => $coaching,
                 "birthday" => $birthday,
+                "maxPercent" => $maxPercent,
                 "\$cellCss" => $style
             ];
 
