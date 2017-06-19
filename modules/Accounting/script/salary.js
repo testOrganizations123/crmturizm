@@ -1,5 +1,6 @@
 webix.ready(function () {
 
+
     window.offices.forEach(function (table, i, arr) {
 
         table.salary.forEach(function (item, i, arr) {
@@ -32,11 +33,11 @@ webix.ready(function () {
 
 
 
-            if (item['base_salary'] && item['stagePercent']) {
+            if (parseInt(item['base_salary']) >=0 && parseInt(item['stagePercent']) >= 0) {
                 item['salesPremiums'] = parseInt(item['base_salary']) * parseInt(item['stagePercent']) / 100;
             }
 
-            if (item['base_salary'] && item['maxPercent']) {
+            if (parseInt(item['base_salary']) >= 0 && parseInt(item['maxPercent']) >=0) {
                 item['possiblePremiums'] = parseInt(item['base_salary']) * parseInt(item['maxPercent']) / 100;
             }
 
@@ -251,13 +252,13 @@ webix.ready(function () {
                                     record['allowedShares'] = record['allowedShares'] + parseInt( record['birthday']);
                                 }
 
-                                if (record['base_salary'] && record['stagePercent']) {
+                                if (parseInt(record['base_salary']) >=0 && parseInt(record['stagePercent'])>=0) {
                                     record['salesPremiums'] = parseInt(record['base_salary']) * parseInt(record['stagePercent']) / 100;
                                 } else {
                                     record['salesPremiums'] = '';
                                 }
 
-                                if (record['base_salary'] && record['maxPercent']) {
+                                if (parseInt(record['base_salary']) >=0 && parseInt(record['maxPercent'])>=0) {
                                     record['possiblePremiums'] = parseInt(record['base_salary']) * parseInt(record['maxPercent']) / 100;
                                 } else {
                                     record['possiblePremiums'] = '';

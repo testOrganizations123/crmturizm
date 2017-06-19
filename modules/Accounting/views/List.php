@@ -1943,8 +1943,6 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
             }
 
-            $maxPercent = null;
-
             foreach ($salesPlan as $item) {
                 if ($user['id'] == $item['worker']) {
                     $level = 0;
@@ -1954,23 +1952,6 @@ class Accounting_List_View extends Vtiger_Index_View
                     $floor3 = $item['floor3'];
                     $floor4 = $item['floor4'];
 
-                        if ($floor4) {
-                            $maxPercent = $percentLevel[0]['level4'];
-                        } else {
-                                if ($floor3) {
-                                    $maxPercent = $percentLevel[0]['level3'];
-                                } else {
-                                    if ($floor2) {
-                                        $maxPercent = $percentLevel[0]['level2'];
-                                    } else {
-                                        if ($floor1) {
-                                            $maxPercent = $percentLevel[0]['level1'];
-                                        }
-                                    }
-                                }
-                            }
-                    var_dump('ooooo');
-                       var_dump($maxPercent);
                     }
             }
 
@@ -1994,12 +1975,15 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
             }
 
+            $maxPercent = null;
 
             if (isset($floor1)) {
                 if ($sum >= $floor1) {
                     $level = 1;
                     $percent = $percentLevel[0]['level1'];
                 }
+
+                $maxPercent = $percentLevel[0]['level1'];
             }
 
             if (isset($floor2)) {
@@ -2007,6 +1991,8 @@ class Accounting_List_View extends Vtiger_Index_View
                     $level = 2;
                     $percent = $percentLevel[0]['level2'];
                 }
+
+                $maxPercent = $percentLevel[0]['level2'];
             }
 
             if (isset($floor3)) {
@@ -2014,6 +2000,8 @@ class Accounting_List_View extends Vtiger_Index_View
                     $level = 3;
                     $percent = $percentLevel[0]['level3'];
                 }
+
+                $maxPercent = $percentLevel[0]['level3'];
             }
 
             if (isset($floor4)) {
@@ -2021,6 +2009,8 @@ class Accounting_List_View extends Vtiger_Index_View
                     $level = 4;
                     $percent = $percentLevel[0]['level4'];
                 }
+
+                $maxPercent = $percentLevel[0]['level4'];
             }
 
             $personSalary = [
