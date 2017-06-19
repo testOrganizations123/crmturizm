@@ -1934,7 +1934,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $offices = [];
 
         foreach ($users as $user) {
-            $level = 0;
+            $level = "";
             $percent = 0;
             $sum = 0;
             foreach ($sales as $item) {
@@ -1945,6 +1945,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             foreach ($salesPlan as $item) {
                 if ($user['id'] == $item['worker']) {
+                    $level = 0;
                     $floor1 = $item['floor1'];
                     $floor2 = $item['floor2'];
                     $floor3 = $item['floor3'];
