@@ -1978,7 +1978,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $personSalary = [
                 "id" => $user["id"],
-                "worker" => $user["name"],
+                "worker" =>"<div style='cursor: pointer' class='user'>".$user["name"]."</div>",
                 "stage" => $level,
                 "stagePercent"=>$percent,
                 "\$cellCss" => $style
