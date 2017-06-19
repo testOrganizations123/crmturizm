@@ -19,7 +19,6 @@
         line-height: 17px;
         padding-right: 15px;
 
-
 </style>
 
 <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css">
