@@ -58,7 +58,7 @@ webix.ready(function () {
                 {
                     id: "salesRevenue",
                     header: {text: "<div class='salary-cell'>Доход от продаж</div>", rotate: true, height: 185},
-                    width: 74
+                    width: 94
                 },
                 {
                     id: "stage",
@@ -67,12 +67,12 @@ webix.ready(function () {
                         rotate: true,
                         height: 185
                     },
-                    width: 74
+                    width: 57
                 },
                 {
                     id: "stagePercent",
                     header: {text: "<div class='salary-cell'>% за достигнутый этап</div>", rotate: true, height: 185},
-                    width: 74
+                    width: 57
                 },
                 {
                     id: "salesPremiums",
