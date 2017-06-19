@@ -1926,6 +1926,11 @@ class Accounting_List_View extends Vtiger_Index_View
             "possibleSalary" => ["background" => "rgba(255, 0, 0, 0.03)"],
         ];
 
+        $salarySql = "SELECT * FROM salary WHERE period=" . $this->filter_data['period'];
+
+        $salaryObject = $this->getSQLArrayResult($salarySql, []);
+
+
         $offices = [];
 
         foreach ($users as $user) {
@@ -1944,6 +1949,26 @@ class Accounting_List_View extends Vtiger_Index_View
                     $floor2 = $item['floor2'];
                     $floor3 = $item['floor3'];
                     $floor4 = $item['floor4'];
+                }
+            }
+
+            $baseSalary = null;
+            $siteNotification = null;
+            $updateSite = null;
+            $transfer = null;
+            $ticketInsurance = null;
+            $coaching = null;
+            $birthday = null;
+
+            foreach ($salaryObject as $item) {
+                if ($user['id'] == $item['worker']) {
+                    $baseSalary = $item["base_salary"];
+                    $siteNotification = $item["site_notification"];
+                    $updateSite = $item["update_site"];
+                    $transfer = $item["transfer"];
+                    $ticketInsurance = $item["ticket_insurance"];
+                    $coaching = $item["coaching"];
+                    $birthday = $item["birthday"];
                 }
             }
 
@@ -1981,6 +2006,14 @@ class Accounting_List_View extends Vtiger_Index_View
                 "worker" => $user["name"],
                 "stage" => $level,
                 "stagePercent"=>$percent,
+
+                "base_salary" => $baseSalary,
+                "site_notification" => $siteNotification,
+                "update_site" => $updateSite,
+                "transfer" => $transfer,
+                "ticket_insurance" => $ticketInsurance,
+                "coaching" => $coaching,
+                "birthday" => $birthday,
                 "\$cellCss" => $style
             ];
 
@@ -2095,8 +2128,8 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         if (count($salary)) {
-            if ($value=''){
-                $sql = "UPDATE salary SET $column = '' WHERE  worker = '$worker' and period = '$date'";
+            if ($value==''){
+                $sql = "UPDATE salary SET $column = null WHERE  worker = '$worker' and period = '$date'";
             } else {
                 $sql = "UPDATE salary SET $column = '$value' WHERE  worker = '$worker' and period = '$date'";
             }
