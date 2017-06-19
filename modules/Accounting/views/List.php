@@ -2003,9 +2003,10 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $personSalary = [
                 "id" => $user["id"],
-                "worker" =>"<div style='cursor: pointer' class='user'>".$user["name"]."</div>",
+                "worker" => "<div style='cursor: pointer' class='user'>" . $user["name"] . "</div>",
+                "salesRevenue"=>$sum,
                 "stage" => $level,
-                "stagePercent"=>$percent,
+                "stagePercent" => $percent,
 
                 "base_salary" => $baseSalary,
                 "site_notification" => $siteNotification,
@@ -2047,7 +2048,6 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
         }
-
 
 
         $offices[] = array_shift($offices);
@@ -2128,7 +2128,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         if (count($salary)) {
-            if ($value==''){
+            if ($value == '') {
                 $sql = "UPDATE salary SET $column = null WHERE  worker = '$worker' and period = '$date'";
             } else {
                 $sql = "UPDATE salary SET $column = '$value' WHERE  worker = '$worker' and period = '$date'";
@@ -2136,6 +2136,42 @@ class Accounting_List_View extends Vtiger_Index_View
         } else {
             $sql = "INSERT INTO salary ($column, period, worker) VALUES('$value', '$date', '$worker')";
         }
+
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+        echo "success";
+        die();
+    }
+
+
+    public function getSales(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+        $worker = $request->get('worker');
+        $period = $request->get('period');
+
+        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+            left join vtiger_office as o ON o.officeid = pcf.cf_1215
+            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+            where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =".$worker;
+
+        $strArr = explode(".", $period);
+        $strPeriod = $strArr[1] . "-" . $strArr[0];
+        $dateObj = new DateTime($strPeriod);
+        $start = $strPeriod . "-01";
+        $finish = $strPeriod . "-" . $dateObj->format('t');
+        $salary = $this->getSQLArrayResult($sql, array($start, $finish));
+$salaryTable = [];
+foreach ($salary as $item){
+    $salaryTable[] = [
+        "id" => $item["id"],
+
+    ];
+
+}
+
 
 
         $db = PearDatabase::getInstance();

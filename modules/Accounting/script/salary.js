@@ -177,11 +177,37 @@ webix.ready(function () {
             },
             onClick: {
                 "user": function (ev, id) {
+
+
                     webix.ui({
-                        view:"popup",
+                        view:"window",
+                        id:'win3',
                         width: 600, height:500,
                         top:200, left: 300,
-                        position: 'absolute'
+                        position: 'absolute',
+                        zIndex: 99999,
+                        modal:true,
+                        head:{
+                            view:"toolbar", margin:-4, cols:[
+                                {view:"label", label: "Продажи. Иванов И.И." },
+
+                                { view:"icon", icon:"times-circle",
+                                    click:"$$('win3').close();"}
+                            ]
+                        },
+                        body:{
+                            view:"datatable",
+                            columns:[
+                                { id:"rank",	header:"", css:"rank",  		width:50,	sort:"int"},
+                                { id:"title",	header:"Film title",width:200,	sort:"string"},
+                                { id:"year",	header:"Released" , width:80,	sort:"int"},
+                                { id:"votes",	header:"Votes", 	width:100,	sort:"int"}
+                            ],
+                            select:"row",
+                            autoheight:true,
+                            autowidth:true,
+                            data:""
+                        }
                     }).show();
 
                 }
