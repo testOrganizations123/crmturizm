@@ -2162,9 +2162,9 @@ class Accounting_List_View extends Vtiger_Index_View
     {
 
         $worker = $request->get('worker');
-        $period = $request->get('period');
+        $period = $request->get('date');
 
-        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, pcf.cf_1225 AS date, concat(u.first_name,' ',u.last_name) as name  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
@@ -2177,11 +2177,12 @@ class Accounting_List_View extends Vtiger_Index_View
         $finish = $strPeriod . "-" . $dateObj->format('t');
         $salary = $this->getSQLArrayResult($sql, array($start, $finish));
         $salaryTable = [];
-        foreach ($salary as $item) {
+        $name = $salary[0]['name'];
+        foreach ($salary as $key=> $item) {
             $salaryTable[] = [
-                "id" => $item["id"],
+                "id" => $key + 1,
                 "date" => $item["date"],
-                "amount" => $item['amount']
+                "amount" => round($item['amount'],2)
 
             ];
 
@@ -2190,7 +2191,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
-        echo json_encode(['table'=>$salaryTable]);
+        echo json_encode(['table'=>$salaryTable, 'name'=>$name]);
         die();
     }
 

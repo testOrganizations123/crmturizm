@@ -1,7 +1,7 @@
 <?php
 /*********************************************************************************
  * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
+ * ("License"); You may not use this file except in compliance with the
  * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
  * Software distributed under the License is distributed on an  "AS IS"  basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
@@ -11,7 +11,7 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
-********************************************************************************/
+ ********************************************************************************/
 
 // Adjust error_reporting favourable to deployment.
 version_compare(PHP_VERSION, '5.5.0') <= 0 ? error_reporting(E_ERORR & ~E_NOTICE & ~E_DEPRECATED) : error_reporting(E_ERROR & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT); // PRODUCTION
@@ -25,16 +25,16 @@ include('vtigerversion.php');
 // memory limit default value = 64M
 ini_set('memory_limit','512M');
 
-// show or hide calendar, world clock, calculator, chat and CKEditor 
-// Do NOT remove the quotes if you set these to false! 
+// show or hide calendar, world clock, calculator, chat and CKEditor
+// Do NOT remove the quotes if you set these to false!
 $CALENDAR_DISPLAY = 'true';
 $WORLD_CLOCK_DISPLAY = 'true';
 $CALCULATOR_DISPLAY = 'true';
-$CHAT_DISPLAY = 'true'; 
+$CHAT_DISPLAY = 'true';
 $USE_RTE = 'true';
 
 // url for customer portal (Example: http://vtiger.com/portal)
-$PORTAL_URL = 'http://vtiger.com/customerportal';
+$PORTAL_URL = 'http://crmturizm.test/customerportal';
 
 // helpdesk support email id and support name (Example: 'support@vtiger.com' and 'vtiger support')
 $HELPDESK_SUPPORT_EMAIL_ID = 'vordoom@inbox.ru';
@@ -54,7 +54,7 @@ $dbconfig['db_server'] = 'localhost';
 $dbconfig['db_port'] = ':3306';
 $dbconfig['db_username'] = 'root';
 $dbconfig['db_password'] = '';
-$dbconfig['db_name'] = 'crmVtiger';
+$dbconfig['db_name'] = 'crmturizmvtiger';
 $dbconfig['db_type'] = 'mysqli';
 $dbconfig['db_status'] = 'true';
 
@@ -85,10 +85,10 @@ $dbconfigoption['ssl'] = false;
 
 $host_name = $dbconfig['db_hostname'];
 
-$site_URL = 'http://crmturizm.ru/';
+$site_URL = 'http://crmturizm.test/';
 
 // root directory path
-$root_directory = 'c:\os\OpenServer\domains\crmturizm';
+$root_directory = 'c:\OpenServer\domains\crmturizm.test';
 
 // cache direcory path
 $cache_dir = 'cache/';
@@ -107,9 +107,9 @@ $upload_dir = 'cache/upload/';
 $upload_maxsize = 3000000;
 
 // flag to allow export functionality
-// 'all' to allow anyone to use exports 
-// 'admin' to only allow admins to export 
-// 'none' to block exports completely 
+// 'all' to allow anyone to use exports
+// 'admin' to only allow admins to export
+// 'none' to block exports completely
 // allow_exports default value = all
 $allow_exports = 'all';
 
@@ -203,7 +203,7 @@ $default_timezone = 'Europe/Moscow';
 
 /** If timezone is configured, try to set it */
 if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
-	@date_default_timezone_set($default_timezone);
+    @date_default_timezone_set($default_timezone);
 }
 
 //Set the default layout 

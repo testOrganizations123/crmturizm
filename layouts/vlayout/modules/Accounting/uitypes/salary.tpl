@@ -1,6 +1,6 @@
 <script>
     window.offices = {$SALARY};
-
+    window.date = '{$MONTHPERIOD}';
 </script>
 
 <h3>Учет заработной платы</h3>

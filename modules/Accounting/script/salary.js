@@ -7,7 +7,7 @@ webix.ready(function () {
 
             item['allowedShares'] = 0;
 
-            if (item['update_site']){
+            if (item['update_site']) {
                 item['allowedShares'] = item['allowedShares'] + parseInt(item['update_site']);
             }
 
@@ -15,20 +15,20 @@ webix.ready(function () {
                 item['allowedShares'] = item['allowedShares'] + parseInt(item['transfer']);
             }
 
-            if (item['site_notification']){
-                item['allowedShares'] = item['allowedShares'] + parseInt( item['site_notification']);
+            if (item['site_notification']) {
+                item['allowedShares'] = item['allowedShares'] + parseInt(item['site_notification']);
             }
 
-            if (item['ticket_insurance']){
-                item['allowedShares'] = item['allowedShares'] + parseInt( item['ticket_insurance']);
+            if (item['ticket_insurance']) {
+                item['allowedShares'] = item['allowedShares'] + parseInt(item['ticket_insurance']);
             }
 
-            if (item['coaching']){
-                item['allowedShares'] = item['allowedShares'] + parseInt( item['coaching']);
+            if (item['coaching']) {
+                item['allowedShares'] = item['allowedShares'] + parseInt(item['coaching']);
             }
 
-            if (item['birthday']){
-                item['allowedShares'] = item['allowedShares'] + parseInt( item['birthday']);
+            if (item['birthday']) {
+                item['allowedShares'] = item['allowedShares'] + parseInt(item['birthday']);
             }
 
 
@@ -228,7 +228,7 @@ webix.ready(function () {
 
                                 record['allowedShares'] = 0;
 
-                                if (record['update_site']){
+                                if (record['update_site']) {
                                     record['allowedShares'] = record['allowedShares'] + parseInt(record['update_site']);
                                 }
 
@@ -236,20 +236,20 @@ webix.ready(function () {
                                     record['allowedShares'] = record['allowedShares'] + parseInt(record['transfer']);
                                 }
 
-                                if (record['site_notification']){
-                                    record['allowedShares'] = record['allowedShares'] + parseInt( record['site_notification']);
+                                if (record['site_notification']) {
+                                    record['allowedShares'] = record['allowedShares'] + parseInt(record['site_notification']);
                                 }
 
-                                if (record['ticket_insurance']){
-                                    record['allowedShares'] = record['allowedShares'] + parseInt( record['ticket_insurance']);
+                                if (record['ticket_insurance']) {
+                                    record['allowedShares'] = record['allowedShares'] + parseInt(record['ticket_insurance']);
                                 }
 
-                                if (record['coaching']){
-                                    record['allowedShares'] = record['allowedShares'] + parseInt( record['coaching']);
+                                if (record['coaching']) {
+                                    record['allowedShares'] = record['allowedShares'] + parseInt(record['coaching']);
                                 }
 
-                                if (record['birthday']){
-                                    record['allowedShares'] = record['allowedShares'] + parseInt( record['birthday']);
+                                if (record['birthday']) {
+                                    record['allowedShares'] = record['allowedShares'] + parseInt(record['birthday']);
                                 }
 
                                 if (parseInt(record['base_salary']) >=0 && parseInt(record['stagePercent'])>=0) {
@@ -276,38 +276,50 @@ webix.ready(function () {
             onClick: {
                 "user": function (ev, id) {
 
+                    $.ajax({
+                        type: "GET",
+                        url: "/index.php?module=Accounting&view=List&mode=getSales&date=" + window.date + "&worker=" + id,
+                        success: function (data) {
+                            var dataProvider = $.parseJSON(data);
+                            webix.ui({
+                                view: "window",
+                                id: 'win3',
+                                width: 600, height: 500,
+                                top: 200, left: 300,
 
-                    webix.ui({
-                        view:"window",
-                        id:'win3',
-                        width: 600, height:500,
-                        top:200, left: 300,
-                        position: 'absolute',
-                        zIndex: 99999,
-                        modal:true,
-                        head:{
-                            view:"toolbar", margin:-4, cols:[
-                                {view:"label", label: "Продажи. Иванов И.И." },
+                                position: function (state) {
+                                    state.top = 200;
+                                },
+                                zIndex: 99999,
+                                modal: true,
+                                head: {
+                                    view: "toolbar", margin: -4, cols: [
+                                        {view: "label", label: "Продажи. "+dataProvider.name },
 
-                                { view:"icon", icon:"times-circle",
-                                    click:"$$('win3').close();"}
-                            ]
-                        },
-                        body:{
-                            view:"datatable",
-                            columns:[
-                                { id:"rank",	header:"", css:"rank",  		width:50,	sort:"int"},
-                                { id:"title",	header:"Film title",width:200,	sort:"string"},
-                                { id:"year",	header:"Released" , width:80,	sort:"int"},
-                                { id:"votes",	header:"Votes", 	width:100,	sort:"int"}
-                            ],
-                            select:"row",
-                            autoheight:true,
-                            autowidth:true,
-                            data:""
+                                        {
+                                            view: "icon", icon: "times-circle",
+                                            click: "$$('win3').close();"
+                                        }
+                                    ]
+                                },
+                                body: {
+                                    view: "scrollview", body: {
+                                        view: "datatable",
+                                        columns: [
+                                            {id: "id", header: "", css: "rank", width: 50, sort: "int"},
+                                            {id: "date", header: "Дата", css: "rank", width: 150, sort: "int"},
+                                            {id: "amount", header: "Доход", width: 150, sort: "string"}
+                                        ],
+                                        select: "row",
+                                        autoheight: true,
+                                        autowidth: true,
+                                        data: dataProvider.table
+                                    }
+                                }
+                            }).show();
+
                         }
-                    }).show();
-
+                    })
                 }
             }
         });
