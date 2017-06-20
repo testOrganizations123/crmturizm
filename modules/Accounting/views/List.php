@@ -1890,6 +1890,15 @@ class Accounting_List_View extends Vtiger_Index_View
         $percentLevel = $this->getSQLArrayResult($queryP, []);
 
 
+        $holidayQuery = "SELECT * FROM holidays where date BETWEEN ? AND ?  ORDER BY date";
+
+
+        $timesQuery = "
+                   SELECT *
+                   FROM working_time as wt
+                   WHERE CAST( wt.date AS DATE) BETWEEN ? AND ?";
+
+
         if (strlen($this->filter_data['period']) < 8) {
             $strArr = explode(".", $this->filter_data['period']);
             $strPeriod = $strArr[1] . "-" . $strArr[0];
@@ -1902,6 +1911,24 @@ class Accounting_List_View extends Vtiger_Index_View
             $start = $strPeriod . "-01";
             $finish = $strPeriod . "-" . $dateObj->format('t');
         }
+
+        $holidaysAll = $this->getSQLArrayResult($holidayQuery, array($start, $finish));
+
+        $workerTimesArray = $this->getSQLArrayResult($timesQuery, array($start, $finish));
+
+
+
+
+        $holidaysAmount = 0;
+        foreach ($holidaysAll as $item) {
+            $dateHoliday = new DateTime($item['date']);
+            if ($dateHoliday->format('N') == 6 || $dateHoliday->format('N') == 7) {
+                continue;
+            }
+            $holidaysAmount += 1;
+
+        }
+
 
         $sales = $this->getSQLArrayResult($sql, array($start, $finish));
 
@@ -1934,6 +1961,23 @@ class Accounting_List_View extends Vtiger_Index_View
         $offices = [];
 
         foreach ($users as $user) {
+            $vacation = 0;
+            $hospital = 0;
+            $workingHours = 0;
+
+            foreach ($workerTimesArray as $item) {
+                if ($item['user'] == $user['id']) {
+                    if ($item['time'] == "от" || $item['time'] == "От" || $item['time'] == "ОТ") {
+                        foreach ($holidaysAll as $value){
+                            
+                        }
+                        $vacation += 1;
+                    }
+
+                }
+            }
+
+
             $level = "";
             $percent = "";
             $sum = 0;
@@ -1957,7 +2001,7 @@ class Accounting_List_View extends Vtiger_Index_View
                     $floor3 = $item['floor3'];
                     $floor4 = $item['floor4'];
 
-                    }
+                }
             }
 
             $baseSalary = null;
@@ -2077,6 +2121,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $offices[] = array_shift($offices);
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('SALARY', json_encode($offices));
+        $viewer->assign('AMOUNTHOLIDAY', $holidaysAmount);
     }
 
 
@@ -2184,7 +2229,7 @@ class Accounting_List_View extends Vtiger_Index_View
             where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =" . $worker;
 
 
-        $usersQuery = "SELECT  concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE u.id=". $worker;
+        $usersQuery = "SELECT  concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE u.id=" . $worker;
 
         $user = $this->getSQLArrayResult($usersQuery, array());
 
@@ -2196,19 +2241,18 @@ class Accounting_List_View extends Vtiger_Index_View
         $finish = $strPeriod . "-" . $dateObj->format('t');
         $salary = $this->getSQLArrayResult($sql, array($start, $finish));
         $salaryTable = [];
-        foreach ($salary as $key=> $item) {
+        foreach ($salary as $key => $item) {
             $salaryTable[] = [
                 "id" => $key + 1,
                 "date" => $item["date"],
-                "amount" => round($item['amount'],2)
+                "amount" => round($item['amount'], 2)
 
             ];
 
         }
 
 
-
-        echo json_encode(['table'=>$salaryTable, 'name'=>$name]);
+        echo json_encode(['table' => $salaryTable, 'name' => $name]);
         die();
     }
 
