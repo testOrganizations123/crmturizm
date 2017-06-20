@@ -2017,7 +2017,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             foreach ($workerTimesArray as $item) {
                 if ($item['user'] == $user['id']) {
-                    if ($item['time'] == "от" || $item['time'] == "От" || $item['time'] == "ОТ") {
+                    if ($item['time'] == "от" || $item['time'] == "От" || $item['time'] == "ОТ" || $item['time'] == 'РТ' || $item['time'] == 'Рт' || $item['time'] == 'рт') {
                         $flag = 0;
                         foreach ($holidaysAll as $value) {
                             $a = new DateTime($value['date']);
@@ -2032,7 +2032,7 @@ class Accounting_List_View extends Vtiger_Index_View
                         $vacation += 1;
                     }
 
-                    if ($item['time'] == 'К') {
+                    if ($item['time'] == 'К' || $item['time'] == 'У' || $item['time'] == 'у') {
                         $item['time'] = 8;
                     }
 
