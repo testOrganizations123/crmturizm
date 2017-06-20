@@ -2001,7 +2001,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         for ($i = 1; $i <= $countDays; $i++) {
             $dayCode = date('w', strtotime($i . "." . $date->format('m.Y')));
-         
+
             if ($dayCode == 6 || $dayCode == 0) {
                 $weekend[]['date'] = new DateTime($i . "." . $date->format('m.Y'));
 
@@ -2055,7 +2055,7 @@ class Accounting_List_View extends Vtiger_Index_View
                             continue;
                         }
                         foreach ($weekend as $value) {
-                            $a = new DateTime($value['date']);
+                            $a = $value['date'];
                             $b = new DateTime($item['date']);
                             if ($a == $b) {
                                 $flag = 1;
@@ -2249,10 +2249,10 @@ class Accounting_List_View extends Vtiger_Index_View
         $query = "SELECT * FROM percent_level";
         $percentLevel = $this->getSQLArrayResult($query, []);
 
-        $data = [['id' => 1, 'level' => '1 этап', 'percent' => $percentLevel[0]['level1'], "\$cellCss" =>  $style],
-                 ['id' => 2, 'level' => '2 этап', 'percent' => $percentLevel[0]['level2'], "\$cellCss" =>  $style],
-                 ['id' => 3, 'level' => '3 этап', 'percent' => $percentLevel[0]['level3'], "\$cellCss" =>  $style],
-                 ['id' => 4, 'level' => '4 этап', 'percent' => $percentLevel[0]['level4'], "\$cellCss" =>  $style]
+        $data = [['id' => 1, 'level' => '1 этап', 'percent' => $percentLevel[0]['level1'], "\$cellCss" => $style],
+            ['id' => 2, 'level' => '2 этап', 'percent' => $percentLevel[0]['level2'], "\$cellCss" => $style],
+            ['id' => 3, 'level' => '3 этап', 'percent' => $percentLevel[0]['level3'], "\$cellCss" => $style],
+            ['id' => 4, 'level' => '4 этап', 'percent' => $percentLevel[0]['level4'], "\$cellCss" => $style]
         ];
         $viewer->assign('DATA', json_encode($data));
         $viewer->assign('OPTIONSALARY', true);
@@ -2272,8 +2272,40 @@ class Accounting_List_View extends Vtiger_Index_View
         $id = $request->get('id');
         $percent = $request->get('percent');
 
+        if (!is_numeric($percent)) {
+            echo json_encode('Поле "процент" должно быть числом');
+            die();
+        }
+
+
         $query = "SELECT * FROM percent_level";
         $percentLevel = $this->getSQLArrayResult($query, []);
+
+        if (count($percentLevel)){
+
+            if ($id == 1){
+                if ($percent > $percentLevel['level2'] ){
+                    echo json_encode('1-й этап  не может быть выше 2-го');
+                    die();
+                }
+            }
+
+            if ($id == 2){
+                if ($percent > $percentLevel['level3'] || $percent < $percentLevel['level1'] ){
+                    echo json_encode('2-й этап  не может быть выше 3-го и ни');
+                    die();
+                }
+            }
+
+
+
+
+
+
+
+
+
+        }
 
         switch ($id) {
             case 1:
