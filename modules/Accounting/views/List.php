@@ -1969,7 +1969,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 if ($item['user'] == $user['id']) {
                     if ($item['time'] == "от" || $item['time'] == "От" || $item['time'] == "ОТ") {
                         foreach ($holidaysAll as $value){
-                            
+
                         }
                         $vacation += 1;
                     }
