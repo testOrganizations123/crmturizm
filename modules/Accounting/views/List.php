@@ -1917,8 +1917,6 @@ class Accounting_List_View extends Vtiger_Index_View
         $workerTimesArray = $this->getSQLArrayResult($timesQuery, array($start, $finish));
 
 
-
-
         $holidaysAmount = 0;
         foreach ($holidaysAll as $item) {
             $dateHoliday = new DateTime($item['date']);
@@ -1960,6 +1958,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $offices = [];
 
+
         foreach ($users as $user) {
             $vacation = 0;
             $hospital = 0;
@@ -1968,11 +1967,21 @@ class Accounting_List_View extends Vtiger_Index_View
             foreach ($workerTimesArray as $item) {
                 if ($item['user'] == $user['id']) {
                     if ($item['time'] == "от" || $item['time'] == "От" || $item['time'] == "ОТ") {
-                        foreach ($holidaysAll as $value){
-
+                        $flag = 0;
+                        foreach ($holidaysAll as $value) {
+                            $a = new DateTime($value['date']);
+                            $b = new DateTime($item['date']);
+                            if ($a == $b) {
+                                $flag = 1;
+                            }
+                        }
+                        if ($flag){
+                            continue;
                         }
                         $vacation += 1;
                     }
+
+                    
 
                 }
             }
@@ -2068,6 +2077,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "salesRevenue" => $sum,
                 "stage" => $level,
                 "stagePercent" => $percent,
+                "vacation"=>$vacation,
 
                 "base_salary" => $baseSalary,
                 "site_notification" => $siteNotification,
@@ -2111,7 +2121,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-        $date = DateTime::createFromFormat('d.m.Y', '1.'. $this->filter_data['period']);
+        $date = DateTime::createFromFormat('d.m.Y', '1.' . $this->filter_data['period']);
 
         $viewer->assign('DATE', json_encode([
             "year" => $date->format('Y'),
