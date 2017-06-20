@@ -2272,7 +2272,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $id = $request->get('id');
         $percent = $request->get('percent');
 
-        if (!is_numeric($percent)) {
+        if (!is_numeric($percent) && $percent != '') {
             echo json_encode('Поле "процент" должно быть числом');
             die();
         }
@@ -2281,28 +2281,116 @@ class Accounting_List_View extends Vtiger_Index_View
         $query = "SELECT * FROM percent_level";
         $percentLevel = $this->getSQLArrayResult($query, []);
 
-        if (count($percentLevel)){
+        if (count($percentLevel) && $percent != "") {
 
-            if ($id == 1){
-                if ($percent > $percentLevel['level2'] ){
-                    echo json_encode('1-й этап  не может быть выше 2-го');
-                    die();
+            if ($id == 1) {
+
+                if ($percentLevel[0]['level2']) {
+                    if ($percent > $percentLevel[0]['level2']) {
+                        echo json_encode('1-й этап  не может быть выше 2-го');
+                        die();
+                    }
+                }
+
+
+                if ($percentLevel[0]['level3']) {
+                    if ($percent > $percentLevel[0]['level3']) {
+                        echo json_encode('1-й этап  не может быть выше 3-го');
+                        die();
+                    }
+                }
+
+                if ($percentLevel[0]['level4']) {
+                    if ($percent > $percentLevel[0]['level4']) {
+                        echo json_encode('1-й этап  не может быть выше 4-го');
+                        die();
+                    }
+                }
+
+            }
+
+            if ($id == 2) {
+
+                if ($percentLevel[0]['level1']){
+                    if ($percent < $percentLevel[0]['level1'] ) {
+                        echo json_encode('2-й этап не может  ниже 1-го');
+                        die();
+                    }
+
+                }
+
+                if ($percentLevel[0]['level3']){
+                    if ($percent > $percentLevel[0]['level3'] ) {
+                        echo json_encode('2-й этап не может выше 3-го');
+                        die();
+                    }
+
+                }
+
+                if ($percentLevel[0]['level4']){
+                    if ($percent < $percentLevel[0]['level1'] ) {
+                        echo json_encode('2-й этап не может выше 4-го');
+                        die();
+                    }
+
+                }
+
+
+            }
+
+            if ($id == 3) {
+
+
+                if ($percentLevel[0]['level1']){
+                    if ($percent < $percentLevel[0]['level1'] ) {
+                        echo json_encode('3-й этап не может  ниже 1-го');
+                        die();
+                    }
+
+                }
+
+                if ($percentLevel[0]['level2']){
+                    if ($percent < $percentLevel[0]['level2'] ) {
+                        echo json_encode('3-й этап не может  ниже 2-го');
+                        die();
+                    }
+
+                }
+
+                if ($percentLevel[0]['level4']){
+                    if ($percent > $percentLevel[0]['level4'] ) {
+                        echo json_encode('3-й этап не может выше 4-го');
+                        die();
+                    }
+
                 }
             }
 
-            if ($id == 2){
-                if ($percent > $percentLevel['level3'] || $percent < $percentLevel['level1'] ){
-                    echo json_encode('2-й этап  не может быть выше 3-го и ни');
-                    die();
+            if ($id == 4) {
+                if ($percentLevel[0]['level1']){
+                    if ($percent < $percentLevel[0]['level1'] ) {
+                        echo json_encode('4-й этап не может  ниже 1-го');
+                        die();
+                    }
+
+                }
+
+                if ($percentLevel[0]['level2']){
+                    if ($percent < $percentLevel[0]['level2'] ) {
+                        echo json_encode('4-й этап не может  ниже 2-го');
+                        die();
+                    }
+
+                }
+
+                if ($percentLevel[0]['level3']){
+                    if ($percent < $percentLevel[0]['level3'] ) {
+                        echo json_encode('4-й этап не может  ниже 3-го');
+                        die();
+                    }
+
                 }
             }
-
-
-
-
-
-
-
 
 
         }
@@ -2323,13 +2411,18 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
         if (count($percentLevel)) {
+            if ($percent == '') {
+                $sql = "UPDATE percent_level SET $column = null WHERE  id=1";
+            } else {
 
-            $sql = "UPDATE percent_level SET $column = '$percent' WHERE  id=1";
-
+                $sql = "UPDATE percent_level SET $column = '$percent' WHERE  id=1";
+            }
         } else {
-
-            $sql = "INSERT INTO percent_level ($column) VALUES('$percent')";
-
+            if ($percent == '') {
+                $sql = "INSERT INTO percent_level ($column) VALUES(NULL )";
+            } else {
+                $sql = "INSERT INTO percent_level ($column) VALUES('$percent')";
+            }
         }
 
 
