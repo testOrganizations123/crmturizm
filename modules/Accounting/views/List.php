@@ -1958,6 +1958,22 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $offices = [];
 
+        $date = DateTime::createFromFormat('m.Y', $this->filter_data['period']);
+
+        $weekend = [];
+        $countDays = cal_days_in_month(CAL_GREGORIAN, $date->format('m'), $date->format('Y'));
+
+
+        for ($i = 1; $i <= $countDays; $i++) {
+            $dayCode = date('w', strtotime($i . "." . $date->format('m.Y')));
+         
+            if ($dayCode == 6 || $dayCode == 0) {
+                $weekend[]['date'] = new DateTime($i . "." . $date->format('m.Y'));
+
+            }
+
+        }
+
 
         foreach ($users as $user) {
             $vacation = 0;
@@ -1975,13 +1991,49 @@ class Accounting_List_View extends Vtiger_Index_View
                                 $flag = 1;
                             }
                         }
-                        if ($flag){
+                        if ($flag) {
                             continue;
                         }
                         $vacation += 1;
                     }
 
-                    
+                    if ($item['time'] == 'К') {
+                        $item['time'] = 8;
+                    }
+
+                    if (is_numeric($item['time'])) {
+
+                        $workingHours += $item['time'];
+                    }
+
+                    if ($item['time'] == 'б' || $item['time'] == 'Б') {
+                        $flag = 0;
+                        foreach ($holidaysAll as $value) {
+                            $a = new DateTime($value['date']);
+                            $b = new DateTime($item['date']);
+                            if ($a == $b) {
+                                $flag = 1;
+                            }
+                        }
+
+                        if ($flag) {
+                            continue;
+                        }
+                        foreach ($weekend as $value) {
+                            $a = new DateTime($value['date']);
+                            $b = new DateTime($item['date']);
+                            if ($a == $b) {
+                                $flag = 1;
+                            }
+                        }
+                        if ($flag) {
+                            continue;
+                        }
+
+                        $hospital += 1;
+
+
+                    }
 
                 }
             }
@@ -2077,7 +2129,9 @@ class Accounting_List_View extends Vtiger_Index_View
                 "salesRevenue" => $sum,
                 "stage" => $level,
                 "stagePercent" => $percent,
-                "vacation"=>$vacation,
+                "vacation" => $vacation,
+                "workingHours" => $workingHours,
+                "hospital" => $hospital,
 
                 "base_salary" => $baseSalary,
                 "site_notification" => $siteNotification,
