@@ -61,6 +61,15 @@ webix.ready(function () {
                 item['possiblePremiums'] = parseInt(item['base_salary']) * parseInt(item['maxPercent']) / 100;
             }
 
+            if (parseInt(item['base_salary']) >=0) {
+                item['allowedSalary'] = parseInt(item['base_salary']) / countWorkingDays * parseInt(item['workingHoursDays']) / 8;
+            }
+
+            if (parseInt(item['base_salary']) >=0) {
+                item['vacation'] = parseInt(item['base_salary']) / countWorkingDays * 0.8 * parseInt(item['hospitalDays'])
+                                 + parseInt(item['base_salary']) / countWorkingDays * parseInt(item['vacationDays']);
+            }
+
 
         });
 
@@ -282,6 +291,17 @@ webix.ready(function () {
                                     record['possiblePremiums'] = parseInt(record['base_salary']) * parseInt(record['maxPercent']) / 100;
                                 } else {
                                     record['possiblePremiums'] = '';
+                                }
+
+                                if (parseInt(record['base_salary']) >=0) {
+                                    record['allowedSalary'] = parseInt(record['base_salary']) / countWorkingDays * parseInt(record['workingHoursDays']) / 8;
+                                } else {
+                                    record['allowedSalary'] = '';
+                                }
+
+                                if (parseInt(record['base_salary']) >=0) {
+                                    record['vacation'] = parseInt(record['base_salary']) / countWorkingDays * 0.8 * parseInt(record['hospitalDays'])
+                                        + parseInt(record['base_salary']) / countWorkingDays * parseInt(record['vacationDays']);
                                 }
 
                                 dtable.refresh();

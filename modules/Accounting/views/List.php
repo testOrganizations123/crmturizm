@@ -2164,9 +2164,9 @@ class Accounting_List_View extends Vtiger_Index_View
                 "salesRevenue" => $sum,
                 "stage" => $level,
                 "stagePercent" => $percent,
-                "vacation" => $vacation,
-                "workingHours" => $workingHours,
-                "hospital" => $hospital,
+                "vacationDays" => $vacation,
+                "workingHoursDays" => $workingHours,
+                "hospitalDays" => $hospital,
 
                 "base_salary" => $baseSalary,
                 "site_notification" => $siteNotification,
