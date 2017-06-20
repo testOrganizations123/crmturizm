@@ -3,6 +3,8 @@ webix.ready(function () {
 
     window.offices.forEach(function (table, i, arr) {
 
+        console.log();
+
         table.salary.forEach(function (item, i, arr) {
 
             item['allowedShares'] = 0;

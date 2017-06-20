@@ -1943,6 +1943,11 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
             }
 
+            $floor1 = null;
+            $floor2 = null;
+            $floor3 = null;
+            $floor4 = null;
+
             foreach ($salesPlan as $item) {
                 if ($user['id'] == $item['worker']) {
                     $level = 0;
@@ -1977,7 +1982,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             $maxPercent = null;
 
-            if (isset($floor1)) {
+            if (!is_null($floor1)) {
                 if ($sum >= $floor1) {
                     $level = 1;
                     $percent = $percentLevel[0]['level1'];
@@ -1986,7 +1991,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 $maxPercent = $percentLevel[0]['level1'];
             }
 
-            if (isset($floor2)) {
+            if (!is_null($floor2)) {
                 if ($sum >= $floor2) {
                     $level = 2;
                     $percent = $percentLevel[0]['level2'];
@@ -1995,7 +2000,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 $maxPercent = $percentLevel[0]['level2'];
             }
 
-            if (isset($floor3)) {
+            if (!is_null($floor3)) {
                 if ($sum >= $floor3) {
                     $level = 3;
                     $percent = $percentLevel[0]['level3'];
@@ -2004,7 +2009,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 $maxPercent = $percentLevel[0]['level3'];
             }
 
-            if (isset($floor4)) {
+            if (!is_null($floor4)) {
                 if ($sum >= $floor4) {
                     $level = 4;
                     $percent = $percentLevel[0]['level4'];
@@ -2062,6 +2067,12 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
+        $date = DateTime::createFromFormat('d.m.Y', '1.'. $this->filter_data['period']);
+
+        $viewer->assign('DATE', json_encode([
+            "year" => $date->format('Y'),
+            "month" => $date->format('m')
+        ]));
 
         $offices[] = array_shift($offices);
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
@@ -2147,7 +2158,9 @@ class Accounting_List_View extends Vtiger_Index_View
                 $sql = "UPDATE salary SET $column = '$value' WHERE  worker = '$worker' and period = '$date'";
             }
         } else {
-            $sql = "INSERT INTO salary ($column, period, worker) VALUES('$value', '$date', '$worker')";
+            if ($value != '') {
+                $sql = "INSERT INTO salary ($column, period, worker) VALUES('$value', '$date', '$worker')";
+            }
         }
 
 
