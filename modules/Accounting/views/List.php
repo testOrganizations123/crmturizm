@@ -1932,26 +1932,61 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $sales = $this->getSQLArrayResult($sql, array($start, $finish));
 
-        $style = [
-            "base_salary" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-            "vacation" => ["background" => "rgba(242, 222, 255, 0.20)"],
-            "allowedSalary" => ["background" => "rgba(242, 222, 255, 0.20)"],
-            "salesRevenue" => ["background" => "rgba(250, 250, 251, 0.5)"],
-            "stage" => ["background" => "rgba(250, 250, 251, 0.5)"],
-            "stagePercent" => ["background" => "rgba(250, 250, 251, 0.5)"],
-            "salesPremiums" => ["background" => "rgba(250, 250, 251, 0.5)"],
-            "possiblePremiums" => ["background" => "rgba(250, 250, 251, 0.5)"],
-            "site_notification" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-            "update_site" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-            "transfer" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-            "ticket_insurance" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-            "coaching" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-            "birthday" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
-            "allowedShares" => ["background" => "rgba(236, 255, 222, 0.2)"],
-            "worker" => ["background" => "rgba(0, 128, 0, 0.03)"],
-            "totalWages" => ["background" => "rgba(255, 0, 0, 0.03)"],
-            "possibleSalary" => ["background" => "rgba(255, 0, 0, 0.03)"],
-        ];
+
+        //узнаем, пользователь обычный менеджер(может стажер) или управляющий
+        $db = PearDatabase::getInstance();
+        $userModel = Users_Record_Model::getCurrentUserModel();
+        $userRole = $userModel->getRole();
+        $sqlRole = "SELECT depth FROM vtiger_role WHERE roleid = '$userRole'";
+        $result = $db->pquery($sqlRole, array());
+
+        $depth = $db->query_result_rowdata($result, "depth");
+        if ($depth["depth"] > 4) {
+            $viewer->assign('WRITINGACCESS', 'false');
+            $style = [
+                "base_salary" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "vacation" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "allowedSalary" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "salesRevenue" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "stage" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "stagePercent" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "salesPremiums" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "possiblePremiums" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "site_notification" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "update_site" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "transfer" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "ticket_insurance" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "coaching" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "birthday" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "allowedShares" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "worker" => ["background" => "rgba(0, 128, 0, 0.03)"],
+                "totalWages" => ["background" => "rgba(255, 0, 0, 0.03)"],
+                "possibleSalary" => ["background" => "rgba(255, 0, 0, 0.03)"],
+            ];
+        } else {
+            $viewer->assign('WRITINGACCESS', 'true');
+
+            $style = [
+                "base_salary" => ["background" => "rgba(242, 222, 255, 0.20)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "vacation" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "allowedSalary" => ["background" => "rgba(242, 222, 255, 0.20)"],
+                "salesRevenue" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "stage" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "stagePercent" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "salesPremiums" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "possiblePremiums" => ["background" => "rgba(250, 250, 251, 0.5)"],
+                "site_notification" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "update_site" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "transfer" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "ticket_insurance" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "coaching" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "birthday" => ["background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer", "border" => "1px solid #aad5fd!important"],
+                "allowedShares" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "worker" => ["background" => "rgba(0, 128, 0, 0.03)"],
+                "totalWages" => ["background" => "rgba(255, 0, 0, 0.03)"],
+                "possibleSalary" => ["background" => "rgba(255, 0, 0, 0.03)"],
+            ];
+        }
 
         $salarySql = "SELECT * FROM salary WHERE period=" . $this->filter_data['period'];
 
@@ -2127,10 +2162,34 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function optionSalary(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
+
+        //узнаем, пользователь обычный менеджер(может стажер) или управляющий
+        $db = PearDatabase::getInstance();
+        $userModel = Users_Record_Model::getCurrentUserModel();
+        $userRole = $userModel->getRole();
+        $sqlRole = "SELECT depth FROM vtiger_role WHERE roleid = '$userRole'";
+        $result = $db->pquery($sqlRole, array());
+
+        $depth = $db->query_result_rowdata($result, "depth");
+        if ($depth["depth"] > 4) {
+            $viewer->assign('WRITINGACCESS', 'false');
+            $style = [
+            ];
+        } else {
+            $viewer->assign('WRITINGACCESS', 'true');
+            $style = [
+                "percent" => ["cursor" => "pointer", "border" => "1px solid #aad5fd!important"]
+            ];
+        }
+
         $query = "SELECT * FROM percent_level";
         $percentLevel = $this->getSQLArrayResult($query, []);
 
-        $data = [['id' => 1, 'level' => '1 этап', 'percent' => $percentLevel[0]['level1']], ['id' => 2, 'level' => '2 этап', 'percent' => $percentLevel[0]['level2']], ['id' => 3, 'level' => '3 этап', 'percent' => $percentLevel[0]['level3']], ['id' => 4, 'level' => '4 этап', 'percent' => $percentLevel[0]['level4']]];
+        $data = [['id' => 1, 'level' => '1 этап', 'percent' => $percentLevel[0]['level1'], "\$cellCss" =>  $style],
+                 ['id' => 2, 'level' => '2 этап', 'percent' => $percentLevel[0]['level2'], "\$cellCss" =>  $style],
+                 ['id' => 3, 'level' => '3 этап', 'percent' => $percentLevel[0]['level3'], "\$cellCss" =>  $style],
+                 ['id' => 4, 'level' => '4 этап', 'percent' => $percentLevel[0]['level4'], "\$cellCss" =>  $style]
+        ];
         $viewer->assign('DATA', json_encode($data));
         $viewer->assign('OPTIONSALARY', true);
     }

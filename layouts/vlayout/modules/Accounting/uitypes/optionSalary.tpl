@@ -1,6 +1,6 @@
 <script>
     window.data = {$DATA};
-
+    window.writingAccess = {$WRITINGACCESS};
 </script>
 
 <h3>Процент начисления за достигнутый этап</h3>

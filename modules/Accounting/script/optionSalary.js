@@ -12,7 +12,7 @@ var dtable = new webix.ui({
 
     autoheight: true,
     autowidth: true,
-    editable: true,
+    editable: window.writingAccess,
     rowHeight: 40,
     data: window.data,
     on: {

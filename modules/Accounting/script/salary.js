@@ -1,9 +1,27 @@
 webix.ready(function () {
 
+    var date = new Date(window.dateObject.year, window.dateObject.month - 1, "1");
+    var mouthNumber = date.getMonth();
+
+    var countWorkingDaysWithHolidays = 0;
+
+    if (date.getDay() != 6 && date.getDay() != 0) {
+        countWorkingDaysWithHolidays ++;
+    }
+
+    for (var i = 1; i<= 40; i++) {
+        date.setDate(date.getDate() + 1);
+        if (date.getMonth() !== mouthNumber) {
+            break;
+        }
+        if (date.getDay() != 6 && date.getDay() != 0) {
+            countWorkingDaysWithHolidays ++
+        }
+    }
+
+    var countWorkingDays = countWorkingDaysWithHolidays - window.amountHoliday;
 
     window.offices.forEach(function (table, i, arr) {
-
-        console.log();
 
         table.salary.forEach(function (item, i, arr) {
 
@@ -179,7 +197,7 @@ webix.ready(function () {
             ],
             autoheight: true,
             autowidth: true,
-            editable: true,
+            editable: window.writingAccess,
             rowHeight: 40,
             data: table.salary,
             on: {
