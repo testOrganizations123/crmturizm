@@ -2170,6 +2170,12 @@ class Accounting_List_View extends Vtiger_Index_View
             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
             where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =" . $worker;
 
+
+        $usersQuery = "SELECT  concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE u.id=". $worker;
+
+        $user = $this->getSQLArrayResult($usersQuery, array());
+
+        $name = $user[0]['name'];
         $strArr = explode(".", $period);
         $strPeriod = $strArr[1] . "-" . $strArr[0];
         $dateObj = new DateTime($strPeriod);
@@ -2177,7 +2183,6 @@ class Accounting_List_View extends Vtiger_Index_View
         $finish = $strPeriod . "-" . $dateObj->format('t');
         $salary = $this->getSQLArrayResult($sql, array($start, $finish));
         $salaryTable = [];
-        $name = $salary[0]['name'];
         foreach ($salary as $key=> $item) {
             $salaryTable[] = [
                 "id" => $key + 1,
@@ -2189,8 +2194,7 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
 
-        $db = PearDatabase::getInstance();
-        $db->pquery($sql, array());
+
         echo json_encode(['table'=>$salaryTable, 'name'=>$name]);
         die();
     }
