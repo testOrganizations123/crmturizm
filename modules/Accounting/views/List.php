@@ -2246,14 +2246,17 @@ class Accounting_List_View extends Vtiger_Index_View
             ];
         }
 
-        $query = "SELECT * FROM percent_level";
+        $query = "SELECT * FROM option_salary";
         $percentLevel = $this->getSQLArrayResult($query, []);
 
-        $data = [['id' => 1, 'level' => '1 этап', 'percent' => $percentLevel[0]['level1'], "\$cellCss" => $style],
-            ['id' => 2, 'level' => '2 этап', 'percent' => $percentLevel[0]['level2'], "\$cellCss" => $style],
-            ['id' => 3, 'level' => '3 этап', 'percent' => $percentLevel[0]['level3'], "\$cellCss" => $style],
-            ['id' => 4, 'level' => '4 этап', 'percent' => $percentLevel[0]['level4'], "\$cellCss" => $style]
+        $data = [['id' => 1, 'vacation' => 'Служебная командировка', 'percent' => $percentLevel[0]['business_trip'], "\$cellCss" => $style],
+            ['id' => 2, 'vacation' => 'Основной отпуск', 'percent' => $percentLevel[0]['vacation_basic'], "\$cellCss" => $style],
+            ['id' => 3, 'vacation' => 'Отпуск в связи с обучением(оплачиваемый)', 'percent' => $percentLevel[0]['study_leave'], "\$cellCss" => $style],
+            ['id' => 4, 'vacation' => 'Рекламный тур', 'percent' => $percentLevel[0]['advertising_tour'], "\$cellCss" => $style],
+            ['id' => 5, 'vacation' => 'Больничный', 'percent' => $percentLevel[0]['hospital'], "\$cellCss" => $style]
         ];
+
+
         $viewer->assign('DATA', json_encode($data));
         $viewer->assign('OPTIONSALARY', true);
     }
@@ -2278,150 +2281,153 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
 
-        $query = "SELECT * FROM percent_level";
+        $query = "SELECT * FROM option_salary";
         $percentLevel = $this->getSQLArrayResult($query, []);
 
-        if (count($percentLevel) && $percent != "") {
-
-            if ($id == 1) {
-
-                if ($percentLevel[0]['level2']) {
-                    if ($percent > $percentLevel[0]['level2']) {
-                        echo json_encode('1-й этап  не может быть выше 2-го');
-                        die();
-                    }
-                }
-
-
-                if ($percentLevel[0]['level3']) {
-                    if ($percent > $percentLevel[0]['level3']) {
-                        echo json_encode('1-й этап  не может быть выше 3-го');
-                        die();
-                    }
-                }
-
-                if ($percentLevel[0]['level4']) {
-                    if ($percent > $percentLevel[0]['level4']) {
-                        echo json_encode('1-й этап  не может быть выше 4-го');
-                        die();
-                    }
-                }
-
-            }
-
-            if ($id == 2) {
-
-                if ($percentLevel[0]['level1']){
-                    if ($percent < $percentLevel[0]['level1'] ) {
-                        echo json_encode('2-й этап не может  ниже 1-го');
-                        die();
-                    }
-
-                }
-
-                if ($percentLevel[0]['level3']){
-                    if ($percent > $percentLevel[0]['level3'] ) {
-                        echo json_encode('2-й этап не может выше 3-го');
-                        die();
-                    }
-
-                }
-
-                if ($percentLevel[0]['level4']){
-                    if ($percent < $percentLevel[0]['level1'] ) {
-                        echo json_encode('2-й этап не может выше 4-го');
-                        die();
-                    }
-
-                }
-
-
-            }
-
-            if ($id == 3) {
-
-
-                if ($percentLevel[0]['level1']){
-                    if ($percent < $percentLevel[0]['level1'] ) {
-                        echo json_encode('3-й этап не может  ниже 1-го');
-                        die();
-                    }
-
-                }
-
-                if ($percentLevel[0]['level2']){
-                    if ($percent < $percentLevel[0]['level2'] ) {
-                        echo json_encode('3-й этап не может  ниже 2-го');
-                        die();
-                    }
-
-                }
-
-                if ($percentLevel[0]['level4']){
-                    if ($percent > $percentLevel[0]['level4'] ) {
-                        echo json_encode('3-й этап не может выше 4-го');
-                        die();
-                    }
-
-                }
-            }
-
-            if ($id == 4) {
-                if ($percentLevel[0]['level1']){
-                    if ($percent < $percentLevel[0]['level1'] ) {
-                        echo json_encode('4-й этап не может  ниже 1-го');
-                        die();
-                    }
-
-                }
-
-                if ($percentLevel[0]['level2']){
-                    if ($percent < $percentLevel[0]['level2'] ) {
-                        echo json_encode('4-й этап не может  ниже 2-го');
-                        die();
-                    }
-
-                }
-
-                if ($percentLevel[0]['level3']){
-                    if ($percent < $percentLevel[0]['level3'] ) {
-                        echo json_encode('4-й этап не может  ниже 3-го');
-                        die();
-                    }
-
-                }
-            }
-
-
-        }
+//        if (count($percentLevel) && $percent != "") {
+//
+//            if ($id == 1) {
+//
+//                if ($percentLevel[0]['level2']) {
+//                    if ($percent > $percentLevel[0]['level2']) {
+//                        echo json_encode('1-й этап  не может быть выше 2-го');
+//                        die();
+//                    }
+//                }
+//
+//
+//                if ($percentLevel[0]['level3']) {
+//                    if ($percent > $percentLevel[0]['level3']) {
+//                        echo json_encode('1-й этап  не может быть выше 3-го');
+//                        die();
+//                    }
+//                }
+//
+//                if ($percentLevel[0]['level4']) {
+//                    if ($percent > $percentLevel[0]['level4']) {
+//                        echo json_encode('1-й этап  не может быть выше 4-го');
+//                        die();
+//                    }
+//                }
+//
+//            }
+//
+//            if ($id == 2) {
+//
+//                if ($percentLevel[0]['level1']){
+//                    if ($percent < $percentLevel[0]['level1'] ) {
+//                        echo json_encode('2-й этап не может  ниже 1-го');
+//                        die();
+//                    }
+//
+//                }
+//
+//                if ($percentLevel[0]['level3']){
+//                    if ($percent > $percentLevel[0]['level3'] ) {
+//                        echo json_encode('2-й этап не может выше 3-го');
+//                        die();
+//                    }
+//
+//                }
+//
+//                if ($percentLevel[0]['level4']){
+//                    if ($percent < $percentLevel[0]['level1'] ) {
+//                        echo json_encode('2-й этап не может выше 4-го');
+//                        die();
+//                    }
+//
+//                }
+//
+//
+//            }
+//
+//            if ($id == 3) {
+//
+//
+//                if ($percentLevel[0]['level1']){
+//                    if ($percent < $percentLevel[0]['level1'] ) {
+//                        echo json_encode('3-й этап не может  ниже 1-го');
+//                        die();
+//                    }
+//
+//                }
+//
+//                if ($percentLevel[0]['level2']){
+//                    if ($percent < $percentLevel[0]['level2'] ) {
+//                        echo json_encode('3-й этап не может  ниже 2-го');
+//                        die();
+//                    }
+//
+//                }
+//
+//                if ($percentLevel[0]['level4']){
+//                    if ($percent > $percentLevel[0]['level4'] ) {
+//                        echo json_encode('3-й этап не может выше 4-го');
+//                        die();
+//                    }
+//
+//                }
+//            }
+//
+//            if ($id == 4) {
+//                if ($percentLevel[0]['level1']){
+//                    if ($percent < $percentLevel[0]['level1'] ) {
+//                        echo json_encode('4-й этап не может  ниже 1-го');
+//                        die();
+//                    }
+//
+//                }
+//
+//                if ($percentLevel[0]['level2']){
+//                    if ($percent < $percentLevel[0]['level2'] ) {
+//                        echo json_encode('4-й этап не может  ниже 2-го');
+//                        die();
+//                    }
+//
+//                }
+//
+//                if ($percentLevel[0]['level3']){
+//                    if ($percent < $percentLevel[0]['level3'] ) {
+//                        echo json_encode('4-й этап не может  ниже 3-го');
+//                        die();
+//                    }
+//
+//                }
+//            }
+//
+//
+//        }
 
         switch ($id) {
             case 1:
-                $column = 'level1';
+                $column = 'business_trip';
                 break;
             case 2:
-                $column = 'level2';
+                $column = 'vacation_basic';
                 break;
             case 3:
-                $column = 'level3';
+                $column = 'study_leave';
                 break;
             case 4:
-                $column = 'level4';
+                $column = 'advertising_tour';
+                break;
+            case 5:
+                $column = 'hospital';
                 break;
         }
 
         if (count($percentLevel)) {
             if ($percent == '') {
-                $sql = "UPDATE percent_level SET $column = null WHERE  id=1";
+                $sql = "UPDATE option_salary SET $column = null WHERE  id=1";
             } else {
 
-                $sql = "UPDATE percent_level SET $column = '$percent' WHERE  id=1";
+                $sql = "UPDATE option_salary SET $column = '$percent' WHERE  id=1";
             }
         } else {
             if ($percent == '') {
-                $sql = "INSERT INTO percent_level ($column) VALUES(NULL )";
+                $sql = "INSERT INTO option_salary ($column) VALUES(NULL )";
             } else {
-                $sql = "INSERT INTO percent_level ($column) VALUES('$percent')";
+                $sql = "INSERT INTO option_salary ($column) VALUES('$percent')";
             }
         }
 

@@ -5,7 +5,7 @@ var dtable = new webix.ui({
     container: "tableOptionSalary",
     view: "datatable",
     columns: [
-        {id: "level", header: "Наименование", width: 100},
+        {id: "vacation", header: "Наименование", width: 350},
         {id: "percent", header: "Процент", width: 100, editor: "text"}
 
     ],
@@ -20,12 +20,12 @@ var dtable = new webix.ui({
 
             var record = dtable.getItem(coordinates.row);
             var percent = record.percent;
-            var level = record.level;
+            var vacation = record.vacation;
             var id = record.id;
 
             $.ajax({
                 type: "GET",
-                url: "/index.php?module=Accounting&view=List&mode=editLevelPercent&id="+id+"&level="+ level+"&percent="+percent,
+                url: "/index.php?module=Accounting&view=List&mode=editLevelPercent&id="+id+"&vacation="+vacation +"&percent="+percent,
                 success: function (data) {
                     if (data != "success") {
 
