@@ -48,7 +48,7 @@
                                                 {else}
                                                     <li class="tabs"><a id="menubar_item_Calendar" href="index.php?module=Calendar&amp;view=List"><strong>Календарь</strong></a></li>
                                                     <li class="tabs"><a id="menubar_item_Potentials" href="index.php?module=Potentials&amp;view=List"><strong>Брони</strong></a></li>
-                                                    <li class="tabs"><a id="menubar_item_Contacts" href="index.php?module=Contacts&amp;view=List"><strong>Клиенты</strong></a></li>
+                                                    
                                                     <li class="tabs"><a id="menubar_item_MailManager" href="index.php?module=MailManager&amp;view=List"><strong>Менеджер почты</strong></a></li>
 													<li class="tabs"><a id="menubar_item_MailManager" href="index.php?module=VChat&amp;view=List"><strong>Чат</strong></a></li> {* troshichev *}
 
@@ -207,10 +207,38 @@
                                                                         <label class="moduleNames"><a id="report_proceeds" href="index.php?module=VDCustomReports&view=List&mode=getProceeds">Выручка и Доход</a></label>
 												                        <label class="moduleNames"><a id="sales_plan" href="index.php?module=VDCustomReports&view=List&mode=getSalesPlan">План продаж</a></label>
 												                        <label class="moduleNames"><a id="sales_funnel" href="index.php?module=VDCustomReports&view=List&mode=getSalesFunnel">Воронка продаж</a></label>
+																		<label class="moduleNames"><a id="vilety" href="index.php?module=VDCustomReports&view=List&mode=getPolet">Города вылетов(в разработке)</a></label>
 
                                                                 </div></div>
 						</li>
 					</ul>
+                    {* Мастер тура для региональных *}
+                    {if $USER_MODEL->getRole()=='H10'||$USER_MODEL->getRole()=='H11'||$USER_MODEL->getRole()=='H16'||$USER_MODEL->getRole()=='H49'||$USER_MODEL->getRole()=='H55'||$USER_MODEL->getRole()=='H62'||$USER_MODEL->getRole()=='H3'}
+					<ul class="nav" id="commonMoreMenu3">
+						<li class="dropdown" id="moreMenu3">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#moreMenu3" style="color:#fff">
+								<strong>{vtranslate('Мастер тура',$MODULE)}&nbsp;</strong>
+								<b class="caret"></b>
+							</a>
+							<div class="dropdown-menu">
+								<div class="shortDropdown">
+
+									<label class="moduleNames"><a id="report_leads" href="index.php?module=ListTouroperators&view=List">Туроператоры</a></label>
+									<label class="moduleNames"><a id="report_bron" href="index.php?module=ClientTypes&view=List">Типы Номеров</a></label>
+									<label class="moduleNames"><a id="report_stat" href="index.php?module=VisaDocuments&view=List">Документы на визу</a></label>
+									<label class="moduleNames"><a id="report_avg" href="index.php?module=TypeTourisVisa&view=List">Типы туристов для визы</a></label>
+									<label class="moduleNames"><a id="report_proceeds" href="index.php?module=ListFoods&view=List">Типы питания</a></label>
+									<label class="moduleNames"><a id="sales_plan" href="index.php?module=ListAccommodations&view=List">Типы размещения</a></label>
+									<label class="moduleNames"><a id="sales_funnel" href="index.php?module=ListResorts&view=List">Курорты</a></label>
+									<label class="moduleNames"><a id="sales_funnel" href="index.php?module=ListCountry&view=List">Страны</a></label>
+									<label class="moduleNames"><a id="sales_funnel" href="index.php?module=ListAirports&view=List">Аэропорты</a></label>
+									<label class="moduleNames"><a id="sales_funnel" href="index.php?module=ListAirlines&view=List">Авиалинии</a></label>
+									<label class="moduleNames"><a id="sales_funnel" href="index.php?module=Services&view=List">Услуги</a></label>
+
+								</div></div>
+						</li>
+					</ul>
+					{/if}
 
 					<ul class="nav" id="commonMoreMenu234">
 						<li class="dropdown" id="moreMenu234">

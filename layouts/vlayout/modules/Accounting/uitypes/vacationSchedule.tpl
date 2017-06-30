@@ -15,16 +15,17 @@
     <br>
     <h4>Основной отпуск</h4>
     <br>
-    <div id="tableVacation_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>
+    <div id="tableVacation_{$KEY}" style="overflow-x: auto; padding-bottom: 20px">
+    </div>
     <br>
     <h4>Рекламный тур</h4>
     <br>
     <div id="tableVacationPromo_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>
-    <br>
-    <h4>Сессии</h4>
-    <br>
-    <div id="tableVacationSession_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>
-    <br>
+    {*<br>*}
+    {*<h4>Сессии</h4>*}
+    {*<br>*}
+    {*<div id="tableVacationSession_{$KEY}" style="overflow-x: auto; padding-bottom: 20px"></div>*}
+    {*<br>*}
     <h4>График</h4>
     <br>
     <div class="charts" id="{$VALUE->officeId}" style="overflow-x: auto; padding-bottom: 20px; height: {$VALUE->height}px"></div>
