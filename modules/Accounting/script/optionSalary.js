@@ -5,7 +5,7 @@ var dtable = new webix.ui({
     container: "tableOptionSalary",
     view: "datatable",
     columns: [
-        {id: "level", header: "Этап", width: 100},
+        {id: "level", header: "Наименование", width: 100},
         {id: "percent", header: "Процент", width: 100, editor: "text"}
 
     ],
