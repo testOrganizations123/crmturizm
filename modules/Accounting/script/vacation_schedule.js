@@ -1,5 +1,3 @@
-$('body').scrollTop(0);
-
 var chart = [];
 
 var time = 1000;
