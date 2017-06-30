@@ -60,7 +60,10 @@ function renderWebix(i) {
                     "б",
                     "Б",
                     "рт",
-                    "РТ"
+                    "РТ",
+                    "ВХ",
+                    "Вх",
+                    "вх"
                 ];
 
                 if (time && parseInt(time) != time && !in_array(time, availableChars)) {
