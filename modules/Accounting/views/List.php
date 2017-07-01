@@ -2614,6 +2614,128 @@ class Accounting_List_View extends Vtiger_Index_View
         $column = $request->get('column');
         $value = $request->get('value');
 
+
+
+        $usersQuery = "SELECT u.percent1, u.percent2, u.percent3, u.percent4 from vtiger_users as u  WHERE  id = '$userId'";
+
+        $users = $this->getSQLArrayResult($usersQuery, []);
+
+       if ( $value != "") {
+
+            if ($column == "percent1") {
+
+                if ($users[0]['percent2']) {
+                    if ($value > $users[0]['percent2']) {
+                        echo json_encode('1-й этап  не может быть выше 2-го');
+                        die();
+                    }
+                }
+
+
+                if ($users[0]['percent3']) {
+                    if ($value > $users[0]['percent3']) {
+                        echo json_encode('1-й этап  не может быть выше 3-го');
+                        die();
+                    }
+                }
+
+                if ($users[0]['percent4']) {
+                    if ($value > $users[0]['percent4']) {
+                        echo json_encode('1-й этап  не может быть выше 4-го');
+                        die();
+                    }
+                }
+
+            }
+
+            if ($column == "percent2") {
+
+                if ($users[0]['percent1']){
+                    if ($value < $users[0]['percent1'] ) {
+                        echo json_encode('2-й этап не может  ниже 1-го');
+                        die();
+                    }
+
+                }
+
+                if ($users[0]['percent3']){
+                    if ($value > $users[0]['percent3'] ) {
+                        echo json_encode('2-й этап не может выше 3-го');
+                        die();
+                    }
+
+                }
+
+                if ($users[0]['percent4']){
+                    if ($value < $users[0]['percent1'] ) {
+                        echo json_encode('2-й этап не может выше 4-го');
+                        die();
+                    }
+
+                }
+
+
+            }
+
+            if ($column == "percent3") {
+
+
+                if ($users[0]['percent1']){
+                    if ($value < $users[0]['percent1'] ) {
+                        echo json_encode('3-й этап не может  ниже 1-го');
+                        die();
+                    }
+
+                }
+
+                if ($users[0]['percent2']){
+                    if ($value < $users[0]['percent2'] ) {
+                        echo json_encode('3-й этап не может  ниже 2-го');
+                        die();
+                    }
+
+                }
+
+                if ($users[0]['percent4']){
+                    if ($value > $users[0]['percent4'] ) {
+                        echo json_encode('3-й этап не может выше 4-го');
+                        die();
+                    }
+
+                }
+            }
+
+            if ($column == "percent4") {
+                if ($users[0]['percent1']){
+                    if ($value < $users[0]['percent1'] ) {
+                        echo json_encode('4-й этап не может  ниже 1-го');
+                        die();
+                    }
+
+                }
+
+                if ($users[0]['percent2']){
+                    if ($value < $users[0]['percent2'] ) {
+                        echo json_encode('4-й этап не может  ниже 2-го');
+                        die();
+                    }
+
+                }
+
+                if ($users[0]['percent3']){
+                    if ($value < $users[0]['percent3'] ) {
+                        echo json_encode('4-й этап не может  ниже 3-го');
+                        die();
+                    }
+
+                }
+            }
+
+
+        }
+
+
+
         if ($value == '') {
             $sql = "UPDATE vtiger_users SET $column = null WHERE  id = '$userId'";
         } else {
