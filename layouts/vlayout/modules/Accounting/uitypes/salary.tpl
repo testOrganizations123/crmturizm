@@ -18,9 +18,19 @@
 
 
 <style>
-    .salary-cell{
+    .salary-cell {
         line-height: 17px;
         padding-right: 15px;
+    }
+
+    .webix_column.webix_first *:hover{
+        color: blue!important;
+        text-decoration: underline;
+    }
+
+    .webix_column.webix_first *{
+        text-decoration: underline;
+    }
 
 </style>
 
