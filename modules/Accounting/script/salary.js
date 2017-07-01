@@ -34,26 +34,24 @@ function renderWebix(i, countWorkingDays) {
 
 
 
-        if (parseInt(item['base_salary']) >=0 && parseInt(item['stagePercent']) >= 0) {
-            item['salesPremiums'] = parseInt(item['base_salary']) * parseInt(item['stagePercent']) / 100;
+        if (parseInt(item['allowedSalary']) >=0 && parseInt(item['stagePercent']) >= 0) {
+            item['salesPremiums'] = parseInt(item['allowedSalary']) * parseInt(item['stagePercent']) / 100;
         }
 
-        if (parseInt(item['base_salary']) >= 0 && parseInt(item['maxPercent']) >=0) {
-            item['possiblePremiums'] = parseInt(item['base_salary']) * parseInt(item['maxPercent']) / 100;
+        if (parseInt(item['allowedSalary']) >= 0 && parseInt(item['maxPercent']) >=0) {
+            item['possiblePremiums'] = parseInt(item['allowedSalary']) * parseInt(item['maxPercent']) / 100;
         }
 
-        if (parseInt(item['base_salary']) >=0) {
-            item['allowedSalary'] = parseInt(item['base_salary']) / countWorkingDays * parseInt(item['workingHoursDays']) / 8;
-        }
 
-        if (parseInt(item['base_salary']) >=0) {
-            item['vacation'] = parseInt(item['base_salary']) / countWorkingDays * 0.8 * parseInt(item['hospitalDays'])
-                + parseInt(item['base_salary']) / countWorkingDays * parseInt(item['vacationDays']);
-        }
 
-        if (parseInt(item['base_salary']) >=0) {
+        // if (parseInt(item['base_salary']) >=0) {
+        //     item['vacation'] = parseInt(item['base_salary']) / countWorkingDays * 0.8 * parseInt(item['hospitalDays'])
+        //         + parseInt(item['base_salary']) / countWorkingDays * parseInt(item['vacationDays']);
+        // }
+
+        if (parseInt(item['allowedSalary']) >=0) {
             item['totalWages'] = 0;
-            if (item['vacation']) item['totalWages'] = item['totalWages'] + item['vacation'];
+           // if (item['vacation']) item['totalWages'] = item['totalWages'] + item['vacation'];
             if (item['allowedSalary']) item['totalWages'] = item['totalWages'] + item['allowedSalary'];
             if (item['salesPremiums']) item['totalWages'] = item['totalWages'] + item['salesPremiums'];
             if (item['allowedShares']) item['totalWages'] = item['totalWages'] + item['allowedShares'];
@@ -61,9 +59,9 @@ function renderWebix(i, countWorkingDays) {
 
         }
 
-        if (parseInt(item['base_salary']) >=0) {
+        if (parseInt(item['allowedSalary']) >=0) {
             item['possibleSalary'] = 0;
-            if (item['vacation']) item['possibleSalary'] = item['possibleSalary'] + item['vacation'];
+           // if (item['vacation']) item['possibleSalary'] = item['possibleSalary'] + item['vacation'];
             if (item['allowedSalary']) item['possibleSalary'] = item['possibleSalary'] + item['allowedSalary'];
             if (item['possiblePremiums']) item['possibleSalary'] = item['possibleSalary'] + item['possiblePremiums'];
         }
@@ -75,17 +73,17 @@ function renderWebix(i, countWorkingDays) {
         view: "datatable",
         columns: [
             {id: "worker", header: "Сотрудник", width: 238},
-            {
-                id: "base_salary",
-                header: {text: "<div class='salary-cell'>Базовый оклад", rotate: true, height: 185},
-                width: 74,
-                editor: 'text'
-            },
-            {
-                id: "vacation",
-                header: {text: "<div class='salary-cell'>Отпуск / больничный</div>", rotate: true, height: 185},
-                width: 74
-            },
+            // {
+            //     id: "base_salary",
+            //     header: {text: "<div class='salary-cell'>Базовый оклад", rotate: true, height: 185},
+            //     width: 74,
+            //     editor: 'text'
+            // },
+            // {
+            //     id: "vacation",
+            //     header: {text: "<div class='salary-cell'>Отпуск / больничный</div>", rotate: true, height: 185},
+            //     width: 74
+            // },
             {
                 id: "allowedSalary",
                 header: {text: "<div class='salary-cell'>Фактический оклад</div>", rotate: true, height: 185},
@@ -122,11 +120,11 @@ function renderWebix(i, countWorkingDays) {
             {
                 id: "possiblePremiums",
                 header: {
-                    text: "<div class='salary-cell'>Возможная премии за продажи (в рублях)</div>",
+                    text: "<div class='salary-cell'>Возможная премии за продажи (в рублях)<br>(При достижении 4 этапа)</div>",
                     rotate: true,
                     height: 185
                 },
-                width: 74
+                width: 100
             },
             {
                 id: "site_notification",
@@ -298,34 +296,34 @@ function renderWebix(i, countWorkingDays) {
                                 record['allowedShares'] = record['allowedShares'] + parseInt(record['birthday']);
                             }
 
-                            if (parseInt(record['base_salary']) >=0 && parseInt(record['stagePercent'])>=0) {
-                                record['salesPremiums'] = parseInt(record['base_salary']) * parseInt(record['stagePercent']) / 100;
+                            if (parseInt(record['allowedSalary']) >=0 && parseInt(record['stagePercent'])>=0) {
+                                record['salesPremiums'] = parseInt(record['allowedSalary']) * parseInt(record['stagePercent']) / 100;
                             } else {
                                 record['salesPremiums'] = '';
                             }
 
-                            if (parseInt(record['base_salary']) >=0 && parseInt(record['maxPercent'])>=0) {
-                                record['possiblePremiums'] = parseInt(record['base_salary']) * parseInt(record['maxPercent']) / 100;
+                            if (parseInt(record['allowedSalary']) >=0 && parseInt(record['maxPercent'])>=0) {
+                                record['possiblePremiums'] = parseInt(record['allowedSalary']) * parseInt(record['maxPercent']) / 100;
                             } else {
                                 record['possiblePremiums'] = '';
                             }
 
-                            if (parseInt(record['base_salary']) >=0) {
-                                record['allowedSalary'] = parseInt(record['base_salary']) / countWorkingDays * parseInt(record['workingHoursDays']) / 8;
-                            } else {
-                                record['allowedSalary'] = '';
-                            }
+                            // if (parseInt(record['base_salary']) >=0) {
+                            //     record['allowedSalary'] = parseInt(record['base_salary']) / countWorkingDays * parseInt(record['workingHoursDays']) / 8;
+                            // } else {
+                            //     record['allowedSalary'] = '';
+                            // }
 
-                            if (parseInt(record['base_salary']) >=0) {
-                                record['vacation'] = parseInt(record['base_salary']) / countWorkingDays * 0.8 * parseInt(record['hospitalDays'])
-                                    + parseInt(record['base_salary']) / countWorkingDays * parseInt(record['vacationDays']);
-                            } else {
-                                record['vacation'] = '';
-                            }
+                            // if (parseInt(record['base_salary']) >=0) {
+                            //     record['vacation'] = parseInt(record['base_salary']) / countWorkingDays * 0.8 * parseInt(record['hospitalDays'])
+                            //         + parseInt(record['base_salary']) / countWorkingDays * parseInt(record['vacationDays']);
+                            // } else {
+                            //     record['vacation'] = '';
+                            // }
 
-                            if (parseInt(record['base_salary']) >=0) {
+                            if (parseInt(record['allowedSalary']) >=0) {
                                 record['totalWages'] = 0;
-                                if (record['vacation']) record['totalWages'] = record['totalWages'] + record['vacation'];
+                               // if (record['vacation']) record['totalWages'] = record['totalWages'] + record['vacation'];
                                 if (record['allowedSalary']) record['totalWages'] = record['totalWages'] + record['allowedSalary'];
                                 if (record['salesPremiums']) record['totalWages'] = record['totalWages'] + record['salesPremiums'];
                                 if (record['allowedShares']) record['totalWages'] = record['totalWages'] + record['allowedShares'];
@@ -333,9 +331,9 @@ function renderWebix(i, countWorkingDays) {
                                 record['totalWages'] = '';
                             }
 
-                            if (parseInt(record['base_salary']) >=0) {
+                            if (parseInt(record['allowedSalary']) >=0) {
                                 record['possibleSalary'] = 0;
-                                if (record['vacation']) record['possibleSalary'] = record['possibleSalary'] + record['vacation'];
+                               // if (record['vacation']) record['possibleSalary'] = record['possibleSalary'] + record['vacation'];
                                 if (record['allowedSalary']) record['possibleSalary'] = record['possibleSalary'] + record['allowedSalary'];
                                 if (record['possiblePremiums']) record['possibleSalary'] = record['possibleSalary'] + record['possiblePremiums'];
                             } else {

@@ -35,11 +35,11 @@
                                     <strong>Учет заработной платы</strong>
                                 </a>
                             </p>
-                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=holidays'" class="{if $MODE eq 'holidays'}selectedQuickLink{else}unSelectedQuickLink{/if}">
-                                <a class="quickLinks" href="index.php?module=Accounting&view=List&mode=holidays">
-                                    <strong>Праздничные дни</strong>
-                                </a>
-                            </p>
+                            {*<p onclick="window.location.href='index.php?module=Accounting&view=List&mode=holidays'" class="{if $MODE eq 'holidays'}selectedQuickLink{else}unSelectedQuickLink{/if}">*}
+                                {*<a class="quickLinks" href="index.php?module=Accounting&view=List&mode=holidays">*}
+                                    {*<strong>Праздничные дни</strong>*}
+                                {*</a>*}
+                            {*</p>*}
                             <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=optionSalary'" class="{if $MODE eq 'optionSalary'}selectedQuickLink{else}unSelectedQuickLink{/if}">
                                 <a class="quickLinks" href="index.php?module=Accounting&view=List&mode=optionSalary">
                                     <strong>Параметры начисления з/п</strong>

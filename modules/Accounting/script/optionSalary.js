@@ -6,7 +6,7 @@ var dtable = new webix.ui({
     view: "datatable",
     columns: [
         {id: "vacation", header: "Наименование", width: 350},
-        {id: "percent", header: "Процент", width: 100, editor: "text"}
+        {id: "percent", header: "Коэффициент", width: 150, editor: "text"}
 
     ],
 

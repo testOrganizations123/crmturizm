@@ -1871,7 +1871,7 @@ class Accounting_List_View extends Vtiger_Index_View
     {
         $addQuery = $this->addQueryFilter();
 
-        $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
+        $usersQuery = "SELECT o.office, o.officeid, u.id, u.title, concat(u.first_name,' ',u.last_name) as name, u.cost_hours, u.percent1, u.percent2, u.percent3, u.percent4 from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
 
         $users = $this->getSQLArrayResult($usersQuery, []);
 
@@ -1888,6 +1888,9 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $queryP = "SELECT * FROM percent_level";
         $percentLevel = $this->getSQLArrayResult($queryP, []);
+
+        $queryVacationPercent = "SELECT * FROM option_salary";
+        $vacationPercent = $this->getSQLArrayResult($queryVacationPercent, []);
 
 
         $holidayQuery = "SELECT * FROM holidays where date BETWEEN ? AND ?  ORDER BY date";
@@ -2014,60 +2017,61 @@ class Accounting_List_View extends Vtiger_Index_View
             $vacation = 0;
             $hospital = 0;
             $workingHours = 0;
+            $allowedSalary = 0;
 
             foreach ($workerTimesArray as $item) {
                 if ($item['user'] == $user['id']) {
-                    if ($item['time'] == "от" || $item['time'] == "От" || $item['time'] == "ОТ" || $item['time'] == 'РТ' || $item['time'] == 'Рт' || $item['time'] == 'рт') {
-                        $flag = 0;
-                        foreach ($holidaysAll as $value) {
-                            $a = new DateTime($value['date']);
-                            $b = new DateTime($item['date']);
-                            if ($a == $b) {
-                                $flag = 1;
-                            }
-                        }
-                        if ($flag) {
-                            continue;
-                        }
-                        $vacation += 1;
+                    if ($item['time'] == "от" || $item['time'] == "От" || $item['time'] == "ОТ") {
+                        $allowedSalary += 8 * $user['cost_hours'] * $vacationPercent[0]['vacation_basic'];
+                    }
+                    if ($item['time'] == "рт" || $item['time'] == "Рт" || $item['time'] == "РТ") {
+                        $allowedSalary += 8 * $user['cost_hours'] * $vacationPercent[0]['advertising_tour'];
                     }
 
-                    if ($item['time'] == 'К' || $item['time'] == 'У' || $item['time'] == 'у') {
-                        $item['time'] = 8;
+                    if ($item['time'] == "К" || $item['time'] == "к") {
+                        $allowedSalary += 8 * $user['cost_hours'] * $vacationPercent[0]['business_trip'];
                     }
-
                     if (is_numeric($item['time'])) {
 
-                        $workingHours += $item['time'];
+                        $allowedSalary += $item['time'] * $user['cost_hours'];
                     }
 
-                    if ($item['time'] == 'б' || $item['time'] == 'Б') {
-                        $flag = 0;
-                        foreach ($holidaysAll as $value) {
-                            $a = new DateTime($value['date']);
-                            $b = new DateTime($item['date']);
-                            if ($a == $b) {
-                                $flag = 1;
-                            }
-                        }
+//                    if ($item['time'] == 'б' || $item['time'] == 'Б') {
+//                        $flag = 0;
+//                        foreach ($holidaysAll as $value) {
+//                            $a = new DateTime($value['date']);
+//                            $b = new DateTime($item['date']);
+//                            if ($a == $b) {
+//                                $flag = 1;
+//                            }
+//                        }
+//
+//                        if ($flag) {
+//                            continue;
+//                        }
+//                        foreach ($weekend as $value) {
+//                            $a = $value['date'];
+//                            $b = new DateTime($item['date']);
+//                            if ($a == $b) {
+//                                $flag = 1;
+//                            }
+//                        }
+//                        if ($flag) {
+//                            continue;
+//                        }
+//
+//                        $hospital += 1;
+//
+//
+//                    }
 
-                        if ($flag) {
-                            continue;
-                        }
-                        foreach ($weekend as $value) {
-                            $a = $value['date'];
-                            $b = new DateTime($item['date']);
-                            if ($a == $b) {
-                                $flag = 1;
-                            }
-                        }
-                        if ($flag) {
-                            continue;
-                        }
-
-                        $hospital += 1;
+                    if ($item['time'] == "Б" || $item['time'] == "б") {
+                        $allowedSalary += 8 * $user['cost_hours'] * $vacationPercent[0]['hospital'];
+                    }
 
 
+                    if ($item['time'] == "У" || $item['time'] == "у") {
+                        $allowedSalary += 8 * $user['cost_hours'] * $vacationPercent[0]['study_leave'];
                     }
 
                 }
@@ -2110,7 +2114,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             foreach ($salaryObject as $item) {
                 if ($user['id'] == $item['worker']) {
-                    $baseSalary = $item["base_salary"];
+                   // $baseSalary = $item["base_salary"];
                     $siteNotification = $item["site_notification"];
                     $updateSite = $item["update_site"];
                     $transfer = $item["transfer"];
@@ -2125,50 +2129,51 @@ class Accounting_List_View extends Vtiger_Index_View
             if (!is_null($floor1)) {
                 if ($sum >= $floor1) {
                     $level = 1;
-                    $percent = $percentLevel[0]['level1'];
+                    $percent = $user['percent1'];
                 }
 
-                $maxPercent = $percentLevel[0]['level1'];
+                $maxPercent = $user['percent1'];
             }
 
             if (!is_null($floor2)) {
                 if ($sum >= $floor2) {
                     $level = 2;
-                    $percent = $percentLevel[0]['level2'];
+                    $percent = $user['percent2'];
                 }
 
-                $maxPercent = $percentLevel[0]['level2'];
+                $maxPercent = $user['percent2'];
             }
 
             if (!is_null($floor3)) {
                 if ($sum >= $floor3) {
                     $level = 3;
-                    $percent = $percentLevel[0]['level3'];
+                    $percent = $user['percent3'];
                 }
 
-                $maxPercent = $percentLevel[0]['level3'];
+                $maxPercent = $user['percent3'];
             }
 
             if (!is_null($floor4)) {
                 if ($sum >= $floor4) {
                     $level = 4;
-                    $percent = $percentLevel[0]['level4'];
+                    $percent = $user['percent4'];
                 }
 
-                $maxPercent = $percentLevel[0]['level4'];
+                $maxPercent = $user['percent4'];
             }
 
             $personSalary = [
                 "id" => $user["id"],
                 "worker" => "<div style='cursor: pointer' class='user'>" . $user["name"] . "</div>",
-                "salesRevenue" => $sum,
+                "salesRevenue" => round($sum,-2),
                 "stage" => $level,
                 "stagePercent" => $percent,
-                "vacationDays" => $vacation,
-                "workingHoursDays" => $workingHours,
-                "hospitalDays" => $hospital,
+                //"vacationDays" => $vacation,
+                //"workingHoursDays" => $workingHours,
+                //"hospitalDays" => $hospital,
 
-                "base_salary" => $baseSalary,
+                // "base_salary" => $baseSalary,
+                "allowedSalary" => $allowedSalary,
                 "site_notification" => $siteNotification,
                 "update_site" => $updateSite,
                 "transfer" => $transfer,
