@@ -183,6 +183,11 @@ class Accounting_List_View extends Vtiger_Index_View
             );
 
         }
+
+        if ($this->mode == 'workers') {
+            return array($region, $office, $staf);
+        }
+
         return array($region, $office, $staf, $period);
     }
 
@@ -325,7 +330,6 @@ class Accounting_List_View extends Vtiger_Index_View
 
     public function workingHours(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
-
 
         $addQuery = $this->addQueryFilter();
 
@@ -2509,5 +2513,114 @@ class Accounting_List_View extends Vtiger_Index_View
         echo json_encode(['table' => $salaryTable, 'name' => $name]);
         die();
     }
+
+    function addScript_workers($jsFileNames)
+    {
+        array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
+        array_push($jsFileNames, "modules.Accounting.script.workers");
+        return $jsFileNames;
+    }
+
+    public function workers(Vtiger_Request $request, Vtiger_Viewer $viewer) {
+
+        $addQuery = $this->addQueryFilter();
+
+        $style = [
+            "cost_hours" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)"],
+            "percent1" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)"],
+            "percent2" => ["border" => "1px solid #aad5fd!important",  "background" => "rgba(236, 255, 222, 0.2)"],
+            "percent3" => ["border" => "1px solid #aad5fd!important",  "background" => "rgba(236, 255, 222, 0.2)"],
+            "percent4" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)"]
+        ];
+
+        //выбираем пользователей
+        $usersQuery = "SELECT o.office, o.officeid, u.id, u.cost_hours, u.percent1, u.percent2, u.percent3, u.percent4, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
+
+        $users = $this->getSQLArrayResult($usersQuery, []);
+
+        $offices = [];
+
+        foreach ($users as $user) {
+
+            if ($user['office'] == null) {
+                $user['office'] = 'Без офиса';
+            }
+
+            if ($user['officeid'] == null) {
+                $user['officeid'] = 0;
+            }
+
+            $flag = 0;
+            foreach ($offices as $key => $off) {
+                if ($off["office"] == $user["office"]) {
+
+                    $us = [];
+                    $us["id"] = $user["id"];
+                    $us["name"] = $user["name"];
+                    $us["cost_hours"] = $user["cost_hours"];
+                    $us["percent1"] = $user["percent1"];
+                    $us["percent2"] = $user["percent2"];
+                    $us["percent3"] = $user["percent3"];
+                    $us["percent4"] = $user["percent4"];
+                    $us["\$cellCss"] = $style;
+
+                    $offices[$key]["users"][] = $us;
+
+                    $flag = 1;
+                    break;
+                }
+            }
+
+            if ($flag == 0) {
+                $office = [
+                    "office" => $user["office"],
+                    "officeId" => $user["officeid"]
+                ];
+
+                $office["users"] = [];
+
+                $us = [];
+                $us["id"] = $user["id"];
+                $us["name"] = $user["name"];
+                $us["cost_hours"] = $user["cost_hours"];
+                $us["percent1"] = $user["percent1"];
+                $us["percent2"] = $user["percent2"];
+                $us["percent3"] = $user["percent3"];
+                $us["percent4"] = $user["percent4"];
+                $us["\$cellCss"] = $style;
+
+
+                $office["users"][] = $us;
+
+                $offices[] = $office;
+            }
+
+        }
+
+        $offices[] = array_shift($offices);
+
+        $viewer->assign('WORKERS', true);
+        $viewer->assign('OFFICES', json_encode($offices));
+    }
+
+    public function editWorkers(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+        $userId = $request->get('user');
+        $column = $request->get('column');
+        $value = $request->get('value');
+
+        if ($value == '') {
+            $sql = "UPDATE vtiger_users SET $column = null WHERE  id = '$userId'";
+        } else {
+            $sql = "UPDATE vtiger_users SET $column = '$value' WHERE  id = '$userId'";
+        }
+
+
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+        echo json_encode('success');
+        die();
+    }
+
 
 }

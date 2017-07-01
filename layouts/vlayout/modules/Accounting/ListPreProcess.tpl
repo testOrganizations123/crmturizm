@@ -45,12 +45,14 @@
                                     <strong>Параметры начисления з/п</strong>
                                 </a>
                             </p>
+                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=workers'" class="{if $MODE eq 'workers'}selectedQuickLink{else}unSelectedQuickLink{/if}">
+                                <a class="quickLinks" href="index.php?module=Accounting&view=List&mode=workers">
+                                    <strong>Сотрудники</strong>
+                                </a>
+                            </p>
                         </div>
-                     
-                        
                             
                     </div>
-                    
                         
                 </div>
                     

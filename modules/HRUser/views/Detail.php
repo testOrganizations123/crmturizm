@@ -21,7 +21,7 @@ class HRUser_Detail_View extends Vtiger_Detail_View {
                 
 		$recordStrucure = Vtiger_RecordStructure_Model::getInstanceFromRecordModel($recordModel, Vtiger_RecordStructure_Model::RECORD_STRUCTURE_MODE_DETAIL);
 		
-                $structuredValues = $recordStrucure->getStructure();
+        $structuredValues = $recordStrucure->getStructure();
                
         $moduleModel = $recordModel->getModule();
 

@@ -100,20 +100,20 @@
                         {if $FIELD_NAME eq 'office' && $MODULE neq 'Office'}
                                                          {include file='uitypes/officeView.tpl'|@vtemplate_path:$MODULE}
                                                      {else}
-							
+
                                              {include file=vtemplate_path($FIELD_MODEL->getUITypeModel()->getDetailViewTemplateName(),$MODULE_NAME) FIELD_MODEL=$FIELD_MODEL USER_MODEL=$USER_MODEL MODULE=$MODULE_NAME RECORD=$RECORD}
-					{/if}  
+					{/if}
                                                      </span>
                                          {if $MODULE_NAME eq 'Users' && ($FIELD_NAME eq 'spcompany' || $FIELD_NAME eq 'office' || $FIELD_NAME eq 'add_user') && !$USER_MODEL->isAdminUser()}
                                          {else if ($MODULE_NAME eq 'Leads' || $MODULE_NAME eq 'Potentials') && $FIELD_NAME eq 'assigned_user_id'}
 					 {else if $IS_AJAX_ENABLED && $FIELD_MODEL->isEditable() eq 'true' && ($FIELD_MODEL->getFieldDataType()!=Vtiger_Field_Model::REFERENCE_TYPE) && $FIELD_MODEL->isAjaxEditable() eq 'true'}
-                                             
+
 						 <span class="hide edit">
                                                      {if $FIELD_NAME eq 'office'}
                                                          {include file='uitypes/office.tpl'|@vtemplate_path:$MODULE}
                                                      {else}
 							 {include file=vtemplate_path($FIELD_MODEL->getUITypeModel()->getTemplateName(),$MODULE_NAME) FIELD_MODEL=$FIELD_MODEL USER_MODEL=$USER_MODEL MODULE=$MODULE_NAME}
-                                                     {/if}    
+                                                     {/if}
                              {if $FIELD_MODEL->getFieldDataType() eq 'multipicklist'}
                                 <input type="hidden" class="fieldname" value='{$FIELD_MODEL->get('name')}[]' data-prev-value='{$FIELD_MODEL->getDisplayValue($FIELD_MODEL->get('fieldvalue'))}' />
                              {else}
