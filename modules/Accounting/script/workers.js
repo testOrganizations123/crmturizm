@@ -17,7 +17,7 @@ function renderWebix(i) {
 
         autoheight: true,
         autowidth: true,
-        editable: true,
+        editable: window.writingAccess,
         data:  table.users,
         on: {
 

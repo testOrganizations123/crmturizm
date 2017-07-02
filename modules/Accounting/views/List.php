@@ -222,7 +222,6 @@ class Accounting_List_View extends Vtiger_Index_View
         return $sql;
     }
 
-
     function getUsersOffice()
     {
         if (is_array($this->office_data)) {
@@ -2532,16 +2531,46 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $addQuery = $this->addQueryFilter();
 
-        $style = [
-            "cost_hours" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)"],
-            "percent1" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)"],
-            "percent2" => ["border" => "1px solid #aad5fd!important",  "background" => "rgba(236, 255, 222, 0.2)"],
-            "percent3" => ["border" => "1px solid #aad5fd!important",  "background" => "rgba(236, 255, 222, 0.2)"],
-            "percent4" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)"]
-        ];
+        if ($this->filter_data['user']) {
+            $userFilter = $this->filter_data['user'];
+        } else {
+            $userFilter = null;
+        }
+
+        //узнаем, пользователь обычный менеджер(может стажер) или управляющий
+        $db = PearDatabase::getInstance();
+        $userModel = Users_Record_Model::getCurrentUserModel();
+        $userRole = $userModel->getRole();
+        $sqlRole = "SELECT depth FROM vtiger_role WHERE roleid = '$userRole'";
+        $result = $db->pquery($sqlRole, array());
+
+        $depth = $db->query_result_rowdata($result, "depth");
+        if ($depth["depth"] > 4) {
+            $viewer->assign('WRITINGACCESS', 'false');
+            $style = [
+                "cost_hours" => ["background" => "rgba(242, 222, 255, 0.1)"],
+                "percent1" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "percent2" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "percent3" => ["background" => "rgba(236, 255, 222, 0.2)"],
+                "percent4" => ["background" => "rgba(236, 255, 222, 0.2)"]
+            ];
+        } else {
+            $viewer->assign('WRITINGACCESS', 'true');
+            $style = [
+                "cost_hours" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent1" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"],
+                "percent2" => ["border" => "1px solid #aad5fd!important",  "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"],
+                "percent3" => ["border" => "1px solid #aad5fd!important",  "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"],
+                "percent4" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"]
+            ];
+        }
 
         //выбираем пользователей
-        $usersQuery = "SELECT o.office, o.officeid, u.id, u.cost_hours, u.percent1, u.percent2, u.percent3, u.percent4, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
+        if ($userFilter) {
+            $usersQuery = "SELECT o.office, o.officeid, u.id, u.cost_hours, u.percent1, u.percent2, u.percent3, u.percent4, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery . "AND u.id = $userFilter";
+        } else {
+            $usersQuery = "SELECT o.office, o.officeid, u.id, u.cost_hours, u.percent1, u.percent2, u.percent3, u.percent4, concat(u.first_name,' ',u.last_name) as name from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office WHERE 1=1 " . $addQuery;
+        }
 
         $users = $this->getSQLArrayResult($usersQuery, []);
 
