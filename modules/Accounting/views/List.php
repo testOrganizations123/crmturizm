@@ -2091,6 +2091,8 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
             }
 
+            $sum = round($sum/100,-2);
+
             $floor1 = null;
             $floor2 = null;
             $floor3 = null;
@@ -2169,7 +2171,7 @@ class Accounting_List_View extends Vtiger_Index_View
             $personSalary = [
                 "id" => $user["id"],
                 "worker" => "<div style='cursor: pointer' class='user'>" . $user["name"] . "</div>",
-                "salesRevenue" => round($sum,-2),
+                "salesRevenue" => $sum,
                 "stage" => $level,
                 "stagePercent" => $percent,
                 //"vacationDays" => $vacation,
