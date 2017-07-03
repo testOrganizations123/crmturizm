@@ -1111,7 +1111,7 @@ function renderWebixPromo(i, show_date, show_editor, parse_editor) {
             {id: "allowed", header: {text: "Положено", rotate: true}, editor: "text", width: 40},
             {id: "spent", header: {text: "Потрачено", rotate: true}, width: 40},
             {id: "left", header: {text: "Осталось", rotate: true}, width: 40},
-            {id: "holidays", header: {text: "Праздники", rotate: true}, width: 40}
+            // {id: "holidays", header: {text: "Праздники", rotate: true}, width: 40}
         ],
         autoheight: true,
         autowidth: true,
