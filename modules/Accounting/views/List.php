@@ -2228,6 +2228,7 @@ class Accounting_List_View extends Vtiger_Index_View
         ]));
 
         $offices[] = array_shift($offices);
+
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('SALARY', json_encode($offices));
         $viewer->assign('AMOUNTHOLIDAY', $holidaysAmount);
@@ -2490,7 +2491,7 @@ class Accounting_List_View extends Vtiger_Index_View
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
-            where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =" . $worker;
+            where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =" . $worker." ORDER BY DATE";
 
 
         $usersQuery = "SELECT  concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE u.id=" . $worker;
