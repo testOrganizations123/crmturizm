@@ -2090,7 +2090,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
             }
 
-            $sum = round($sum/100,-2);
+            $sum = round($sum,-2);
 
             $floor1 = null;
             $floor2 = null;
