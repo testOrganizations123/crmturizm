@@ -63,6 +63,12 @@
            {if isset($WORKERS)}
                 {include file=vtemplate_path("uitypes/workers.tpl",$MODULE) }
            {/if}
+            {if isset($PERSONALCARD)}
+                {include file=vtemplate_path("uitypes/personalCard.tpl",$MODULE) }
+            {/if}
+            {if isset($EMPLOYEES)}
+                {include file=vtemplate_path("uitypes/employees.tpl",$MODULE) }
+            {/if}
         </div>
     </div>
 {/strip}

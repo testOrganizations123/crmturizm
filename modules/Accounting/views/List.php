@@ -187,6 +187,13 @@ class Accounting_List_View extends Vtiger_Index_View
         if ($this->mode == 'workers') {
             return array($region, $office, $staf);
         }
+        if ($this->mode == 'employees') {
+            return array($region, $office, $staf);
+        }
+
+        if ($this->mode == 'personalCard') {
+            return array($period);
+        }
 
         return array($region, $office, $staf, $period);
     }
@@ -2090,7 +2097,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 }
             }
 
-            $sum = round($sum,-2);
+            $sum = round($sum, -2);
 
             $floor1 = null;
             $floor2 = null;
@@ -2119,7 +2126,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             foreach ($salaryObject as $item) {
                 if ($user['id'] == $item['worker']) {
-                   // $baseSalary = $item["base_salary"];
+                    // $baseSalary = $item["base_salary"];
                     $siteNotification = $item["site_notification"];
                     $updateSite = $item["update_site"];
                     $transfer = $item["transfer"];
@@ -2491,7 +2498,7 @@ class Accounting_List_View extends Vtiger_Index_View
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             left join vtiger_office as o ON o.officeid = pcf.cf_1215
             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
-            where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =" . $worker." ORDER BY DATE";
+            where c1.deleted=0  and (CAST( pcf.cf_1225 AS DATE) BETWEEN ? AND ?) and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' and u.id =" . $worker . " ORDER BY DATE";
 
 
         $usersQuery = "SELECT  concat(u.first_name,' ',u.last_name) as name from vtiger_users as u WHERE u.id=" . $worker;
@@ -2528,7 +2535,8 @@ class Accounting_List_View extends Vtiger_Index_View
         return $jsFileNames;
     }
 
-    public function workers(Vtiger_Request $request, Vtiger_Viewer $viewer) {
+    public function workers(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
 
         $addQuery = $this->addQueryFilter();
 
@@ -2560,8 +2568,8 @@ class Accounting_List_View extends Vtiger_Index_View
             $style = [
                 "cost_hours" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
                 "percent1" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"],
-                "percent2" => ["border" => "1px solid #aad5fd!important",  "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"],
-                "percent3" => ["border" => "1px solid #aad5fd!important",  "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"],
+                "percent2" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"],
+                "percent3" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"],
                 "percent4" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(236, 255, 222, 0.2)", "cursor" => "pointer"]
             ];
         }
@@ -2647,12 +2655,11 @@ class Accounting_List_View extends Vtiger_Index_View
         $value = $request->get('value');
 
 
-
         $usersQuery = "SELECT u.percent1, u.percent2, u.percent3, u.percent4 from vtiger_users as u  WHERE  id = '$userId'";
 
         $users = $this->getSQLArrayResult($usersQuery, []);
 
-       if ( $value != "") {
+        if ($value != "") {
 
             if ($column == "percent1") {
 
@@ -2682,24 +2689,24 @@ class Accounting_List_View extends Vtiger_Index_View
 
             if ($column == "percent2") {
 
-                if ($users[0]['percent1']){
-                    if ($value < $users[0]['percent1'] ) {
+                if ($users[0]['percent1']) {
+                    if ($value < $users[0]['percent1']) {
                         echo json_encode('2-й этап не может  ниже 1-го');
                         die();
                     }
 
                 }
 
-                if ($users[0]['percent3']){
-                    if ($value > $users[0]['percent3'] ) {
+                if ($users[0]['percent3']) {
+                    if ($value > $users[0]['percent3']) {
                         echo json_encode('2-й этап не может выше 3-го');
                         die();
                     }
 
                 }
 
-                if ($users[0]['percent4']){
-                    if ($value < $users[0]['percent1'] ) {
+                if ($users[0]['percent4']) {
+                    if ($value < $users[0]['percent1']) {
                         echo json_encode('2-й этап не может выше 4-го');
                         die();
                     }
@@ -2712,24 +2719,24 @@ class Accounting_List_View extends Vtiger_Index_View
             if ($column == "percent3") {
 
 
-                if ($users[0]['percent1']){
-                    if ($value < $users[0]['percent1'] ) {
+                if ($users[0]['percent1']) {
+                    if ($value < $users[0]['percent1']) {
                         echo json_encode('3-й этап не может  ниже 1-го');
                         die();
                     }
 
                 }
 
-                if ($users[0]['percent2']){
-                    if ($value < $users[0]['percent2'] ) {
+                if ($users[0]['percent2']) {
+                    if ($value < $users[0]['percent2']) {
                         echo json_encode('3-й этап не может  ниже 2-го');
                         die();
                     }
 
                 }
 
-                if ($users[0]['percent4']){
-                    if ($value > $users[0]['percent4'] ) {
+                if ($users[0]['percent4']) {
+                    if ($value > $users[0]['percent4']) {
                         echo json_encode('3-й этап не может выше 4-го');
                         die();
                     }
@@ -2738,24 +2745,24 @@ class Accounting_List_View extends Vtiger_Index_View
             }
 
             if ($column == "percent4") {
-                if ($users[0]['percent1']){
-                    if ($value < $users[0]['percent1'] ) {
+                if ($users[0]['percent1']) {
+                    if ($value < $users[0]['percent1']) {
                         echo json_encode('4-й этап не может  ниже 1-го');
                         die();
                     }
 
                 }
 
-                if ($users[0]['percent2']){
-                    if ($value < $users[0]['percent2'] ) {
+                if ($users[0]['percent2']) {
+                    if ($value < $users[0]['percent2']) {
                         echo json_encode('4-й этап не может  ниже 2-го');
                         die();
                     }
 
                 }
 
-                if ($users[0]['percent3']){
-                    if ($value < $users[0]['percent3'] ) {
+                if ($users[0]['percent3']) {
+                    if ($value < $users[0]['percent3']) {
                         echo json_encode('4-й этап не может  ниже 3-го');
                         die();
                     }
@@ -2765,7 +2772,6 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         }
-
 
 
         if ($value == '') {
@@ -2779,6 +2785,78 @@ class Accounting_List_View extends Vtiger_Index_View
         $db->pquery($sql, array());
         echo json_encode('success');
         die();
+    }
+
+
+    function addScript_personalCard($jsFileNames)
+    {
+        array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
+        array_push($jsFileNames, "modules.Accounting.script.personalCard");
+        return $jsFileNames;
+    }
+
+    public function personalCard(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+        $date = DateTime::createFromFormat('m.Y', $this->filter_data['period']);
+
+        //считаем количество дней в месяце
+
+        $countDays = cal_days_in_month(CAL_GREGORIAN, $date->format('m'), $date->format('Y'));
+
+        $remaining = $countDays - 28;
+
+        $header = [
+            ['id'=>'name', 'header'=>"",'width'=>250],
+            ['id'=>'name2','header'=>"",'width'=>250],
+            ['id'=>'week1', 'header'=>"1.".$date->format('m')." - 7.".$date->format('m'), 'width'=>200],
+            ['id'=>'week2', 'header'=>"8.".$date->format('m')." - 14.".$date->format('m'), 'width'=>200],
+            ['id'=>'week3', 'header'=>"15.".$date->format('m')." - 21.".$date->format('m'), 'width'=>200],
+            ['id'=>'week4', 'header'=>"22.".$date->format('m')." - ".(28+$remaining).".".$date->format('m'), 'width'=>200],
+            ['id'=>'total', 'header'=>"Итого", 'width'=>200],
+        ];
+
+        $viewer->assign('PERSONALCARD', true);
+        $viewer->assign('HEADER', json_encode($header));
+    }
+
+    function addScript_employees($jsFileNames)
+    {
+        array_push($jsFileNames, "modules.VDCustomReports.webix.webix");
+        array_push($jsFileNames, "modules.Accounting.script.employees");
+        return $jsFileNames;
+    }
+
+    public function employees(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+        $addQuery = $this->addQueryFilter();
+
+        if ($this->filter_data['user']) {
+            $userFilter = $this->filter_data['user'];
+        } else {
+            $userFilter = null;
+        }
+
+        if ($userFilter) {
+            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery . "AND u.id = $userFilter";
+        } else {
+            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery;
+        }
+        $users = $this->getSQLArrayResult($usersQuery, array());
+
+        foreach ($users as $key => $item) {
+            if ($item['office'] == null) {
+                $users[$key]['office'] = "Без офиса";
+            }
+
+            $users[$key]['office'] = html_entity_decode($users[$key]['office']);
+
+            if ($item['position'] == null) {
+                $users[$key]['position'] = "Без должности";
+            }
+        }
+
+        $viewer->assign('USERS', json_encode($users));
+        $viewer->assign('EMPLOYEES', true);
     }
 
 

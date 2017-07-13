@@ -50,6 +50,11 @@
                                     <strong>Сотрудники</strong>
                                 </a>
                             </p>
+                            <p onclick="window.location.href='index.php?module=Accounting&view=List&mode=employees'" class="{if $MODE eq 'employees'}selectedQuickLink{else}unSelectedQuickLink{/if}">
+                                <a class="quickLinks" href="index.php?module=Accounting&view=List&mode=employees">
+                                    <strong>Личная карточка</strong>
+                                </a>
+                            </p>
                         </div>
                             
                     </div>

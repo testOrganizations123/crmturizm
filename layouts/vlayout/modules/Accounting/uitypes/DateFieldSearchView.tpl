@@ -11,7 +11,7 @@
 -->*}
 {strip}
 
-    {if !isset($EDITPLAN) && !isset($PLAN) && !isset($WORKING) && !isset($SALARY)}
+    {if !isset($EDITPLAN) && !isset($PLAN) && !isset($WORKING) && !isset($SALARY) && !isset($PERSONALCARD)}
         {assign var='dateFormat' value=$USER_MODEL->get('date_format')}
         <div class='row-fluid'>
 
