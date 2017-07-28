@@ -3099,11 +3099,11 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $header = [
             ['id' => 'name', 'header' => "", 'width' => 300],
-            ['id' => 'week1', 'header' => "1." . $date->format('m') . " - 7." . $date->format('m'), 'width' => 200],
-            ['id' => 'week2', 'header' => "8." . $date->format('m') . " - 14." . $date->format('m'), 'width' => 200],
-            ['id' => 'week3', 'header' => "15." . $date->format('m') . " - 21." . $date->format('m'), 'width' => 200],
-            ['id' => 'week4', 'header' => "22." . $date->format('m') . " - " . (28 + $remaining) . "." . $date->format('m'), 'width' => 200],
-            ['id' => 'total', 'header' => "Итого", 'width' => 200],
+            ['id' => 'week1', 'header' => "1." . $date->format('m') . " - 7." . $date->format('m'), 'width' => 150],
+            ['id' => 'week2', 'header' => "8." . $date->format('m') . " - 14." . $date->format('m'), 'width' => 150],
+            ['id' => 'week3', 'header' => "15." . $date->format('m') . " - 21." . $date->format('m'), 'width' => 150],
+            ['id' => 'week4', 'header' => "22." . $date->format('m') . " - " . (28 + $remaining) . "." . $date->format('m'), 'width' => 150],
+            ['id' => 'total', 'header' => "Итого", 'width' => 150],
         ];
         $viewer->assign('DATA1', json_encode($data1));
         $viewer->assign('PERSONALCARD', true);
