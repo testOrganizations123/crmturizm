@@ -2808,6 +2808,15 @@ class Accounting_List_View extends Vtiger_Index_View
         $dateStringFinish = $date->format("Y-m-$countDays 23:59:59");
 
 
+        $sqlNewFunnelApplication = "SELECT l.leadid as id, c1.createdtime , a1.eventstatus, l.leadsource, c1.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as c1 ON c1.crmid = l.leadid
+                                    INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
+                                    LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+                                    WHERE a1.eventstatus != 'Held' and (CAST(c1.createdtime AS DATE) BETWEEN '$dateStringStart' AND '$dateStringFinish') AND u.id = '$userId'
+            GROUP BY  c1.crmid";
+
+        $resultApplicationNew = $this->getSQLArrayResult($sqlNewFunnelApplication, []);
+
+
         $timesQuery = "
                    SELECT *
                    FROM working_time as wt
@@ -2815,7 +2824,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $workerTimesArray = $this->getSQLArrayResult($timesQuery, []);
 
-        
+
         $date2 = new DateTime("7.".$this->filter_data['period']);
         $date3 = new DateTime("8.".$this->filter_data['period']);
         $date4 = new DateTime("14.".$this->filter_data['period']);
@@ -2852,6 +2861,33 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
+        $applicationWeek1 = 0;
+        $applicationWeek2 = 0;
+        $applicationWeek3 = 0;
+        $applicationWeek4 = 0;
+        $applicationAll = 0;
+
+        foreach ($resultApplicationNew as $item){
+            $applicationAll++;
+            if (new DateTime($item['createdtime']) <= $date2) {
+                $applicationWeek1++;
+            }
+            if (new DateTime($item['createdtime']) >= $date3 &&
+                    new DateTime($item['createdtime']) <= $date4) {
+                $applicationWeek2++;
+            }
+            if (new DateTime($item['createdtime']) >= $date5 &&
+                    new DateTime($item['createdtime']) <= $date6) {
+                $applicationWeek3++;
+            }
+            if (new DateTime($item['createdtime']) >= $date7) {
+                $applicationWeek4++;
+            }
+
+        }
+
+
+
         $data1 = [
             ['id' => 1,
                 'name' => 'Количество рабочих дней',
@@ -2861,6 +2897,15 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week3" => $workDay3,
                 "week4" => $workDay4,
                 "total" => $workDayAll
+            ],
+            ['id' => 2,
+                'name' => 'Количество заявок в работе',
+                'name2' => "",
+                "week1" => $applicationWeek1,
+                "week2" => $applicationWeek2,
+                "week3" => $applicationWeek3,
+                "week4" => $applicationWeek4,
+                "total" => $applicationAll
             ]
         ];
 
