@@ -9,6 +9,9 @@
                     <input type="hidden" name="module" value="Accounting">
                     <input type="hidden" name="view" value="List">
                     <input type="hidden" name="mode" value="{$MODE}">
+                    {if isset($USERID)}
+                        <input type="hidden" name="id" value='{$USERID}'>
+                    {/if}
                     {foreach item=item from=$FILTER}
                         <div class="span2"><label>{$item['label']}</label>
                             {if isset($item['tpl'])}

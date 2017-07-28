@@ -2986,6 +2986,8 @@ class Accounting_List_View extends Vtiger_Index_View
         $viewer->assign('DATA1', json_encode($data1));
         $viewer->assign('PERSONALCARD', true);
         $viewer->assign('HEADER', json_encode($header));
+        $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
+        $viewer->assign('USERID', $userId);
     }
 
     function addScript_employees($jsFileNames)
