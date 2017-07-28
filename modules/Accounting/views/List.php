@@ -2798,23 +2798,83 @@ class Accounting_List_View extends Vtiger_Index_View
     public function personalCard(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         $date = DateTime::createFromFormat('m.Y', $this->filter_data['period']);
-
+        $userId = $request->get('id');
         //считаем количество дней в месяце
 
         $countDays = cal_days_in_month(CAL_GREGORIAN, $date->format('m'), $date->format('Y'));
 
         $remaining = $countDays - 28;
+        $dateStringStart = $date->format("Y-m-01 00:00:00");
+        $dateStringFinish = $date->format("Y-m-$countDays 23:59:59");
 
-        $header = [
-            ['id'=>'name', 'header'=>"",'width'=>250],
-            ['id'=>'name2','header'=>"",'width'=>250],
-            ['id'=>'week1', 'header'=>"1.".$date->format('m')." - 7.".$date->format('m'), 'width'=>200],
-            ['id'=>'week2', 'header'=>"8.".$date->format('m')." - 14.".$date->format('m'), 'width'=>200],
-            ['id'=>'week3', 'header'=>"15.".$date->format('m')." - 21.".$date->format('m'), 'width'=>200],
-            ['id'=>'week4', 'header'=>"22.".$date->format('m')." - ".(28+$remaining).".".$date->format('m'), 'width'=>200],
-            ['id'=>'total', 'header'=>"Итого", 'width'=>200],
+
+        $timesQuery = "
+                   SELECT *
+                   FROM working_time as wt
+                   WHERE user = '$userId' AND  CAST( wt.date AS DATE) BETWEEN '$dateStringStart' AND '$dateStringFinish'";
+
+        $workerTimesArray = $this->getSQLArrayResult($timesQuery, []);
+
+        
+        $date2 = new DateTime("7.".$this->filter_data['period']);
+        $date3 = new DateTime("8.".$this->filter_data['period']);
+        $date4 = new DateTime("14.".$this->filter_data['period']);
+        $date5 = new DateTime("15.".$this->filter_data['period']);
+        $date6 = new DateTime("21.".$this->filter_data['period']);
+        $date7 = new DateTime("22.".$this->filter_data['period']);
+
+        $workDay1 = 0;
+        $workDay2 = 0;
+        $workDay3 = 0;
+        $workDay4 = 0;
+        $workDayAll = 0;
+        foreach ($workerTimesArray as $item) {
+
+            if (is_numeric($item['time']) || $item['time'] == "K") {
+                $workDayAll++;
+
+            }
+
+            if ((is_numeric($item['time']) || $item['time'] == "K") && (new DateTime($item['date']) <= $date2)) {
+                $workDay1++;
+            }
+            if ((is_numeric($item['time']) || $item['time'] == "K") && (new DateTime($item['date']) >= $date3 &&
+                    new DateTime($item['date']) <= $date4)) {
+                $workDay2++;
+            }
+            if ((is_numeric($item['time']) || $item['time'] == "K") && (new DateTime($item['date']) >= $date5 &&
+                    new DateTime($item['date']) <= $date6)) {
+                $workDay3++;
+            }
+            if ((is_numeric($item['time']) || $item['time'] == "K") && (new DateTime($item['date']) >= $date7)) {
+                $workDay4++;
+            }
+
+        }
+
+        $data1 = [
+            ['id' => 1,
+                'name' => 'Количество рабочих дней',
+                'name2' => "",
+                "week1" => $workDay1,
+                "week2" => $workDay2,
+                "week3" => $workDay3,
+                "week4" => $workDay4,
+                "total" => $workDayAll
+            ]
         ];
 
+
+        $header = [
+            ['id' => 'name', 'header' => "", 'width' => 250],
+            ['id' => 'name2', 'header' => "", 'width' => 250],
+            ['id' => 'week1', 'header' => "1." . $date->format('m') . " - 7." . $date->format('m'), 'width' => 200],
+            ['id' => 'week2', 'header' => "8." . $date->format('m') . " - 14." . $date->format('m'), 'width' => 200],
+            ['id' => 'week3', 'header' => "15." . $date->format('m') . " - 21." . $date->format('m'), 'width' => 200],
+            ['id' => 'week4', 'header' => "22." . $date->format('m') . " - " . (28 + $remaining) . "." . $date->format('m'), 'width' => 200],
+            ['id' => 'total', 'header' => "Итого", 'width' => 200],
+        ];
+        $viewer->assign('DATA1', json_encode($data1));
         $viewer->assign('PERSONALCARD', true);
         $viewer->assign('HEADER', json_encode($header));
     }

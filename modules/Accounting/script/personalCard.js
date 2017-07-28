@@ -1,10 +1,6 @@
 
 
-var data = [
-    {id:"1"},
-    {id:"2"}
 
-];
 
 
 
@@ -16,13 +12,7 @@ webix.ready(function () {
         spans:true,
         autoheight: true,
         autowidth: true,
-        data: {
-            data:data,
-            spans:[
-
-                [1, "name",8 , 1, "Аналитика по эффективности финансовых показателей ", "header"]
-            ]
-        }
+        data: window.data1
 
     });
 
