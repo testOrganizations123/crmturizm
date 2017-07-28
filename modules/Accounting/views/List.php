@@ -2838,12 +2838,12 @@ class Accounting_List_View extends Vtiger_Index_View
         $workerTimesArray = $this->getSQLArrayResult($timesQuery, []);
 
 
-        $date2 = new DateTime("7.".$this->filter_data['period']);
-        $date3 = new DateTime("8.".$this->filter_data['period']);
-        $date4 = new DateTime("14.".$this->filter_data['period']);
-        $date5 = new DateTime("15.".$this->filter_data['period']);
-        $date6 = new DateTime("21.".$this->filter_data['period']);
-        $date7 = new DateTime("22.".$this->filter_data['period']);
+        $date2 = new DateTime("7.".$this->filter_data['period']." 23:59:59");
+        $date3 = new DateTime("8.".$this->filter_data['period']." 00:00:00");
+        $date4 = new DateTime("14.".$this->filter_data['period']." 23:59:59");
+        $date5 = new DateTime("15.".$this->filter_data['period']." 00:00:00");
+        $date6 = new DateTime("21.".$this->filter_data['period']." 23:59:59");
+        $date7 = new DateTime("22.".$this->filter_data['period']." 00:00:00");
 
         $workDay1 = 0;
         $workDay2 = 0;
@@ -3111,6 +3111,8 @@ class Accounting_List_View extends Vtiger_Index_View
         $viewer->assign('DATA1', json_encode($data1));
         $viewer->assign('PERSONALCARD', true);
         $viewer->assign('HEADER', json_encode($header));
+        $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
+        $viewer->assign('USERID', $userId);
     }
 
     function addScript_employees($jsFileNames)

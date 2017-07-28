@@ -11,7 +11,7 @@
         text-align: center;
     }
 </style>
-<h3>Аналтика эффективности финансовых показателей</h3>
+<h3>Аналитика эффективности финансовых показателей</h3>
 <br>
 <div id="personal-card"></div>
 <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css">

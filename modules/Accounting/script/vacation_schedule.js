@@ -651,6 +651,7 @@ function parseDate(input, format) {
 
 function renderWebixVacation(i, show_date, show_editor, parse_editor) {
 
+    
     var self = this;
 
     var table = window.offices[i];
