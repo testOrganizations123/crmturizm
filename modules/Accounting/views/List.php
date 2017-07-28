@@ -2944,24 +2944,28 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
         $sumWeek1 = round($profitWeek1,-2);
-        $sumWeek2 = round($profitWeek2,-2);
-        $sumWeek3 = round($profitWeek3,-2);
-        $sumWeek4 = round($profitWeek4,-2);
+        $sumWeek2 = round($profitWeek2+$sumWeek1,-2);
+        $sumWeek3 = round($profitWeek3+$sumWeek1+$sumWeek2,-2);
+        $sumWeek4 = round($profitWeek4+$profitWeek3+$sumWeek1+$sumWeek2,-2);
 
-        if (!is_null($salesPlan['floor1'])) {
-            if ($sumWeek1 >= $salesPlan['floor1']) {
+
+
+        if (!is_null($salesPlan[0]['floor1'])) {
+
+            if ($sumWeek1 >= $salesPlan[0]['floor1']) {
                 $level1 = 1;
 
             }
-            if ($sumWeek2 >= $salesPlan['floor1']) {
+            if ($sumWeek2 >= $salesPlan[0]['floor1']) {
                 $level2 = 1;
 
             }
-            if ($sumWeek3 >= $salesPlan['floor1']) {
+            if ($sumWeek3 >= $salesPlan[0]['floor1']) {
                 $level3 = 1;
 
             }
-            if ($sumWeek4 >= $salesPlan['floor1']) {
+
+            if ($sumWeek4 >= $salesPlan[0]['floor1']) {
                 $level1 = 1;
 
             }
@@ -2969,64 +2973,65 @@ class Accounting_List_View extends Vtiger_Index_View
 
         }
 
-        if (!is_null($salesPlan['floor2'])) {
-            if ($sumWeek1 >= $salesPlan['floor2']) {
+        if (!is_null($salesPlan[0]['floor2'])) {
+            if ($sumWeek1 >= $salesPlan[0]['floor2']) {
                 $level1 = 2;
 
             }
-            if ($sumWeek2 >= $salesPlan['floor2']) {
+            if ($sumWeek2 >= $salesPlan[0]['floor2']) {
                 $level2 = 2;
 
             }
-            if ($sumWeek3 >= $salesPlan['floor2']) {
+            if ($sumWeek3 >= $salesPlan[0]['floor2']) {
                 $level3 = 2;
 
             }
-            if ($sumWeek4 >= $salesPlan['floor2']) {
+            if ($sumWeek4 >= $salesPlan[0]['floor2']) {
                 $level4 = 2;
 
             }
 
         }
 
-        if (!is_null($salesPlan['floor3'])) {
-            if ($sumWeek1 >= $salesPlan['floor3']) {
+        if (!is_null($salesPlan[0]['floor3'])) {
+            if ($sumWeek1 >= $salesPlan[0]['floor3']) {
                 $level1 = 3;
 
             }
-            if ($sumWeek2 >= $salesPlan['floor3']) {
+            if ($sumWeek2 >= $salesPlan[0]['floor3']) {
                 $level2 = 3;
 
             }
-            if ($sumWeek3 >= $salesPlan['floor3']) {
+            if ($sumWeek3 >= $salesPlan[0]['floor3']) {
                 $level3 = 3;
 
             }
-            if ($sumWeek4 >= $salesPlan['floor3']) {
+            if ($sumWeek4 >= $salesPlan[0]['floor3']) {
                 $level4 = 3;
 
             }
 
         }
 
-        if (!is_null($salesPlan['floor4'])) {
-            if ($sumWeek1 >= $salesPlan['floor4']) {
+        if (!is_null($salesPlan[0]['floor4'])) {
+            if ($sumWeek1 >= $salesPlan[0]['floor4']) {
                 $level1 = 4;
 
             }
-            if ($sumWeek2 >= $salesPlan['floor4']) {
+            if ($sumWeek2 >= $salesPlan[0]['floor4']) {
                 $level2 = 4;
 
             }
-            if ($sumWeek3 >= $salesPlan['floor4']) {
-                $leve3 = 4;
+            if ($sumWeek3 >= $salesPlan[0]['floor4']) {
+                $level3 = 4;
 
             }
-            if ($sumWeek4 >= $salesPlan['floor4']) {
+            if ($sumWeek4 >= $salesPlan[0]['floor4']) {
                 $level4 = 4;
 
             }
         }
+
 
 
 
