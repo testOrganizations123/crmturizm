@@ -3035,7 +3035,6 @@ class Accounting_List_View extends Vtiger_Index_View
         $data1 = [
             ['id' => 1,
                 'name' => 'Количество рабочих дней',
-                'name2' => "",
                 "week1" => $workDay1,
                 "week2" => $workDay2,
                 "week3" => $workDay3,
@@ -3044,7 +3043,6 @@ class Accounting_List_View extends Vtiger_Index_View
             ],
             ['id' => 2,
                 'name' => 'Количество заявок в работе',
-                'name2' => "",
                 "week1" => $applicationWeek1,
                 "week2" => $applicationWeek2,
                 "week3" => $applicationWeek3,
@@ -3053,7 +3051,6 @@ class Accounting_List_View extends Vtiger_Index_View
             ],
             ['id' => 3,
                 'name' => 'Количество подтвержденных броней',
-                'name2' => "",
                 "week1" => $reservationWeek1,
                 "week2" => $reservationWeek2,
                 "week3" => $reservationWeek3,
@@ -3062,7 +3059,6 @@ class Accounting_List_View extends Vtiger_Index_View
             ],
             ['id' => 4,
                 'name' => 'Коэффициент (заявки/брони)',
-                'name2' => "",
                 "week1" => round($reservationWeek1/$applicationWeek1,2),
                 "week2" => round($reservationWeek2/$applicationWeek2,2),
                 "week3" => round($reservationWeek3/$applicationWeek3,2),
@@ -3071,7 +3067,6 @@ class Accounting_List_View extends Vtiger_Index_View
             ],
             ['id' => 4,
                 'name' => 'Средний чек',
-                'name2' => "",
                 "week1" => round($profitWeek1/$reservationWeek1,2),
                 "week2" => round($profitWeek2/$reservationWeek2,2),
                 "week3" => round($profitWeek3/$reservationWeek3,2),
@@ -3080,7 +3075,6 @@ class Accounting_List_View extends Vtiger_Index_View
             ],
             ['id' => 5,
                 'name' => 'Доход',
-                'name2' => "",
                 "week1" => round($profitWeek1,2),
                 "week2" => round($profitWeek2,2),
                 "week3" => round($profitWeek3,2),
@@ -3089,7 +3083,6 @@ class Accounting_List_View extends Vtiger_Index_View
             ],
             ['id' => 6,
                 'name' => 'Достигнутый этап',
-                'name2' => "",
                 "week1" => $level1,
                 "week2" => $level2,
                 "week3" => $level3,
@@ -3100,8 +3093,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
         $header = [
-            ['id' => 'name', 'header' => "", 'width' => 250],
-            ['id' => 'name2', 'header' => "", 'width' => 250],
+            ['id' => 'name', 'header' => "", 'width' => 300],
             ['id' => 'week1', 'header' => "1." . $date->format('m') . " - 7." . $date->format('m'), 'width' => 200],
             ['id' => 'week2', 'header' => "8." . $date->format('m') . " - 14." . $date->format('m'), 'width' => 200],
             ['id' => 'week3', 'header' => "15." . $date->format('m') . " - 21." . $date->format('m'), 'width' => 200],
@@ -3147,7 +3139,7 @@ class Accounting_List_View extends Vtiger_Index_View
             $users[$key]['office'] = html_entity_decode($users[$key]['office']);
 
             if ($item['position'] == null) {
-                $users[$key]['position'] = "Без должности";
+                $users[$key]['position'] = "-";
             }
         }
 
