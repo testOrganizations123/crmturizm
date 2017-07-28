@@ -2807,6 +2807,9 @@ class Accounting_List_View extends Vtiger_Index_View
         $dateStringStart = $date->format("Y-m-01 00:00:00");
         $dateStringFinish = $date->format("Y-m-$countDays 23:59:59");
 
+        $salesPlanQuery = "SELECT * FROM worker_sales_plan WHERE date=" . $this->filter_data['period']." AND worker ='$userId'";
+
+        $salesPlan = $this->getSQLArrayResult($salesPlanQuery, []);
 
 
         $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, u.first_name, u.last_name, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
@@ -2907,30 +2910,125 @@ class Accounting_List_View extends Vtiger_Index_View
         $profitWeek4 = 0;
         $profitAll = 0;
 
-        $averageCheckWeek1 = 0;
-        $averageCheckWeek2 = 0;
-        $averageCheckWeek3 = 0;
-        $averageCheckWeek4 = 0;
-        $averageCheckAll = 0;
+//        $averageCheckWeek1 = 0;
+//        $averageCheckWeek2 = 0;
+//        $averageCheckWeek3 = 0;
+//        $averageCheckWeek4 = 0;
+//        $averageCheckAll = 0;
+
+        $level1 = 0;
+        $level2 = 0;
+        $level3 = 0;
+        $level4 = 0;
+
 
         foreach ($reservation as $item){
             $reservationAll++;
             $profitAll+=$item['amount'];
             if (new DateTime($item['date']) <= $date2) {
                 $reservationWeek1++;
-                
+                $profitWeek1+=$item['amount'];
             }
             if (new DateTime($item['date']) >= $date3 && new DateTime($item['date']) <= $date4) {
                 $reservationWeek2++;
+                $profitWeek2+=$item['amount'];
             }
             if (new DateTime($item['date']) >= $date5 && new DateTime($item['date']) <= $date6) {
                 $reservationWeek3++;
+                $profitWeek3+=$item['amount'];
             }
             if (new DateTime($item['date']) >= $date7) {
+                $profitWeek4+=$item['amount'];
                 $reservationWeek4++;
             }
 
         }
+        $sumWeek1 = round($profitWeek1,-2);
+        $sumWeek2 = round($profitWeek2,-2);
+        $sumWeek3 = round($profitWeek3,-2);
+        $sumWeek4 = round($profitWeek4,-2);
+
+        if (!is_null($salesPlan['floor1'])) {
+            if ($sumWeek1 >= $salesPlan['floor1']) {
+                $level1 = 1;
+
+            }
+            if ($sumWeek2 >= $salesPlan['floor1']) {
+                $level2 = 1;
+
+            }
+            if ($sumWeek3 >= $salesPlan['floor1']) {
+                $level3 = 1;
+
+            }
+            if ($sumWeek4 >= $salesPlan['floor1']) {
+                $level1 = 1;
+
+            }
+
+
+        }
+
+        if (!is_null($salesPlan['floor2'])) {
+            if ($sumWeek1 >= $salesPlan['floor2']) {
+                $level1 = 2;
+
+            }
+            if ($sumWeek2 >= $salesPlan['floor2']) {
+                $level2 = 2;
+
+            }
+            if ($sumWeek3 >= $salesPlan['floor2']) {
+                $level3 = 2;
+
+            }
+            if ($sumWeek4 >= $salesPlan['floor2']) {
+                $level4 = 2;
+
+            }
+
+        }
+
+        if (!is_null($salesPlan['floor3'])) {
+            if ($sumWeek1 >= $salesPlan['floor3']) {
+                $level1 = 3;
+
+            }
+            if ($sumWeek2 >= $salesPlan['floor3']) {
+                $level2 = 3;
+
+            }
+            if ($sumWeek3 >= $salesPlan['floor3']) {
+                $level3 = 3;
+
+            }
+            if ($sumWeek4 >= $salesPlan['floor3']) {
+                $level4 = 3;
+
+            }
+
+        }
+
+        if (!is_null($salesPlan['floor4'])) {
+            if ($sumWeek1 >= $salesPlan['floor4']) {
+                $level1 = 4;
+
+            }
+            if ($sumWeek2 >= $salesPlan['floor4']) {
+                $level2 = 4;
+
+            }
+            if ($sumWeek3 >= $salesPlan['floor4']) {
+                $leve3 = 4;
+
+            }
+            if ($sumWeek4 >= $salesPlan['floor4']) {
+                $level4 = 4;
+
+            }
+        }
+
+
 
 
 
@@ -2970,6 +3068,33 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week3" => round($reservationWeek3/$applicationWeek3,2),
                 "week4" => round($reservationWeek4/$applicationWeek4,2),
                 "total" => round($reservationAll/$applicationAll,2)
+            ],
+            ['id' => 4,
+                'name' => 'Средний чек',
+                'name2' => "",
+                "week1" => round($profitWeek1/$reservationWeek1,2),
+                "week2" => round($profitWeek2/$reservationWeek2,2),
+                "week3" => round($profitWeek3/$reservationWeek3,2),
+                "week4" => round($profitWeek4/$reservationWeek4,2),
+                "total" => round($profitAll/$reservationAll,2)
+            ],
+            ['id' => 5,
+                'name' => 'Доход',
+                'name2' => "",
+                "week1" => round($profitWeek1,2),
+                "week2" => round($profitWeek2,2),
+                "week3" => round($profitWeek3,2),
+                "week4" => round($profitWeek4,2),
+                "total" => round($profitAll,2)
+            ],
+            ['id' => 6,
+                'name' => 'Достигнутый этап',
+                'name2' => "",
+                "week1" => $level1,
+                "week2" => $level2,
+                "week3" => $level3,
+                "week4" => $level4,
+                "total" => ""
             ]
         ];
 
