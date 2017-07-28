@@ -2808,7 +2808,17 @@ class Accounting_List_View extends Vtiger_Index_View
         $dateStringFinish = $date->format("Y-m-$countDays 23:59:59");
 
 
-        $sqlNewFunnelApplication = "SELECT l.leadid as id, c1.createdtime , a1.eventstatus, l.leadsource, c1.meet FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as c1 ON c1.crmid = l.leadid
+
+        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, u.first_name, u.last_name, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+            inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
+            LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
+            where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN '$dateStringStart' AND '$dateStringFinish') and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' AND u.id = '$userId' ";
+
+        $reservation = $this->getSQLArrayResult($sql, []);
+
+
+
+        $sqlNewFunnelApplication = "SELECT l.leadid as id, c1.createdtime , a1.eventstatus FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as c1 ON c1.crmid = l.leadid
                                     INNER JOIN vtiger_seactivityrel as s1 ON s1.crmid =l.leadid INNER JOIN vtiger_activity as a1 ON a1.activityid = s1.activityid 
                                     LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
                                     WHERE a1.eventstatus != 'Held' and (CAST(c1.createdtime AS DATE) BETWEEN '$dateStringStart' AND '$dateStringFinish') AND u.id = '$userId'
@@ -2867,21 +2877,57 @@ class Accounting_List_View extends Vtiger_Index_View
         $applicationWeek4 = 0;
         $applicationAll = 0;
 
+
         foreach ($resultApplicationNew as $item){
             $applicationAll++;
             if (new DateTime($item['createdtime']) <= $date2) {
                 $applicationWeek1++;
             }
-            if (new DateTime($item['createdtime']) >= $date3 &&
-                    new DateTime($item['createdtime']) <= $date4) {
+            if (new DateTime($item['createdtime']) >= $date3 && new DateTime($item['createdtime']) <= $date4) {
                 $applicationWeek2++;
             }
-            if (new DateTime($item['createdtime']) >= $date5 &&
-                    new DateTime($item['createdtime']) <= $date6) {
+            if (new DateTime($item['createdtime']) >= $date5 && new DateTime($item['createdtime']) <= $date6) {
                 $applicationWeek3++;
             }
             if (new DateTime($item['createdtime']) >= $date7) {
                 $applicationWeek4++;
+            }
+
+        }
+
+        $reservationWeek1 = 0;
+        $reservationWeek2 = 0;
+        $reservationWeek3 = 0;
+        $reservationWeek4 = 0;
+        $reservationAll = 0;
+
+        $profitWeek1 = 0;
+        $profitWeek2 = 0;
+        $profitWeek3 = 0;
+        $profitWeek4 = 0;
+        $profitAll = 0;
+
+        $averageCheckWeek1 = 0;
+        $averageCheckWeek2 = 0;
+        $averageCheckWeek3 = 0;
+        $averageCheckWeek4 = 0;
+        $averageCheckAll = 0;
+
+        foreach ($reservation as $item){
+            $reservationAll++;
+            $profitAll+=$item['amount'];
+            if (new DateTime($item['date']) <= $date2) {
+                $reservationWeek1++;
+                
+            }
+            if (new DateTime($item['date']) >= $date3 && new DateTime($item['date']) <= $date4) {
+                $reservationWeek2++;
+            }
+            if (new DateTime($item['date']) >= $date5 && new DateTime($item['date']) <= $date6) {
+                $reservationWeek3++;
+            }
+            if (new DateTime($item['date']) >= $date7) {
+                $reservationWeek4++;
             }
 
         }
@@ -2906,6 +2952,24 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week3" => $applicationWeek3,
                 "week4" => $applicationWeek4,
                 "total" => $applicationAll
+            ],
+            ['id' => 3,
+                'name' => 'Количество подтвержденных броней',
+                'name2' => "",
+                "week1" => $reservationWeek1,
+                "week2" => $reservationWeek2,
+                "week3" => $reservationWeek3,
+                "week4" => $reservationWeek4,
+                "total" => $reservationAll
+            ],
+            ['id' => 4,
+                'name' => 'Коэффициент (заявки/брони)',
+                'name2' => "",
+                "week1" => round($reservationWeek1/$applicationWeek1,2),
+                "week2" => round($reservationWeek2/$applicationWeek2,2),
+                "week3" => round($reservationWeek3/$applicationWeek3,2),
+                "week4" => round($reservationWeek4/$applicationWeek4,2),
+                "total" => round($reservationAll/$applicationAll,2)
             ]
         ];
 
