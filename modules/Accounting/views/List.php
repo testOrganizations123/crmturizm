@@ -2807,18 +2807,21 @@ class Accounting_List_View extends Vtiger_Index_View
         $dateStringStart = $date->format("Y-m-01 00:00:00");
         $dateStringFinish = $date->format("Y-m-$countDays 23:59:59");
 
-        $salesPlanQuery = "SELECT * FROM worker_sales_plan WHERE date=" . $this->filter_data['period']." AND worker ='$userId'";
+        $salesPlanQuery = "SELECT * FROM worker_sales_plan WHERE date=" . $this->filter_data['period'];
 
         $salesPlan = $this->getSQLArrayResult($salesPlanQuery, []);
+        $usersQuery = "SELECT office FROM vtiger_users WHERE id=".$userId;
+
+        $usersDB = $this->getSQLArrayResult($usersQuery, []);
 
 
-        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, u.first_name, u.last_name, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
+        $sql = "SELECT p.amount-pcf.cf_1256 AS amount , c1.smownerid, u.first_name, u.last_name, u.id AS user, pcf.cf_1225 AS date  FROM vtiger_potential as p INNER JOIN vtiger_crmentity as c1 ON c1.crmid = p.potentialid
             inner join vtiger_potentialscf as pcf ON pcf.potentialid = p.potentialid
             LEFT JOIN vtiger_users as u ON u.id = c1.smownerid
-            where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN '$dateStringStart' AND '$dateStringFinish') and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' AND u.id = '$userId' ";
+            LEFT JOIN vtiger_office as o ON o.officeid = u.office
+            where c1.deleted=0 and (CAST( pcf.cf_1225 AS DATE) BETWEEN '$dateStringStart' AND '$dateStringFinish') and p.sales_stage <> 'Closed Lost' and p.sales_stage <> 'Новый' and p.sales_stage <> 'Заключение договора' and p.sales_stage <> 'Договор заключен' AND o.officeid=".$usersDB[0]['office'];
 
         $reservation = $this->getSQLArrayResult($sql, []);
-
 
 
         $sqlNewFunnelApplication = "SELECT l.leadid as id, c1.createdtime , a1.eventstatus FROM vtiger_leaddetails as l INNER JOIN vtiger_crmentity as c1 ON c1.crmid = l.leadid
@@ -2838,12 +2841,12 @@ class Accounting_List_View extends Vtiger_Index_View
         $workerTimesArray = $this->getSQLArrayResult($timesQuery, []);
 
 
-        $date2 = new DateTime("7.".$this->filter_data['period']." 23:59:59");
-        $date3 = new DateTime("8.".$this->filter_data['period']." 00:00:00");
-        $date4 = new DateTime("14.".$this->filter_data['period']." 23:59:59");
-        $date5 = new DateTime("15.".$this->filter_data['period']." 00:00:00");
-        $date6 = new DateTime("21.".$this->filter_data['period']." 23:59:59");
-        $date7 = new DateTime("22.".$this->filter_data['period']." 00:00:00");
+        $date2 = new DateTime("7." . $this->filter_data['period'] . " 23:59:59");
+        $date3 = new DateTime("8." . $this->filter_data['period'] . " 00:00:00");
+        $date4 = new DateTime("14." . $this->filter_data['period'] . " 23:59:59");
+        $date5 = new DateTime("15." . $this->filter_data['period'] . " 00:00:00");
+        $date6 = new DateTime("21." . $this->filter_data['period'] . " 23:59:59");
+        $date7 = new DateTime("22." . $this->filter_data['period'] . " 00:00:00");
 
         $workDay1 = 0;
         $workDay2 = 0;
@@ -2881,7 +2884,8 @@ class Accounting_List_View extends Vtiger_Index_View
         $applicationAll = 0;
 
 
-        foreach ($resultApplicationNew as $item){
+        foreach ($resultApplicationNew as $item) {
+
             $applicationAll++;
             if (new DateTime($item['createdtime']) <= $date2) {
                 $applicationWeek1++;
@@ -2895,6 +2899,7 @@ class Accounting_List_View extends Vtiger_Index_View
             if (new DateTime($item['createdtime']) >= $date7) {
                 $applicationWeek4++;
             }
+
 
         }
 
@@ -2921,121 +2926,480 @@ class Accounting_List_View extends Vtiger_Index_View
         $level3 = 0;
         $level4 = 0;
 
+        $levelArr1 = [];
+        $levelArr2 = [];
+        $levelArr3 = [];
+        $levelArr4 = [];
 
-        foreach ($reservation as $item){
-            $reservationAll++;
-            $profitAll+=$item['amount'];
-            if (new DateTime($item['date']) <= $date2) {
-                $reservationWeek1++;
-                $profitWeek1+=$item['amount'];
+        $sumArrWeek1 = [];
+        $sumArrWeek2 = [];
+        $sumArrWeek3 = [];
+        $sumArrWeek4 = [];
+
+        $usersId = [];
+        foreach ($reservation as $item) {
+            if ($item['user'] == $userId) {
+                $reservationAll++;
+                $profitAll += $item['amount'];
+                if (new DateTime($item['date']) <= $date2) {
+                    $reservationWeek1++;
+                    $profitWeek1 += $item['amount'];
+                }
+                if (new DateTime($item['date']) >= $date3 && new DateTime($item['date']) <= $date4) {
+                    $reservationWeek2++;
+                    $profitWeek2 += $item['amount'];
+                }
+                if (new DateTime($item['date']) >= $date5 && new DateTime($item['date']) <= $date6) {
+                    $reservationWeek3++;
+                    $profitWeek3 += $item['amount'];
+                }
+                if (new DateTime($item['date']) >= $date7) {
+                    $profitWeek4 += $item['amount'];
+                    $reservationWeek4++;
+                }
             }
-            if (new DateTime($item['date']) >= $date3 && new DateTime($item['date']) <= $date4) {
-                $reservationWeek2++;
-                $profitWeek2+=$item['amount'];
-            }
-            if (new DateTime($item['date']) >= $date5 && new DateTime($item['date']) <= $date6) {
-                $reservationWeek3++;
-                $profitWeek3+=$item['amount'];
-            }
-            if (new DateTime($item['date']) >= $date7) {
-                $profitWeek4+=$item['amount'];
-                $reservationWeek4++;
-            }
-
-        }
-        $sumWeek1 = round($profitWeek1,-2);
-        $sumWeek2 = round($profitWeek2+$sumWeek1,-2);
-        $sumWeek3 = round($profitWeek3+$sumWeek1+$sumWeek2,-2);
-        $sumWeek4 = round($profitWeek4+$profitWeek3+$sumWeek1+$sumWeek2,-2);
-
-
-
-        if (!is_null($salesPlan[0]['floor1'])) {
-
-            if ($sumWeek1 >= $salesPlan[0]['floor1']) {
-                $level1 = 1;
-
-            }
-            if ($sumWeek2 >= $salesPlan[0]['floor1']) {
-                $level2 = 1;
-
-            }
-            if ($sumWeek3 >= $salesPlan[0]['floor1']) {
-                $level3 = 1;
-
-            }
-
-            if ($sumWeek4 >= $salesPlan[0]['floor1']) {
-                $level1 = 1;
-
+            if (!in_array($item['user'], $usersId)) {
+                $usersId[] = $item['user'];
             }
 
 
         }
+        $sumWeek1 = round($profitWeek1, -2);
+        $sumWeek2 = round($profitWeek2 + $sumWeek1, -2);
+        $sumWeek3 = round($profitWeek3 + $sumWeek1 + $sumWeek2, -2);
 
-        if (!is_null($salesPlan[0]['floor2'])) {
-            if ($sumWeek1 >= $salesPlan[0]['floor2']) {
-                $level1 = 2;
+        $sumWeek4 = round($profitWeek4 + $profitWeek3 + $sumWeek1 + $sumWeek2, -2);
 
+        foreach ($usersId as $value) {
+            $sum1 = 0;
+            $sum2 = 0;
+            $sum3 = 0;
+            $sum4 = 0;
+
+            foreach ($reservation as $item) {
+
+                if ($item['user'] == $value) {
+                    if (new DateTime($item['date']) <= $date2) {
+                        $sum1 += $item['amount'];
+                    }
+                    if (new DateTime($item['date']) >= $date3 && new DateTime($item['date']) <= $date4) {
+                        $sum2 += $item['amount'];
+                    }
+                    if (new DateTime($item['date']) >= $date5 && new DateTime($item['date']) <= $date6) {
+                        $sum3 += $item['amount'];
+                    }
+                    if (new DateTime($item['date']) >= $date7) {
+                        $sum4 += $item['amount'];
+                    }
+                }
             }
-            if ($sumWeek2 >= $salesPlan[0]['floor2']) {
-                $level2 = 2;
-
-            }
-            if ($sumWeek3 >= $salesPlan[0]['floor2']) {
-                $level3 = 2;
-
-            }
-            if ($sumWeek4 >= $salesPlan[0]['floor2']) {
-                $level4 = 2;
-
-            }
+            $sumArrWeek1[]['sum'] = $sum1;
+            $sumArrWeek1[]['id'] = $value;
+            $sumArrWeek2[]['sum'] = $sum2 + $sum1;
+            $sumArrWeek2[]['id'] = $value;
+            $sumArrWeek3[]['sum'] = $sum3 + $sum1 + $sum2;
+            $sumArrWeek3[]['id'] = $value;
+            $sumArrWeek4[]['sum'] = $sum4 + $sum3 + $sum1 + $sum2;
+            $sumArrWeek4[]['id'] = $value;
 
         }
 
-        if (!is_null($salesPlan[0]['floor3'])) {
-            if ($sumWeek1 >= $salesPlan[0]['floor3']) {
-                $level1 = 3;
+
+        $levelsWeek1 = [];
+        $levelsWeek2 = [];
+        $levelsWeek3 = [];
+        $levelsWeek4 = [];
+
+        foreach ($salesPlan as $item) {
+            if ($item['worker'] == $userId) {
+                if (!is_null($item['floor1'])) {
+
+                    if ($sumWeek1 >= $item['floor1']) {
+                        $level1 = 1;
+
+                    }
+                    if ($sumWeek2 >= $item['floor1']) {
+                        $level2 = 1;
+
+                    }
+                    if ($sumWeek3 >= $item['floor1']) {
+                        $level3 = 1;
+
+                    }
+
+                    if ($sumWeek4 >= $item['floor1']) {
+                        $level1 = 1;
+
+                    }
+
+
+                }
+
+                if (!is_null($item['floor2'])) {
+                    if ($sumWeek1 >= $item['floor2']) {
+                        $level1 = 2;
+
+                    }
+                    if ($sumWeek2 >= $item['floor2']) {
+                        $level2 = 2;
+
+                    }
+                    if ($sumWeek3 >= $item['floor2']) {
+                        $level3 = 2;
+
+                    }
+                    if ($sumWeek4 >= $item['floor2']) {
+
+                        $level4 = 2;
+
+                    }
+
+                }
+
+                if (!is_null($item['floor3'])) {
+                    if ($sumWeek1 >= $item['floor3']) {
+                        $level1 = 3;
+
+                    }
+                    if ($sumWeek2 >= $item['floor3']) {
+                        $level2 = 3;
+
+                    }
+                    if ($sumWeek3 >= $item['floor3']) {
+                        $level3 = 3;
+
+                    }
+                    if ($sumWeek4 >= $item['floor3']) {
+                        $level4 = 3;
+
+                    }
+
+                }
+
+                if (!is_null($item['floor4'])) {
+                    if ($sumWeek1 >= $item['floor4']) {
+                        $level1 = 4;
+
+                    }
+                    if ($sumWeek2 >= $item['floor4']) {
+                        $level2 = 4;
+
+                    }
+                    if ($sumWeek3 >= $item['floor4']) {
+                        $level3 = 4;
+
+                    }
+                    if ($sumWeek4 >= $item['floor4']) {
+                        $level4 = 4;
+
+                    }
+                }
 
             }
-            if ($sumWeek2 >= $salesPlan[0]['floor3']) {
-                $level2 = 3;
+
+
+            foreach ($sumArrWeek1 as $value) {
+                if ($value['id'] == $item['worker']) {
+
+                    if ($value['sum'] >= $item['floor4']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr1[] = 4;
+                        }
+
+                    }
+                    if ($value['sum'] >= $item['floor3']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr1[] = 3;
+                        }
+
+                    }
+                    if ($value['sum'] >= $item['floor2']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr1[] = 2;
+                        }
+
+                    }
+
+                    if ($value['sum'] >= $item['floor1']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr1[] = 1;
+                        }
+
+                    }
+
+
+                }
 
             }
-            if ($sumWeek3 >= $salesPlan[0]['floor3']) {
-                $level3 = 3;
+
+
+            foreach ($sumArrWeek2 as $value) {
+                if ($value['id'] == $item['worker']) {
+
+                    if ($value['sum'] >= $item['floor4']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr2[] = 4;
+                        }
+
+                    }
+                    if ($value['sum'] >= $item['floor3']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr2[] = 3;
+                        }
+
+                    }
+                    if ($value['sum'] >= $item['floor2']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr2[] = 2;
+                        }
+
+                    }
+
+                    if ($value['sum'] >= $item['floor1']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr2[] = 1;
+                        }
+
+                    }
+
+
+                }
 
             }
-            if ($sumWeek4 >= $salesPlan[0]['floor3']) {
-                $level4 = 3;
+
+            foreach ($sumArrWeek3 as $value) {
+                if ($value['id'] == $item['worker']) {
+
+                    if ($value['sum'] >= $item['floor4']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr3[] = 4;
+                        }
+
+                    }
+                    if ($value['sum'] >= $item['floor3']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr3[] = 3;
+                        }
+
+                    }
+                    if ($value['sum'] >= $item['floor2']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr3[] = 2;
+                        }
+
+                    }
+
+                    if ($value['sum'] >= $item['floor1']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr3[] = 1;
+                        }
+
+                    }
+
+
+                }
 
             }
 
+
+            foreach ($sumArrWeek4 as $value) {
+                if ($value['id'] == $item['worker']) {
+
+                    if ($value['sum'] >= $item['floor4']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr4[] = 4;
+                        }
+
+                    }
+                    if ($value['sum'] >= $item['floor3']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr4[] = 3;
+                        }
+
+                    }
+                    if ($value['sum'] >= $item['floor2']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr4[] = 2;
+                        }
+
+                    }
+
+                    if ($value['sum'] >= $item['floor1']) {
+                        if (!in_array(1, $levelArr1)) {
+                            $levelArr4[] = 1;
+                        }
+
+                    }
+
+
+                }
+
+            }
         }
 
-        if (!is_null($salesPlan[0]['floor4'])) {
-            if ($sumWeek1 >= $salesPlan[0]['floor4']) {
-                $level1 = 4;
 
+
+        if ($level1 == 4) {
+            $place1 = 1;
+        } elseif ($level1 == 3) {
+            if (in_array(4, $levelArr1)) {
+                $place1 = 2;
+            } else {
+                $place1 = 1;
             }
-            if ($sumWeek2 >= $salesPlan[0]['floor4']) {
-                $level2 = 4;
-
+        } elseif ($level1==2){
+            if(in_array(4, $levelArr1) && in_array(3, $levelArr1)){
+                $place1 = 3;
+            }elseif (in_array(4, $levelArr1) || in_array(3, $levelArr1)){
+                $place1 = 2;
+            }else{
+                $place1 = 1;
             }
-            if ($sumWeek3 >= $salesPlan[0]['floor4']) {
-                $level3 = 4;
-
+        }elseif ($level1==1){
+            if(count($levelArr1)==4){
+                $place1 = 4;
+            }elseif (count($levelArr1)==3){
+                $place1 = 3;
+            }elseif(count($levelArr1) == 2){
+                $place1 = 2;
+            }else{
+                $place1 = 1;
             }
-            if ($sumWeek4 >= $salesPlan[0]['floor4']) {
-                $level4 = 4;
+        }else{
+            if(count($levelArr1)==4){
+                $place1 = 5;
+            }elseif (count($levelArr1)==3){
+                $place1 = 4;
+            }elseif(count($levelArr1) == 2){
+                $place1 = 3;
+            }else if (count($levelArr1) == 1){
+                $place1 = 2;
+            }else{
+                $place1 = 1;
+            }
+        }
 
+        if ($level2 == 4) {
+            $place2 = 1;
+        } elseif ($level2 == 3) {
+            if (in_array(4, $levelArr2)) {
+                $place2 = 2;
+            } else {
+                $place2 = 1;
+            }
+        } elseif ($level2==2){
+            if(in_array(4, $levelArr2) && in_array(3, $levelArr2)){
+                $place2 = 3;
+            }elseif (in_array(4, $levelArr2) || in_array(3, $levelArr2)){
+                $place2 = 2;
+            }else{
+                $place2 = 1;
+            }
+        }elseif ($level2==1){
+            if(count($levelArr2)==4){
+                $place2 = 4;
+            }elseif (count($levelArr2)==3){
+                $place2 = 3;
+            }elseif(count($levelArr2) == 2){
+                $place2 = 2;
+            }else{
+                $place2 = 1;
+            }
+        }else{
+            if(count($levelArr2)==4){
+                $place2 = 5;
+            }elseif (count($levelArr2)==3){
+                $place2 = 4;
+            }elseif(count($levelArr2) == 2){
+                $place2 = 3;
+            }else if (count($levelArr2) == 1){
+                $place2 = 2;
+            }else{
+                $place2 = 1;
             }
         }
 
 
 
+        if ($level3 == 4) {
+            $place3 = 1;
+        } elseif ($level3 == 3) {
+            if (in_array(4, $levelArr3)) {
+                $place3 = 2;
+            } else {
+                $place3 = 1;
+            }
+        } elseif ($level3==2){
+            if(in_array(4, $levelArr3) && in_array(3, $levelArr3)){
+                $place3 = 3;
+            }elseif (in_array(4, $levelArr3) || in_array(3, $levelArr3)){
+                $place3 = 2;
+            }else{
+                $place3 = 1;
+            }
+        }elseif ($level3==1){
+            if(count($levelArr3)==4){
+                $place3 = 4;
+            }elseif (count($levelArr3)==3){
+                $place3 = 3;
+            }elseif(count($levelArr3) == 2){
+                $place3 = 2;
+            }else{
+                $place3 = 1;
+            }
+        }else{
+            if(count($levelArr3)==4){
+                $place3 = 5;
+            }elseif (count($levelArr3)==3){
+                $place3 = 4;
+            }elseif(count($levelArr3) == 2){
+                $place3 = 3;
+            }else if (count($levelArr3) == 1){
+                $place3 = 2;
+            }else{
+                $place3 = 1;
+            }
+        }
 
-
+        if ($level4 == 4) {
+            $place4 = 1;
+        } elseif ($level4 == 3) {
+            if (in_array(4, $levelArr4)) {
+                $place4 = 2;
+            } else {
+                $place4 = 1;
+            }
+        } elseif ($level4==2){
+            if(in_array(4, $levelArr4) && in_array(3, $levelArr4)){
+                $place4 = 3;
+            }elseif (in_array(4, $levelArr4) || in_array(3, $levelArr4)){
+                $place4 = 2;
+            }else{
+                $place4 = 1;
+            }
+        }elseif ($level4==1){
+            if(count($levelArr4)==4){
+                $place4 = 4;
+            }elseif (count($levelArr4)==3){
+                $place4 = 3;
+            }elseif(count($levelArr4) == 2){
+                $place4 = 2;
+            }else{
+                $place4 = 1;
+            }
+        }else{
+            if(count($levelArr4)==4){
+                $place4 = 5;
+            }elseif (count($levelArr4)==3){
+                $place4 = 4;
+            }elseif(count($levelArr4) == 2){
+                $place4 = 3;
+            }else if (count($levelArr4) == 1){
+                $place4 = 2;
+            }else{
+                $place4 = 1;
+            }
+        }
 
         $data1 = [
             ['id' => 1,
@@ -3064,27 +3428,27 @@ class Accounting_List_View extends Vtiger_Index_View
             ],
             ['id' => 4,
                 'name' => 'Коэффициент (заявки/брони)',
-                "week1" => round($reservationWeek1/$applicationWeek1,2),
-                "week2" => round($reservationWeek2/$applicationWeek2,2),
-                "week3" => round($reservationWeek3/$applicationWeek3,2),
-                "week4" => round($reservationWeek4/$applicationWeek4,2),
-                "total" => round($reservationAll/$applicationAll,2)
+                "week1" => round($reservationWeek1 / $applicationWeek1, 2),
+                "week2" => round($reservationWeek2 / $applicationWeek2, 2),
+                "week3" => round($reservationWeek3 / $applicationWeek3, 2),
+                "week4" => round($reservationWeek4 / $applicationWeek4, 2),
+                "total" => round($reservationAll / $applicationAll, 2)
             ],
             ['id' => 4,
                 'name' => 'Средний чек',
-                "week1" => round($profitWeek1/$reservationWeek1,2),
-                "week2" => round($profitWeek2/$reservationWeek2,2),
-                "week3" => round($profitWeek3/$reservationWeek3,2),
-                "week4" => round($profitWeek4/$reservationWeek4,2),
-                "total" => round($profitAll/$reservationAll,2)
+                "week1" => round($profitWeek1 / $reservationWeek1, 2),
+                "week2" => round($profitWeek2 / $reservationWeek2, 2),
+                "week3" => round($profitWeek3 / $reservationWeek3, 2),
+                "week4" => round($profitWeek4 / $reservationWeek4, 2),
+                "total" => round($profitAll / $reservationAll, 2)
             ],
             ['id' => 5,
                 'name' => 'Доход',
-                "week1" => round($profitWeek1,2),
-                "week2" => round($profitWeek2,2),
-                "week3" => round($profitWeek3,2),
-                "week4" => round($profitWeek4,2),
-                "total" => round($profitAll,2)
+                "week1" => round($profitWeek1, 2),
+                "week2" => round($profitWeek2, 2),
+                "week3" => round($profitWeek3, 2),
+                "week4" => round($profitWeek4, 2),
+                "total" => round($profitAll, 2)
             ],
             ['id' => 6,
                 'name' => 'Достигнутый этап',
@@ -3092,6 +3456,14 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week2" => $level2,
                 "week3" => $level3,
                 "week4" => $level4,
+                "total" => ""
+            ],
+            ['id' => 7,
+                'name' => 'Командное место',
+                "week1" => $place1,
+                "week2" => $place2,
+                "week3" => $place3,
+                "week4" => $place3,
                 "total" => ""
             ]
         ];
@@ -3119,7 +3491,8 @@ class Accounting_List_View extends Vtiger_Index_View
         return $jsFileNames;
     }
 
-    public function employees(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    public
+    function employees(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         $addQuery = $this->addQueryFilter();
 
