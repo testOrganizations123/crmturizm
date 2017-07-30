@@ -2993,14 +2993,21 @@ class Accounting_List_View extends Vtiger_Index_View
                     }
                 }
             }
-            $sumArrWeek1[]['sum'] = $sum1;
-            $sumArrWeek1[]['id'] = $value;
-            $sumArrWeek2[]['sum'] = $sum2 + $sum1;
-            $sumArrWeek2[]['id'] = $value;
-            $sumArrWeek3[]['sum'] = $sum3 + $sum1 + $sum2;
-            $sumArrWeek3[]['id'] = $value;
-            $sumArrWeek4[]['sum'] = $sum4 + $sum3 + $sum1 + $sum2;
-            $sumArrWeek4[]['id'] = $value;
+
+            $sAW1['sum'] = $sum1;
+            $sAW1['id'] = $value;
+            $sAW2['sum'] = $sum2 + $sum1;
+            $sAW2['id'] = $value;
+            $sAW3['sum'] = $sum3 + $sum1 + $sum2;
+            $sAW3['id'] = $value;
+            $sAW4['sum'] = $sum4 + $sum3 + $sum1 + $sum2;
+            $sAW4['id'] = $value;
+
+
+            $sumArrWeek1[] = $sAW1;
+            $sumArrWeek2[]= $sAW2;
+            $sumArrWeek3[]=$sAW3;
+            $sumArrWeek4[]=$sAW4;
 
         }
 
@@ -3009,6 +3016,8 @@ class Accounting_List_View extends Vtiger_Index_View
         $levelsWeek2 = [];
         $levelsWeek3 = [];
         $levelsWeek4 = [];
+
+
 
         foreach ($salesPlan as $item) {
             if ($item['worker'] == $userId) {
@@ -3134,6 +3143,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
             foreach ($sumArrWeek2 as $value) {
+
                 if ($value['id'] == $item['worker']) {
 
                     if ($value['sum'] >= $item['floor4']) {
@@ -3143,6 +3153,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
                     }
                     if ($value['sum'] >= $item['floor3']) {
+
                         if (!in_array(1, $levelArr1)) {
                             $levelArr2[] = 3;
                         }
@@ -3463,7 +3474,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week1" => $place1,
                 "week2" => $place2,
                 "week3" => $place3,
-                "week4" => $place3,
+                "week4" => $place4,
                 "total" => ""
             ]
         ];
