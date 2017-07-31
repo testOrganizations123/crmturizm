@@ -255,6 +255,7 @@
                                     {*<label class="moduleNames"><a href="/index.php?module=Accounting&view=List&mode=holidays">Праздничные дни</a></label>*}
 									<label class="moduleNames"><a href="/index.php?module=Accounting&view=List&mode=optionSalary">Параметры начисления заработной платы</a></label>
 									<label class="moduleNames"><a href="/index.php?module=Accounting&view=List&mode=workers">Сотрудники</a></label>
+									<label class="moduleNames"><a href="/index.php?module=Accounting&view=List&mode=employees">Личная карточка</a></label>
 
 
 								</div>

@@ -3110,20 +3110,22 @@ class Accounting_List_View extends Vtiger_Index_View
             foreach ($sumArrWeek1 as $value) {
                 if ($value['id'] == $item['worker']) {
 
+
                     if ($value['sum'] >= $item['floor4']) {
-                        if (!in_array(1, $levelArr1)) {
+
+                        if (!in_array(4, $levelArr1)) {
                             $levelArr1[] = 4;
                         }
 
                     }
                     if ($value['sum'] >= $item['floor3']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(3, $levelArr1)) {
                             $levelArr1[] = 3;
                         }
 
                     }
                     if ($value['sum'] >= $item['floor2']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(2, $levelArr1)) {
                             $levelArr1[] = 2;
                         }
 
@@ -3147,27 +3149,27 @@ class Accounting_List_View extends Vtiger_Index_View
                 if ($value['id'] == $item['worker']) {
 
                     if ($value['sum'] >= $item['floor4']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(4, $levelArr2)) {
                             $levelArr2[] = 4;
                         }
 
                     }
                     if ($value['sum'] >= $item['floor3']) {
 
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(3, $levelArr2)) {
                             $levelArr2[] = 3;
                         }
 
                     }
                     if ($value['sum'] >= $item['floor2']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(2, $levelArr2)) {
                             $levelArr2[] = 2;
                         }
 
                     }
 
                     if ($value['sum'] >= $item['floor1']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(1, $levelArr2)) {
                             $levelArr2[] = 1;
                         }
 
@@ -3182,26 +3184,26 @@ class Accounting_List_View extends Vtiger_Index_View
                 if ($value['id'] == $item['worker']) {
 
                     if ($value['sum'] >= $item['floor4']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(4, $levelArr3)) {
                             $levelArr3[] = 4;
                         }
 
                     }
                     if ($value['sum'] >= $item['floor3']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(3, $levelArr3)) {
                             $levelArr3[] = 3;
                         }
 
                     }
                     if ($value['sum'] >= $item['floor2']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(2, $levelArr3)) {
                             $levelArr3[] = 2;
                         }
 
                     }
 
                     if ($value['sum'] >= $item['floor1']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(1, $levelArr3)) {
                             $levelArr3[] = 1;
                         }
 
@@ -3217,26 +3219,27 @@ class Accounting_List_View extends Vtiger_Index_View
                 if ($value['id'] == $item['worker']) {
 
                     if ($value['sum'] >= $item['floor4']) {
-                        if (!in_array(1, $levelArr1)) {
+
+                        if (!in_array(4, $levelArr4)) {
                             $levelArr4[] = 4;
                         }
 
                     }
                     if ($value['sum'] >= $item['floor3']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(3, $levelArr4)) {
                             $levelArr4[] = 3;
                         }
 
                     }
                     if ($value['sum'] >= $item['floor2']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(2, $levelArr4)) {
                             $levelArr4[] = 2;
                         }
 
                     }
 
                     if ($value['sum'] >= $item['floor1']) {
-                        if (!in_array(1, $levelArr1)) {
+                        if (!in_array(1, $levelArr4)) {
                             $levelArr4[] = 1;
                         }
 
@@ -3247,6 +3250,7 @@ class Accounting_List_View extends Vtiger_Index_View
 
             }
         }
+
 
 
 
