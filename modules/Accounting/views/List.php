@@ -2966,9 +2966,9 @@ class Accounting_List_View extends Vtiger_Index_View
         }
         $sumWeek1 = round($profitWeek1, -2);
         $sumWeek2 = round($profitWeek2 + $sumWeek1, -2);
-        $sumWeek3 = round($profitWeek3 + $sumWeek1 + $sumWeek2, -2);
+        $sumWeek3 = round($profitWeek3 + $sumWeek2, -2);
 
-        $sumWeek4 = round($profitWeek4 + $profitWeek3 + $sumWeek1 + $sumWeek2, -2);
+        $sumWeek4 = round($profitWeek4 + $sumWeek3, -2);
 
         foreach ($usersId as $value) {
             $sum1 = 0;

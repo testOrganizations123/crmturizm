@@ -88,7 +88,7 @@ $host_name = $dbconfig['db_hostname'];
 $site_URL = 'http://crmturizm.test/';
 
 // root directory path
-$root_directory = 'c:\OpenServer\domains\crmturizm.test';
+$root_directory = 'c:\OpenServer\domains\crmturizm';
 
 // cache direcory path
 $cache_dir = 'cache/';
