@@ -4,6 +4,7 @@ webix.ready(function () {
         view: "datatable",
         columns: [
             {id: "name", header: ["Сотрудник", {content: "selectFilter"}], width: 300, sort: "string"},
+            {id: "region", header: ["Регион", {content: "selectFilter"}], width: 300, sort: "string"},
             {id: "office", header: ["Офис", {content: "selectFilter"}], width: 300, sort: "string"},
             {id: "position", header: ["Должность", {content: "selectFilter"}], width: 300, sort: "string"}
         ],

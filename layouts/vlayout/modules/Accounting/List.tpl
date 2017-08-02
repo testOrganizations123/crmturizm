@@ -1,6 +1,7 @@
 {strip}
     <div id="listViewContents" class="VDDialogueDesigner_container listViewPageDiv listViewContentDiv"
          style="padding-right: 3%">
+        {if (!isset($EMPLOYEES))}
         <br/>
         <br/>
         <div class="listViewEntriesTable row-fluid">
@@ -45,6 +46,7 @@
             {/if}
         </div>
         <hr/>
+        {/if}
 
         <div class="padding1per row-fluid" style="border:1px solid #ccc;">
             {if isset($OPTIONSALARY)}

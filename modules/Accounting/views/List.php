@@ -127,21 +127,44 @@ class Accounting_List_View extends Vtiger_Index_View
         return true;
     }
 
+    public $regionsArray = array(
+            array("value" => "H10", "label" => "Томск, Омск"),
+            array("value" => "H11", "label" => "Новосибиркс, Барнаул"),
+            array("value" => "H16", "label" => "Кузбасс, Абакан, Красноярск"),
+            array("value" => "H49", "label" => "Сургут, Вартовск, Стрежевой"),
+            array("value" => "H55", "label" => "Москва, Екат, Тюмень"),
+            array("value" => "H62", "label" => "Франчайзинг"),
+        );
+
+    function getRegionForOffice($office) {
+        $findingRegion = null;
+        foreach ($this->office_to_region as $region => $offices) {
+            foreach ($offices as $of) {
+                if ($of == $office) {
+                    $findingRegion = $region;
+                    break 2;
+                }
+            }
+        }
+
+        $titleRegion = '-';
+        foreach ($this->regionsArray as $reg) {
+            if ($reg['value'] == $findingRegion) {
+                $titleRegion = $reg['label'];
+                break;
+            }
+        }
+
+        return $titleRegion;
+    }
+
     function getFilter()
     {
         $region = array(
             "label" => "Регион",
             "type" => "select",
             "name" => 'region',
-            "option" => array(
-                array("value" => "H10", "label" => "Томск, Омск"),
-                array("value" => "H11", "label" => "Новосибиркс, Барнаул"),
-                array("value" => "H16", "label" => "Кузбасс, Абакан, Красноярск"),
-                array("value" => "H49", "label" => "Сургут, Вартовск, Стрежевой"),
-                array("value" => "H55", "label" => "Москва, Екат, Тюмень"),
-                array("value" => "H62", "label" => "Франчайзинг"),
-
-            ),
+            "option" => $this->regionsArray,
             "data" => $this->filter_data['region'],
         );
 
@@ -3520,18 +3543,19 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
         if ($userFilter) {
-            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery . "AND u.id = $userFilter";
+            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, o.officeid, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery . "AND u.id = $userFilter";
         } else {
-            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery;
+            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, o.officeid, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery;
         }
         $users = $this->getSQLArrayResult($usersQuery, array());
 
         foreach ($users as $key => $item) {
             if ($item['office'] == null) {
-                $users[$key]['office'] = "Без офиса";
+                $users[$key]['office'] = "-";
             }
 
             $users[$key]['office'] = html_entity_decode($users[$key]['office']);
+            $users[$key]['region'] = $this->getRegionForOffice($users[$key]['officeid']);
 
             if ($item['position'] == null) {
                 $users[$key]['position'] = "-";
