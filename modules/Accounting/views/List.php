@@ -3021,6 +3021,8 @@ class Accounting_List_View extends Vtiger_Index_View
 
         foreach ($salesPlan as $item) {
             if ($item['worker'] == $userId) {
+
+
                 if (!is_null($item['floor1'])) {
 
                     if ($sumWeek1 >= $item['floor1']) {
@@ -3037,7 +3039,7 @@ class Accounting_List_View extends Vtiger_Index_View
                     }
 
                     if ($sumWeek4 >= $item['floor1']) {
-                        $level1 = 1;
+                        $level4 = 1;
 
                     }
 
@@ -3449,7 +3451,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week4" => round($reservationWeek4 / $applicationWeek4, 2),
                 "total" => round($reservationAll / $applicationAll, 2)
             ],
-            ['id' => 4,
+            ['id' => 5,
                 'name' => 'Средний чек',
                 "week1" => round($profitWeek1 / $reservationWeek1, 2),
                 "week2" => round($profitWeek2 / $reservationWeek2, 2),
@@ -3457,7 +3459,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week4" => round($profitWeek4 / $reservationWeek4, 2),
                 "total" => round($profitAll / $reservationAll, 2)
             ],
-            ['id' => 5,
+            ['id' => 6,
                 'name' => 'Доход',
                 "week1" => round($profitWeek1, 2),
                 "week2" => round($profitWeek2, 2),
@@ -3465,7 +3467,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week4" => round($profitWeek4, 2),
                 "total" => round($profitAll, 2)
             ],
-            ['id' => 6,
+            ['id' => 7,
                 'name' => 'Достигнутый этап',
                 "week1" => $level1,
                 "week2" => $level2,
@@ -3473,7 +3475,7 @@ class Accounting_List_View extends Vtiger_Index_View
                 "week4" => $level4,
                 "total" => ""
             ],
-            ['id' => 7,
+            ['id' => 8,
                 'name' => 'Командное место',
                 "week1" => $place1,
                 "week2" => $place2,
