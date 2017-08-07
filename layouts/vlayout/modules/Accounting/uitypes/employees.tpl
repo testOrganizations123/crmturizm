@@ -1,7 +1,5 @@
 <script>
     window.users = {$USERS};
-
-
 </script>
 
 <style>

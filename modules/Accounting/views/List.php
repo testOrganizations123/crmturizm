@@ -1781,7 +1781,6 @@ class Accounting_List_View extends Vtiger_Index_View
         die();
     }
 
-
     public function editVacationSession(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         $value = $request->get("value");
@@ -2264,7 +2263,6 @@ class Accounting_List_View extends Vtiger_Index_View
         $viewer->assign('AMOUNTHOLIDAY', $holidaysAmount);
     }
 
-
     public function optionSalary(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
 
@@ -2509,7 +2507,6 @@ class Accounting_List_View extends Vtiger_Index_View
         echo json_encode('success');
         die();
     }
-
 
     public function getSales(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
@@ -2833,7 +2830,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $salesPlanQuery = "SELECT * FROM worker_sales_plan WHERE date=" . $this->filter_data['period'];
 
         $salesPlan = $this->getSQLArrayResult($salesPlanQuery, []);
-        $usersQuery = "SELECT office FROM vtiger_users WHERE id=".$userId;
+        $usersQuery = "SELECT office, cost_hours, percent1, percent2, percent3, percent4, concat(first_name,' ',last_name) as name_user FROM vtiger_users WHERE id=".$userId;
 
         $usersDB = $this->getSQLArrayResult($usersQuery, []);
 
@@ -3517,11 +3514,129 @@ class Accounting_List_View extends Vtiger_Index_View
             ['id' => 'week4', 'header' => "22." . $date->format('m') . " - " . (28 + $remaining) . "." . $date->format('m'), 'width' => 150],
             ['id' => 'total', 'header' => "Итого", 'width' => 150],
         ];
+
+        //узнаем, пользователь обычный менеджер(может стажер) или управляющий
+        $db = PearDatabase::getInstance();
+        $userModel = Users_Record_Model::getCurrentUserModel();
+        $userRole = $userModel->getRole();
+        $sqlRole = "SELECT depth FROM vtiger_role WHERE roleid = '$userRole'";
+        $result = $db->pquery($sqlRole, array());
+
+        $depth = $db->query_result_rowdata($result, "depth");
+        if ($depth["depth"] > 4) {
+            $viewer->assign('WRITINGACCESS', 'false');
+            $style = [
+            ];
+        } else {
+            $viewer->assign('WRITINGACCESS', 'true');
+            $style = [
+                "cost_hours" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent1" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent2" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent3" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent4" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"]
+            ];
+        }
+
+        $sqlRole = "SELECT start1, start2, start3, start4, finish1, finish2, finish3, finish4, year FROM vacation WHERE worker = '$userId' ORDER BY year";
+        $vacations = $this->getSQLArrayResult($sqlRole, []);
+
+        $yearsArray = [];
+
+        foreach ($vacations as $vacation) {
+            if ((!$vacation['start1'] || !$vacation['finish1']) && (!$vacation['start2'] || !$vacation['finish2']) && (!$vacation['start3'] || !$vacation['finish3']) && (!$vacation['start4'] || !$vacation['finish4']))
+                continue;
+
+            $dates = [];
+            if ($vacation['start1'] && $vacation['finish1']) {
+                $start = date_create($vacation['start1']);
+                $finish = date_create($vacation['finish1']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start2'] && $vacation['finish2']) {
+                $start = date_create($vacation['start2']);
+                $finish = date_create($vacation['finish2']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start3'] && $vacation['finish3']) {
+                $start = date_create($vacation['start3']);
+                $finish = date_create($vacation['finish3']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start4'] && $vacation['finish4']) {
+                $start = date_create($vacation['start4']);
+                $finish = date_create($vacation['finish4']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            $yearsArray[$vacation["year"]]= $dates;
+        }
+
+        $sqlRole = "SELECT start1, start2, start3, start4, finish1, finish2, finish3, finish4, year FROM vacation_promotional_tour WHERE worker = '$userId' ORDER BY year";
+        $vacations = $this->getSQLArrayResult($sqlRole, []);
+
+        $yearsPromotionalArray = [];
+
+        foreach ($vacations as $vacation) {
+            if ((!$vacation['start1'] || !$vacation['finish1']) && (!$vacation['start2'] || !$vacation['finish2']) && (!$vacation['start3'] || !$vacation['finish3']) && (!$vacation['start4'] || !$vacation['finish4']))
+                continue;
+
+            $dates = [];
+            if ($vacation['start1'] && $vacation['finish1']) {
+                $start = date_create($vacation['start1']);
+                $finish = date_create($vacation['finish1']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start2'] && $vacation['finish2']) {
+                $start = date_create($vacation['start2']);
+                $finish = date_create($vacation['finish2']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start3'] && $vacation['finish3']) {
+                $start = date_create($vacation['start3']);
+                $finish = date_create($vacation['finish3']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start4'] && $vacation['finish4']) {
+                $start = date_create($vacation['start4']);
+                $finish = date_create($vacation['finish4']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            $yearsPromotionalArray[$vacation["year"]]= $dates;
+        }
+
         $viewer->assign('DATA1', json_encode($data1));
+        $viewer->assign('VACATIONARCHIVE', json_encode($yearsArray));
+        $viewer->assign('VACATIONPROMOTOINALARCHIVE', json_encode($yearsPromotionalArray));
         $viewer->assign('PERSONALCARD', true);
         $viewer->assign('HEADER', json_encode($header));
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('USERID', $userId);
+        $viewer->assign('USERINFO', json_encode([
+            "user_id" => $userId,
+            "user_name" => $usersDB[0]["name_user"],
+            "cost_hours" => $usersDB[0]["cost_hours"],
+            "percent1" => $usersDB[0]["percent1"],
+            "percent2" => $usersDB[0]["percent2"],
+            "percent3" => $usersDB[0]["percent3"],
+            "percent4" => $usersDB[0]["percent4"],
+            "\$cellCss" => $style
+        ]));
     }
 
     function addScript_employees($jsFileNames)
