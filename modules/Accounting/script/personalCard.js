@@ -2,6 +2,12 @@ $("#title_name").html(window.userInfo.user_name);
 
 
 webix.ready(function () {
+    var self = this;
+
+    var show_editor = webix.Date.dateToStr("%Y / %m / %d");
+    var parse_editor = webix.Date.strToDate("%Y / %m / %d");
+    //format in grid
+    var show_date = webix.Date.dateToStr("%d.%m.%Y");
 
     var dtableRate = new webix.ui({
         container: "rate",
@@ -14,7 +20,7 @@ webix.ready(function () {
         autoheight: true,
         autowidth: true,
         editable: window.writingAccess,
-        data:  [
+        data: [
             window.userInfo
         ],
         on: {
@@ -84,7 +90,7 @@ webix.ready(function () {
         autoheight: true,
         autowidth: true,
         editable: true,
-        data:  [
+        data: [
             window.userInfo
         ],
         on: {
@@ -180,7 +186,7 @@ webix.ready(function () {
         container: "personal-card",
         view: "datatable",
         columns: window.header,
-        spans:true,
+        spans: true,
         autoheight: true,
         autowidth: true,
         data: window.data1
@@ -190,62 +196,30 @@ webix.ready(function () {
         container: "personal-card2",
         view: "datatable",
         columns: window.header,
-        spans:true,
+        spans: true,
         autoheight: true,
         autowidth: true,
         data: window.data1
     });
 
-    if (window.maternityLeave.length > 0) {
-        var maternityLeave = new webix.ui({
-            container: "maternityLeave",
-            view: "datatable",
-            width: 1000,
-            columns: [
-                {id: "start", header: "Начало", width: 110},
-                {id: "finish", header: "Конец", width: 110},
-                {id: "duration", header: "Дней", width: 70}
-            ],
 
-            autoheight: true,
-            autowidth: true,
-            editable: false,
-            data: window.maternityLeave
-        });
-    }
-
-
-});
-
-function addMaternityLeave () {
-    window.maternityLeave.push(
-        {
-            "start": "",
-            "finish": "",
-            "duration": ""
-        }
-    );
-
-    var maternityLeave = new webix.ui({
+    maternityLeave = new webix.ui({
+        id: "maternity",
         container: "maternityLeave",
         view: "datatable",
         width: 1000,
         columns: [
-            {id: "start", header: "Начало", width: 110, editor: "text", css: {
-                "border": "1px solid #aad5fd!important",
-                "background": "rgba(242, 222, 255, 0.1)",
-                "cursor": "pointer"
-            }},
-            {id: "finish", header: "Конец", width: 110, editor: "text", css: {
-                "border": "1px solid #aad5fd!important",
-                "background": "rgba(242, 222, 255, 0.1)",
-                "cursor": "pointer"
-            }},
-            {id: "duration", header: "Дней", width: 70, editor: "text", css: {
-                "border": "1px solid #aad5fd!important",
-                "background": "rgba(242, 222, 255, 0.1)",
-                "cursor": "pointer"
-            }}
+            {id: "start", header: "Начало", width: 110,format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor,
+                editor: "date"},
+            {id: "finish", header: "Конец", width: 110, format: show_date,
+                editFormat: show_editor,
+                editParse: parse_editor,
+                editor: "date"
+              },
+            {id: "duration", header: "Дней", width: 70},
+            {id: "", template: "<span class='delbtn' style='font-size: 20px; cursor: pointer'>X</span>", width: 45}
         ],
 
         autoheight: true,
@@ -253,7 +227,46 @@ function addMaternityLeave () {
         editable: true,
         data: window.maternityLeave
     });
+
+    maternityLeave.on_click.delbtn = function (e, id, trg) {
+        // $.ajax({
+        //     type: 'get',
+        //     url: '/index.php?module=Accounting&view=List&mode=deleteHoliday&id=' + id,
+        //     success: function (dataJSON) {
+        //         var data = $.parseJSON(dataJSON);
+        //         if (data.status == 'success') {
+
+                    $$("maternity").remove(id);
+
+        //         }
+        //
+        //     }
+        //
+        // });
+
+
+        return false; //here it blocks default behavior
+    };
+
+
+
+
+});
+
+function addMaternityLeave() {
+
+
+    $$("maternity").add({
+        start: " ",
+        finish: " "
+
+    }, 0);
+    maternityLeave.sort("date", "asc");
+
+
 }
+
+
 
 
 /* PNotify modules included in this custom build file:
