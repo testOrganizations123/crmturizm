@@ -1,6 +1,11 @@
 {strip}
+    {if isset($PERSONALCARD)}
+        <h3 id="title">Личная карточка: &nbsp;<span style="text-decoration: underline" id="title_name"></span></h3>
+    {/if}
+
     <div id="listViewContents" class="VDDialogueDesigner_container listViewPageDiv listViewContentDiv"
          style="padding-right: 3%">
+        {if (!isset($EMPLOYEES))}
         <br/>
         <br/>
         <div class="listViewEntriesTable row-fluid">
@@ -45,6 +50,7 @@
             {/if}
         </div>
         <hr/>
+        {/if}
 
         <div class="padding1per row-fluid" style="border:1px solid #ccc;">
             {if isset($OPTIONSALARY)}
@@ -209,6 +215,12 @@
             left: 50%;
             right: auto;
             margin-left: -150px
+        }
+
+        #title {
+            margin-left: 40px;
+            margin-bottom: -38px;
+            margin-top: 16px;
         }
     </style>
 {/literal}

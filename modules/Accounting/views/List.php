@@ -127,21 +127,44 @@ class Accounting_List_View extends Vtiger_Index_View
         return true;
     }
 
+    public $regionsArray = array(
+            array("value" => "H10", "label" => "Томск, Омск"),
+            array("value" => "H11", "label" => "Новосибиркс, Барнаул"),
+            array("value" => "H16", "label" => "Кузбасс, Абакан, Красноярск"),
+            array("value" => "H49", "label" => "Сургут, Вартовск, Стрежевой"),
+            array("value" => "H55", "label" => "Москва, Екат, Тюмень"),
+            array("value" => "H62", "label" => "Франчайзинг"),
+        );
+
+    function getRegionForOffice($office) {
+        $findingRegion = null;
+        foreach ($this->office_to_region as $region => $offices) {
+            foreach ($offices as $of) {
+                if ($of == $office) {
+                    $findingRegion = $region;
+                    break 2;
+                }
+            }
+        }
+
+        $titleRegion = '-';
+        foreach ($this->regionsArray as $reg) {
+            if ($reg['value'] == $findingRegion) {
+                $titleRegion = $reg['label'];
+                break;
+            }
+        }
+
+        return $titleRegion;
+    }
+
     function getFilter()
     {
         $region = array(
             "label" => "Регион",
             "type" => "select",
             "name" => 'region',
-            "option" => array(
-                array("value" => "H10", "label" => "Томск, Омск"),
-                array("value" => "H11", "label" => "Новосибиркс, Барнаул"),
-                array("value" => "H16", "label" => "Кузбасс, Абакан, Красноярск"),
-                array("value" => "H49", "label" => "Сургут, Вартовск, Стрежевой"),
-                array("value" => "H55", "label" => "Москва, Екат, Тюмень"),
-                array("value" => "H62", "label" => "Франчайзинг"),
-
-            ),
+            "option" => $this->regionsArray,
             "data" => $this->filter_data['region'],
         );
 
@@ -1758,7 +1781,6 @@ class Accounting_List_View extends Vtiger_Index_View
         die();
     }
 
-
     public function editVacationSession(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         $value = $request->get("value");
@@ -2241,7 +2263,6 @@ class Accounting_List_View extends Vtiger_Index_View
         $viewer->assign('AMOUNTHOLIDAY', $holidaysAmount);
     }
 
-
     public function optionSalary(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
 
@@ -2486,7 +2507,6 @@ class Accounting_List_View extends Vtiger_Index_View
         echo json_encode('success');
         die();
     }
-
 
     public function getSales(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
@@ -2810,7 +2830,7 @@ class Accounting_List_View extends Vtiger_Index_View
         $salesPlanQuery = "SELECT * FROM worker_sales_plan WHERE date=" . $this->filter_data['period'];
 
         $salesPlan = $this->getSQLArrayResult($salesPlanQuery, []);
-        $usersQuery = "SELECT office FROM vtiger_users WHERE id=".$userId;
+        $usersQuery = "SELECT office, cost_hours, percent1, percent2, percent3, percent4, concat(first_name,' ',last_name) as name_user FROM vtiger_users WHERE id=".$userId;
 
         $usersDB = $this->getSQLArrayResult($usersQuery, []);
 
@@ -2966,9 +2986,9 @@ class Accounting_List_View extends Vtiger_Index_View
         }
         $sumWeek1 = round($profitWeek1, -2);
         $sumWeek2 = round($profitWeek2 + $sumWeek1, -2);
-        $sumWeek3 = round($profitWeek3 + $sumWeek1 + $sumWeek2, -2);
+        $sumWeek3 = round($profitWeek3 + $sumWeek2, -2);
 
-        $sumWeek4 = round($profitWeek4 + $profitWeek3 + $sumWeek1 + $sumWeek2, -2);
+        $sumWeek4 = round($profitWeek4 + $sumWeek3, -2);
 
         foreach ($usersId as $value) {
             $sum1 = 0;
@@ -3494,11 +3514,129 @@ class Accounting_List_View extends Vtiger_Index_View
             ['id' => 'week4', 'header' => "22." . $date->format('m') . " - " . (28 + $remaining) . "." . $date->format('m'), 'width' => 150],
             ['id' => 'total', 'header' => "Итого", 'width' => 150],
         ];
+
+        //узнаем, пользователь обычный менеджер(может стажер) или управляющий
+        $db = PearDatabase::getInstance();
+        $userModel = Users_Record_Model::getCurrentUserModel();
+        $userRole = $userModel->getRole();
+        $sqlRole = "SELECT depth FROM vtiger_role WHERE roleid = '$userRole'";
+        $result = $db->pquery($sqlRole, array());
+
+        $depth = $db->query_result_rowdata($result, "depth");
+        if ($depth["depth"] > 4) {
+            $viewer->assign('WRITINGACCESS', 'false');
+            $style = [
+            ];
+        } else {
+            $viewer->assign('WRITINGACCESS', 'true');
+            $style = [
+                "cost_hours" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent1" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent2" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent3" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"],
+                "percent4" => ["border" => "1px solid #aad5fd!important", "background" => "rgba(242, 222, 255, 0.1)", "cursor" => "pointer"]
+            ];
+        }
+
+        $sqlRole = "SELECT start1, start2, start3, start4, finish1, finish2, finish3, finish4, year FROM vacation WHERE worker = '$userId' ORDER BY year";
+        $vacations = $this->getSQLArrayResult($sqlRole, []);
+
+        $yearsArray = [];
+
+        foreach ($vacations as $vacation) {
+            if ((!$vacation['start1'] || !$vacation['finish1']) && (!$vacation['start2'] || !$vacation['finish2']) && (!$vacation['start3'] || !$vacation['finish3']) && (!$vacation['start4'] || !$vacation['finish4']))
+                continue;
+
+            $dates = [];
+            if ($vacation['start1'] && $vacation['finish1']) {
+                $start = date_create($vacation['start1']);
+                $finish = date_create($vacation['finish1']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start2'] && $vacation['finish2']) {
+                $start = date_create($vacation['start2']);
+                $finish = date_create($vacation['finish2']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start3'] && $vacation['finish3']) {
+                $start = date_create($vacation['start3']);
+                $finish = date_create($vacation['finish3']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start4'] && $vacation['finish4']) {
+                $start = date_create($vacation['start4']);
+                $finish = date_create($vacation['finish4']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            $yearsArray[$vacation["year"]]= $dates;
+        }
+
+        $sqlRole = "SELECT start1, start2, start3, start4, finish1, finish2, finish3, finish4, year FROM vacation_promotional_tour WHERE worker = '$userId' ORDER BY year";
+        $vacations = $this->getSQLArrayResult($sqlRole, []);
+
+        $yearsPromotionalArray = [];
+
+        foreach ($vacations as $vacation) {
+            if ((!$vacation['start1'] || !$vacation['finish1']) && (!$vacation['start2'] || !$vacation['finish2']) && (!$vacation['start3'] || !$vacation['finish3']) && (!$vacation['start4'] || !$vacation['finish4']))
+                continue;
+
+            $dates = [];
+            if ($vacation['start1'] && $vacation['finish1']) {
+                $start = date_create($vacation['start1']);
+                $finish = date_create($vacation['finish1']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start2'] && $vacation['finish2']) {
+                $start = date_create($vacation['start2']);
+                $finish = date_create($vacation['finish2']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start3'] && $vacation['finish3']) {
+                $start = date_create($vacation['start3']);
+                $finish = date_create($vacation['finish3']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            if ($vacation['start4'] && $vacation['finish4']) {
+                $start = date_create($vacation['start4']);
+                $finish = date_create($vacation['finish4']);
+                $interval = date_diff($start, $finish);
+                $duration = 1 + $interval->format('%d');
+                $dates [] = ['start' => $start->format('d.m.Y'), 'finish' => $finish->format('d.m.Y'), 'duration' => $duration];
+            }
+            $yearsPromotionalArray[$vacation["year"]]= $dates;
+        }
+
         $viewer->assign('DATA1', json_encode($data1));
+        $viewer->assign('VACATIONARCHIVE', json_encode($yearsArray));
+        $viewer->assign('VACATIONPROMOTOINALARCHIVE', json_encode($yearsPromotionalArray));
         $viewer->assign('PERSONALCARD', true);
         $viewer->assign('HEADER', json_encode($header));
         $viewer->assign('MONTHPERIOD', $this->filter_data['period']);
         $viewer->assign('USERID', $userId);
+        $viewer->assign('USERINFO', json_encode([
+            "user_id" => $userId,
+            "user_name" => $usersDB[0]["name_user"],
+            "cost_hours" => $usersDB[0]["cost_hours"],
+            "percent1" => $usersDB[0]["percent1"],
+            "percent2" => $usersDB[0]["percent2"],
+            "percent3" => $usersDB[0]["percent3"],
+            "percent4" => $usersDB[0]["percent4"],
+            "\$cellCss" => $style
+        ]));
     }
 
     function addScript_employees($jsFileNames)
@@ -3520,18 +3658,19 @@ class Accounting_List_View extends Vtiger_Index_View
         }
 
         if ($userFilter) {
-            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery . "AND u.id = $userFilter";
+            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, o.officeid, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery . "AND u.id = $userFilter";
         } else {
-            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery;
+            $usersQuery = "SELECT u.id, concat(u.first_name,' ',u.last_name) as name, o.office as office, o.officeid, u.title as position  from vtiger_users as u LEFT JOIN vtiger_office as o ON o.officeid = u.office  WHERE 1=1 " . $addQuery;
         }
         $users = $this->getSQLArrayResult($usersQuery, array());
 
         foreach ($users as $key => $item) {
             if ($item['office'] == null) {
-                $users[$key]['office'] = "Без офиса";
+                $users[$key]['office'] = "-";
             }
 
             $users[$key]['office'] = html_entity_decode($users[$key]['office']);
+            $users[$key]['region'] = $this->getRegionForOffice($users[$key]['officeid']);
 
             if ($item['position'] == null) {
                 $users[$key]['position'] = "-";
