@@ -3707,14 +3707,18 @@ class Accounting_List_View extends Vtiger_Index_View
         $startObj = new DateTime($request->get('start'));
         $start = $startObj->format("Y-m-d");
 
-        $finishObj = new DateTime($request->get('start'));
-        $finish = $finishObj->format("Y-m-d");
 
+        $finishObj = new DateTime($request->get('finish'));
+        $finish = $finishObj->format("Y-m-d");
+        $interval = $startObj->diff($finishObj);
         $worker = $request->get('user');
 
         $sql = "INSERT INTO maternity_leave (worker,start, finish) VALUES('$worker','$start', '$finish')";
         $db = PearDatabase::getInstance();
         $db->pquery($sql, array());
+
+        $sqlIds = "SELECT id FROM maternity_leave ORDER BY id DESC LIMIT 1";
+        $ids = $this->getSQLArrayResult($sqlIds, array());
 
 
            $this->editHours($start, 'start1', $start, $finish, 'ож', $worker, 'add');
@@ -3722,8 +3726,30 @@ class Accounting_List_View extends Vtiger_Index_View
 
 
 
-        echo json_encode('success');
+        echo json_encode(['status'=>'success', 'interval'=>$interval->format('%a'), 'id'=>$ids[0]['id']]);
         die();
+    }
+
+    public function deleteMaternityLeave(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+        $id = $request->get('id');
+
+        $sqlML = "SELECT * FROM maternity_leave WHERE id = '$id'";
+        $ML = $this->getSQLArrayResult($sqlML, array());
+
+        $start = $ML[0]['start'];
+        $finish = $ML[0]['finish'];
+        $worker = $ML[0]['worker'];
+        $this->editHours($start, 'start1', $start, $finish, 'ож', $worker, 'delete');
+
+        $sql = "DELETE FROM maternity_leave WHERE id = '$id'";
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+        echo json_encode(['status' => 'success']);
+        die();
+
     }
 
 

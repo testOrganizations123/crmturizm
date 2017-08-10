@@ -223,20 +223,20 @@ webix.ready(function () {
     });
 
     maternityLeave.on_click.delbtn = function (e, id, trg) {
-        // $.ajax({
-        //     type: 'get',
-        //     url: '/index.php?module=Accounting&view=List&mode=deleteHoliday&id=' + id,
-        //     success: function (dataJSON) {
-        //         var data = $.parseJSON(dataJSON);
-        //         if (data.status == 'success') {
+        $.ajax({
+            type: 'get',
+            url: '/index.php?module=Accounting&view=List&mode=deleteMaternityLeave&id=' + id,
+            success: function (dataJSON) {
+                var data = $.parseJSON(dataJSON);
+                if (data.status == 'success') {
 
                     $$("maternity").remove(id);
 
-        //         }
-        //
-        //     }
-        //
-        // });
+                }
+
+            }
+
+        });
 
 
         return false; //here it blocks default behavior
@@ -286,8 +286,9 @@ function addMaternityLeave() {
 
                 $$("maternity").add({
                     start: start,
-                    finish: finish
-
+                    finish: finish,
+                    duration: data.interval,
+                    id:data.id
                 }, 0);
                 maternityLeave.sort("start", "asc");
                 $("#start").find('.webix_inp_static').html("");

@@ -9,54 +9,54 @@
 
     console.log({$VACATIONPROMOTOINALARCHIVE});
 </script>
-<style>
-    .header  {
-        background: #edf !important;
-        font-weight: bold;
-        text-align: center;
-    }
-    .webix_cell{
-        height: 33px!important;
-    }
-    #maternityLeave .webix_cell{
-        height: 31px!important;
-    }
+{*<style>*}
+    {*.header  {*}
+        {*background: #edf !important;*}
+        {*font-weight: bold;*}
+        {*text-align: center;*}
+    {*}*}
+    {*.webix_cell{*}
+        {*height: 33px!important;*}
+    {*}*}
+    {*#maternityLeave .webix_cell{*}
+        {*height: 31px!important;*}
+    {*}*}
 
-    .delbtn:hover{
-        background: red;
-        color: white;
-    }
-    .delbtn{
-        display: block;
-        text-align: center;
-        margin-top: 5px;
-        height: 25px;
-        line-height: 24px;
-        font-weight: bold;
-        background: #eeeeee;
-    }
-    .webix_inp_static {
-        border-radius: 0!important;
-        margin-top: -3px;
-        line-height: 25px!important;
-        height: 28px!important;
-        cursor: pointer;
-    }
+    {*.delbtn:hover{*}
+        {*background: red;*}
+        {*color: white;*}
+    {*}*}
+    {*.delbtn{*}
+        {*display: block;*}
+        {*text-align: center;*}
+        {*margin-top: 5px;*}
+        {*height: 25px;*}
+        {*line-height: 24px;*}
+        {*font-weight: bold;*}
+        {*background: #eeeeee;*}
+    {*}*}
+    {*.webix_inp_static {*}
+        {*border-radius: 0!important;*}
+        {*margin-top: -3px;*}
+        {*line-height: 25px!important;*}
+        {*height: 28px!important;*}
+        {*cursor: pointer;*}
+    {*}*}
 
-    .webix_input_icon.fa-calendar{
-        border-radius: 0!important;
-        height: 24px!important;
-        padding-top: 4px!important;
-        margin-top: -3px;
-        cursor: pointer;
-    }
+    {*.webix_input_icon.fa-calendar{*}
+        {*border-radius: 0!important;*}
+        {*height: 24px!important;*}
+        {*padding-top: 4px!important;*}
+        {*margin-top: -3px;*}
+        {*cursor: pointer;*}
+    {*}*}
 
-    #holiday{
-        box-shadow: none;
-        width: 189px;
-        height: 16px!important;
-    }
-</style>
+    {*#holiday{*}
+        {*box-shadow: none;*}
+        {*width: 189px;*}
+        {*height: 16px!important;*}
+    {*}*}
+{*</style>*}
 <div style="display: inline-block; vertical-align: top">
     <h3>Ставка</h3>
     <br>
@@ -110,10 +110,9 @@
 <br>
 <br>
 <div>
-    <h3>Декретный отпуск (в разработке)</h3>
+    <h3>Декретный отпуск</h3>
     <br>
-    <button style="width: 30px; height: 30px;font-weight: bold; font-size: 14px" onclick="addMaternityLeave()">+</button>
-    <br>
+
     <br>
     <div id="maternityLeave" style="display: inline-block;"></div>
     {if $WRITINGACCESS == 'true'}
@@ -127,6 +126,13 @@
     {/if}
 </div>
 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 <br>
 <link rel="stylesheet" href="http://cdn.webix.com/edge/webix.css" type="text/css">

@@ -54,7 +54,7 @@ $dbconfig['db_server'] = 'localhost';
 $dbconfig['db_port'] = ':3306';
 $dbconfig['db_username'] = 'root';
 $dbconfig['db_password'] = '';
-$dbconfig['db_name'] = 'crmVtiger';
+$dbconfig['db_name'] = 'crmturizmvtiger';
 $dbconfig['db_type'] = 'mysqli';
 $dbconfig['db_status'] = 'true';
 
@@ -88,7 +88,7 @@ $host_name = $dbconfig['db_hostname'];
 $site_URL = 'http://crmturizm.ru/';
 
 // root directory path
-$root_directory = 'c:\os\OpenServer\domains\crmturizm';
+$root_directory = 'C:\OpenServer\domains\crmturizm';
 
 // cache direcory path
 $cache_dir = 'cache/';
