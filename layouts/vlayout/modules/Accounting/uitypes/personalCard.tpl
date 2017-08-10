@@ -5,7 +5,7 @@
     window.writingAccess = {$WRITINGACCESS};
     window.vacationArchive = {$VACATIONARCHIVE};
     window.vacationPromotionalArchive = {$VACATIONPROMOTOINALARCHIVE};
-    window.maternityLeave = [];
+    window.maternityLeave = {$MATERNITYLEAVE};
 
     console.log({$VACATIONPROMOTOINALARCHIVE});
 </script>
@@ -20,6 +20,41 @@
     }
     #maternityLeave .webix_cell{
         height: 31px!important;
+    }
+
+    .delbtn:hover{
+        background: red;
+        color: white;
+    }
+    .delbtn{
+        display: block;
+        text-align: center;
+        margin-top: 5px;
+        height: 25px;
+        line-height: 24px;
+        font-weight: bold;
+        background: #eeeeee;
+    }
+    .webix_inp_static {
+        border-radius: 0!important;
+        margin-top: -3px;
+        line-height: 25px!important;
+        height: 28px!important;
+        cursor: pointer;
+    }
+
+    .webix_input_icon.fa-calendar{
+        border-radius: 0!important;
+        height: 24px!important;
+        padding-top: 4px!important;
+        margin-top: -3px;
+        cursor: pointer;
+    }
+
+    #holiday{
+        box-shadow: none;
+        width: 189px;
+        height: 16px!important;
     }
 </style>
 <div style="display: inline-block; vertical-align: top">
@@ -80,7 +115,16 @@
     <button style="width: 30px; height: 30px;font-weight: bold; font-size: 14px" onclick="addMaternityLeave()">+</button>
     <br>
     <br>
-    <div id="maternityLeave"></div>
+    <div id="maternityLeave" style="display: inline-block;"></div>
+    {if $WRITINGACCESS == 'true'}
+        <div style="display: inline-block; vertical-align: top; margin-top: -18px;">
+            <form style="margin-left:20px;width:200px">
+                Начало <div  id="start" ></div>
+                Конец <div  id="finish" ></div><br>
+                <div  style="display: inline-block; "><input type="button" class="btn" value="Добавить" onclick="addMaternityLeave()"></div>
+            </form>
+        </div>
+    {/if}
 </div>
 
 <br>

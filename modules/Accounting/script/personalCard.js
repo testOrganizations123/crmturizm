@@ -1,13 +1,10 @@
 $("#title_name").html(window.userInfo.user_name);
 
-
+console.log(window.userInfo);
 webix.ready(function () {
     var self = this;
 
-    var show_editor = webix.Date.dateToStr("%Y / %m / %d");
-    var parse_editor = webix.Date.strToDate("%Y / %m / %d");
-    //format in grid
-    var show_date = webix.Date.dateToStr("%d.%m.%Y");
+
 
     var dtableRate = new webix.ui({
         container: "rate",
@@ -209,13 +206,10 @@ webix.ready(function () {
         view: "datatable",
         width: 1000,
         columns: [
-            {id: "start", header: "Начало", width: 110,format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor,
+            {id: "start", header: "Начало", width: 110,
+
                 editor: "date"},
-            {id: "finish", header: "Конец", width: 110, format: show_date,
-                editFormat: show_editor,
-                editParse: parse_editor,
+            {id: "finish", header: "Конец", width: 110,
                 editor: "date"
               },
             {id: "duration", header: "Дней", width: 70},
@@ -255,16 +249,81 @@ webix.ready(function () {
 
 function addMaternityLeave() {
 
+    var start = $("#start").find('.webix_inp_static').html();
+    var finish = $("#finish").find('.webix_inp_static').html();
 
-    $$("maternity").add({
-        start: " ",
-        finish: " "
+    if (!start) {
+        $(function () {
+            new PNotify({
+                title: 'Поле "Начало" не должно быть пустым!',
+                text: "",
+                delay: 4000
+            });
 
-    }, 0);
-    maternityLeave.sort("date", "asc");
+        });
+        return false
+    }
+
+    if (!finish) {
+        $(function () {
+            new PNotify({
+                title: 'Поле "Финиш" не должно быть пустым!',
+                text: "",
+                delay: 4000
+            });
+
+        });
+        return false
+    }
+
+
+    $.ajax({
+        type: 'get',
+        url: '/index.php?module=Accounting&view=List&mode=editMaternityLeave&start=' + start + '&finish=' + finish+'&user='+window.userInfo.user_id,
+        success: function (dataJson) {
+            var data = $.parseJSON(dataJson);
+            if (data.status == 'success') {
+
+                $$("maternity").add({
+                    start: start,
+                    finish: finish
+
+                }, 0);
+                maternityLeave.sort("start", "asc");
+                $("#start").find('.webix_inp_static').html("");
+                $("#finish").find('.webix_inp_static').html("");
+
+            }
+
+        }
+
+    });
+
+
+
+
+
+
+
 
 
 }
+
+ webix.ui({
+    container: "start",
+
+
+    view: "datepicker", align: "right", format: "%d.%m.%Y", labelPosition:"top"
+
+});
+
+webix.ui({
+    container: "finish",
+
+
+    view: "datepicker", align: "right", format: "%d.%m.%Y"
+
+});
 
 
 

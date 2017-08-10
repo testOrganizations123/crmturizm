@@ -1781,6 +1781,9 @@ class Accounting_List_View extends Vtiger_Index_View
         die();
     }
 
+
+
+
     public function editVacationSession(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         $value = $request->get("value");
@@ -3582,6 +3585,24 @@ class Accounting_List_View extends Vtiger_Index_View
         $sqlRole = "SELECT start1, start2, start3, start4, finish1, finish2, finish3, finish4, year FROM vacation_promotional_tour WHERE worker = '$userId' ORDER BY year";
         $vacations = $this->getSQLArrayResult($sqlRole, []);
 
+        $sqlMaternityLeave = "SELECT * FROM maternity_leave WHERE worker = '$userId' ORDER BY start";
+        $maternityLeave = $this->getSQLArrayResult($sqlMaternityLeave, []);
+
+        $matLeavArr = [];
+
+        foreach ($maternityLeave as $item){
+            $matLeav['id'] = $item['id'];
+            $matLeav['start'] = $item['start'];
+            $matLeav['finish'] = $item['finish'];
+            $start = new DateTime($item['start']);
+            $finish = new DateTime($item['finish']);
+            $interval = $start->diff($finish);
+            $matLeav['duration'] = $interval->format('%a');
+            $matLeavArr[]=$matLeav;
+
+        }
+
+
         $yearsPromotionalArray = [];
 
         foreach ($vacations as $vacation) {
@@ -3619,7 +3640,7 @@ class Accounting_List_View extends Vtiger_Index_View
             }
             $yearsPromotionalArray[$vacation["year"]]= $dates;
         }
-
+        $viewer->assign('MATERNITYLEAVE', json_encode($matLeavArr));
         $viewer->assign('DATA1', json_encode($data1));
         $viewer->assign('VACATIONARCHIVE', json_encode($yearsArray));
         $viewer->assign('VACATIONPROMOTOINALARCHIVE', json_encode($yearsPromotionalArray));
@@ -3646,8 +3667,7 @@ class Accounting_List_View extends Vtiger_Index_View
         return $jsFileNames;
     }
 
-    public
-    function employees(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    public function employees(Vtiger_Request $request, Vtiger_Viewer $viewer)
     {
         $addQuery = $this->addQueryFilter();
 
@@ -3679,6 +3699,31 @@ class Accounting_List_View extends Vtiger_Index_View
 
         $viewer->assign('USERS', json_encode($users));
         $viewer->assign('EMPLOYEES', true);
+    }
+
+    public function editMaternityLeave(Vtiger_Request $request, Vtiger_Viewer $viewer)
+    {
+
+        $startObj = new DateTime($request->get('start'));
+        $start = $startObj->format("Y-m-d");
+
+        $finishObj = new DateTime($request->get('start'));
+        $finish = $finishObj->format("Y-m-d");
+
+        $worker = $request->get('user');
+
+        $sql = "INSERT INTO maternity_leave (worker,start, finish) VALUES('$worker','$start', '$finish')";
+        $db = PearDatabase::getInstance();
+        $db->pquery($sql, array());
+
+
+           $this->editHours($start, 'start1', $start, $finish, 'ож', $worker, 'add');
+           $this->editHours($finish, 'finish1', $start, $finish, 'ож', $worker, 'add');
+
+
+
+        echo json_encode('success');
+        die();
     }
 
 
